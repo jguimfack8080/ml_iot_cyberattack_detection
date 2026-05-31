@@ -79,10 +79,11 @@ _minted*/
 Paper/log/
 paper-usenix-template-jguimfackjeuna/log/
 
-# PDFs generes (regenerables via buildlualatex.sh)
+# PDFs generes (regenerables via build.sh)
 Paper/hauptdatei.pdf
 Paper/jguimfackjeuna-related-work.pdf
 paper-usenix-template-jguimfackjeuna/*.pdf
+paper-usenix-template-jguimfackjeuna/build/
 
 # =============================================================
 # OS / IDE
