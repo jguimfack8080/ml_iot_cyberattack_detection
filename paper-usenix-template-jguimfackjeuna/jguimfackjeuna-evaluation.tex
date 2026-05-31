@@ -228,10 +228,15 @@ auf Korrelationsartefakte im Datensatz interpretiert.
 \textbf{Ablation Study SHAP.}
 Der Vergleich der \shap{}-Erklaerungen zwischen Pipeline~A und Pipeline~B zeigt den
 qualitativen Effekt der \pca{}-Reduktion auf die Interpretierbarkeit.
-Pipeline~A-Erklaerungen identifizieren Hauptkomponenten (PC1, PC2, \ldots, PC16) als
-wichtigste Features.
+Fuer Stufe~1 (binaere Klassifikation, Pipeline~A) identifiziert der \texttt{TreeExplainer}
+PC6 ($\overline{|\phi|}$\,=\,90.171), PC1 (62.205) und PC7 (47.902) als die drei wichtigsten
+Komponenten.
+Fuer Stufe~2 (Mehrklassenklassifikation, Pipeline~A) dominieren PC2 und PC1 uebergreifend
+ueber alle Klassen mit Abstand, gefolgt von PC7 und PC6.
 Da Hauptkomponenten lineare Kombinationen der 39 Originalmerkmale sind, fehlt ihnen jede
 direkte semantische Bedeutung~\cite{alharby2025ciciot}.
+Ein Sicherheitsanalyst kann aus \glqq{}PC6 ist das wichtigste Feature\grqq{} kein
+Angriffsverhalten ableiten.
 Pipeline~B-Erklaerungen benennen konkrete Netzwerkmerkmale wie \texttt{Rate},
 \texttt{syn\_flag\_number} oder \texttt{Number}, die unmittelbar mit bekannten
 Angriffssignaturen vergleichbar sind.
