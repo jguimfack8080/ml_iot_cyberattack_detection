@@ -109,11 +109,24 @@ Modellleistung aufgewogen wird.
 \shap{} wird ausschliesslich als post-hoc-Erklaerungskomponente eingesetzt.
 Die Analyse erfolgt auf zwei Ebenen in Anlehnung an Mohale und Obagbuwa~\cite{mohale2025xai}.
 
+\textbf{Explainer-Wahl.}
+Fuer Stufe~1 (binaere Klassifikation) wird der \texttt{TreeExplainer} eingesetzt, der
+exakte Shapley-Werte fuer baumbasierte Modelle ohne Approximation
+berechnet~\cite{mohale2025xai}.
+Fuer Stufe~2 (Mehrklassenklassifikation mit mehr als zwei Klassen) ist der
+\texttt{TreeExplainer} in \shap{}~0.52 fuer \texttt{GradientBoostingClassifier} nicht
+verfuegbar.
+Daher kommt der \texttt{PermutationExplainer} mit \texttt{predict\_proba} als
+Modellschnittstelle zum Einsatz, der modellunabhaengige Shapley-Werte berechnet und die
+wissenschaftliche Gueltigkeit der Erklaerungen
+erhaelt~\cite{mohale2025xai,hermosilla2025xai_forensic}.
+
 Auf \textbf{globaler Ebene} werden Feature-Importance-Ranglisten pro Angriffsklasse erzeugt,
-basierend auf dem Betragsmittelwert der \shap{}-Werte ueber alle Testinstanzen.
+basierend auf dem Betragsmittelwert der \shap{}-Werte ueber alle Testinstanzen
+($\overline{|\phi_i|}$).
 
 Auf \textbf{lokaler Ebene} werden Einzelfallanalysen ausgewaehlter Fehlklassifikationen
-durchgefuehrt.
+durchgefuehrt (Waterfall-Plots).
 
 Die Qualitaet der \shap{}-Erklaerungen wird anhand der Bewertungsmetriken aus Hermosilla et
 al.\ \cite{hermosilla2025xai_forensic} ueberprueft: Fidelitaet, Konsistenz und

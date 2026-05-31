@@ -1,19 +1,37 @@
 \section{Fazit}\label{fazit}
 
-\textit{Dieser Abschnitt wird ergaenzt, sobald die Grid-Search-Optimierung und die
-SHAP-Analyse abgeschlossen sind und die validierten Projektergebnisse vorliegen.}
-
-\textbf{Vorlaeufiges Fazit.}
 Die vorliegende Arbeit hat einen zweistufigen hierarchischen \gb{}-Klassifikator auf dem
-CICIoT2023-Datensatz~\cite{neto2023ciciot2023} implementiert und mit der \ba{} als primaerer
-Metrik evaluiert.
-Die Ablation Study liefert ein erstes messbares Ergebnis: \pca{} reduziert die \ba{} von
-Stufe~2 um 8{,}21~Prozentpunkte (0{,}6301 gegenueber 0{,}5480), waehrend Pipeline~B ohne
-\pca{} konsistent besser abschneidet und gleichzeitig um 583~Sekunden schneller trainiert.
-Damit bestaetigt sich die Ausgangshypothese, dass \pca{} die Mehrklassenklassifikation
-beeintraechtigt.
+CICIoT2023-Datensatz~\cite{neto2023ciciot2023} implementiert, evaluiert und mit einer
+\shap{}-basierten Erklaerbarkeitskomponente versehen.
 
-Die \shap{}-Integration und die Grid-Search-Optimierung sind geplante naechste Schritte.
-Die vorliegende Arbeit schliesst damit die von Raturi et al.\ \cite{raturi2026exploratory}
-identifizierte Forschungsluecke der fehlenden Erklaerbarkeit und liefert durch die Ablation
-Study einen eigenstaendigen wissenschaftlichen Beitrag.
+\textbf{Kernergebnisse.}
+Die Ablation Study liefert ein klar messbares Ergebnis: \pca{} reduziert die \ba{} von
+Stufe~2 um 8{,}21~Prozentpunkte (Pipeline~B: 0{,}6301 gegenueber Pipeline~A: 0{,}5480
+mit Standardparametern).
+Gleichzeitig trainiert Pipeline~B ohne \pca{} um 583~Sekunden schneller.
+Die Grid-Search-Optimierung verbessert die \ba{} von Stufe~2 in Pipeline~B um weitere
+1{,}78~Prozentpunkte auf 0{,}6479 (auf einem Teilmengedatensatz von 8.045~Instanzen).
+Diese Ergebnisse bestaetigen die Ausgangshypothese: \pca{} beeintraechtigt die
+Mehrklassenklassifikation messbar und gleichzeitig die semantische Interpretierbarkeit
+der \shap{}-Erklaerungen, da Hauptkomponenten keine direkte Entsprechung zu
+Netzwerkmerkmalen haben~\cite{alharby2025ciciot}.
+
+\textbf{Wissenschaftlicher Beitrag.}
+Gegenueber Raturi et al.\ \cite{raturi2026exploratory} schliesst die vorliegende Arbeit
+die identifizierte Forschungsluecke der fehlenden Erklaerbarkeit durch die Integration von
+\shap{} als post-hoc-Erklaerungskomponente.
+Gegenueber Alharby~\cite{alharby2025ciciot} ergaenzt die Arbeit die \pca{}-basierte
+Klassifikation um eine systematische Ablation Study einschliesslich des Einflusses auf die
+\shap{}-Feature-Importance-Ranglisten.
+Die Kombination aus zweistufiger hierarchischer Architektur, \ba{} als primaerer Metrik
+und \shap{}-Analyse auf dem CICIoT2023-Datensatz stellt nach Kenntnis des Autors eine
+eigenstaendige Kombination in der Literatur dar.
+
+\textbf{Ausblick.}
+Die vollstaendige \shap{}-Analyse auf dem Gesamtmodell nach Reentrainement mit optimierten
+Hyperparametern und die Bewertung der Erklaerungsqualitaet nach Hermosilla et al.\
+\cite{hermosilla2025xai_forensic} (Fidelitaet, Konsistenz, Jaccard-Aehnlichkeit) sind
+naechste Schritte.
+Offene Forschungsfragen bleiben die Latenzmessung fuer den Echtzeiteinsatz in
+ressourcenbeschraenkten \iot{}-Umgebungen~\cite{raturi2026exploratory} sowie die
+Generalisierbarkeit auf weitere \iot{}-Datensaetze~\cite{hamedani2025iotsurvey}.

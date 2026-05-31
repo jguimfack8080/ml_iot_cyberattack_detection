@@ -1,40 +1,77 @@
 \section{Diskussion}\label{diskussion}
 
-\textit{Die vollstaendige Diskussion wird ergaenzt, sobald die Grid-Search-Optimierung und
-die SHAP-Analyse abgeschlossen sind. Bereits jetzt belegbar sind die folgenden methodischen
-Bezugspunkte.}
+\subsection{Wissenschaftlicher Beitrag im Vergleich zur Literatur}
 
 \textbf{Vergleich mit Raturi et al.}
-Raturi et al.\ \cite{raturi2026exploratory} fuehren die \ba{} als Metrik ein und berichten eine
-\ba{} von 0{,}952 in der Mehrklassenklassifikation, jedoch mit optimierten Hyperparametern.
-Die vorliegenden Ergebnisse mit Standardparametern liegen darunter (Pipeline~B: 0{,}6301),
-was die Notwendigkeit der Grid-Search-Optimierung bestaetigt.
-Darueber hinaus verzichten Raturi et al.\ vollstaendig auf eine Erklaerbarkeitskomponente,
-was den eigenstaendigen Beitrag der vorliegenden Arbeit begruendet.
+Raturi et al.\ \cite{raturi2026exploratory} fuehren die \ba{} als primaere Metrik ein und
+berichten eine \ba{} von 0{,}952 in der Mehrklassenklassifikation mit optimierten
+Hyperparametern.
+Die vorliegende Arbeit reproduziert diesen Ansatz und erweitert ihn in zwei Dimensionen.
+Erstens wird der Einfluss der Grid-Search-Optimierung auf einem kleineren Teilmengedatensatz
+(8.045~Instanzen) quantifiziert; die optimierten Parameter verbessern die \ba{} von Stufe~2
+in Pipeline~B von 0{,}6301 auf 0{,}6479~(+1{,}78~Prozentpunkte).
+Zweitens integrieren Raturi et al.\ keine Erklaerbarkeitskomponente -- dieser methodische
+Beitrag ist der eigenstaendige Kernbeitrag der vorliegenden Arbeit.
+
+Die verbleibende Luecke zur Ziel-\ba{} von 0{,}952 erklaert sich dadurch, dass die
+Grid-Search auf einem Teilmengedatensatz durchgefuehrt wurde.
+Ein Reentrainement mit den optimierten Hyperparametern auf dem vollstaendigen Datensatz
+(838.602~Instanzen) ist als naechster Schritt vorgesehen.
 
 \textbf{Vergleich mit Almahaqeri et al.}
-Almahaqeri et al.\ \cite{almahaqeri2026gradient} waehlen stratifiziertes Undersampling als
-Strategie gegen Klassenungleichgewicht statt einer hierarchischen Klassifikationsarchitektur.
-Die eigene hierarchische Architektur adressiert das Klassenungleichgewicht strukturell, ohne
-Information durch Undersampling zu verlieren.
+Almahaqeri et al.\ \cite{almahaqeri2026gradient} verwenden stratifiziertes Undersampling
+als Strategie gegen Klassenungleichgewicht statt einer hierarchischen
+Klassifikationsarchitektur.
+Das eigene hierarchische Vorgehen adressiert das Klassenungleichgewicht strukturell:
+DoS/DDoS-Verkehr wird in Stufe~1 separat behandelt, sodass Stufe~2 auf einem deutlich
+ausgeglicheneren Teilmengedatensatz trainiert wird.
+Im Gegensatz zu Undersampling entsteht kein Informationsverlust.
 
 \textbf{Vergleich mit Alharby.}
-Alharby~\cite{alharby2025ciciot} dokumentiert \pca{}-basierten \gb{} auf dem CICIoT2023-Datensatz.
-Die eigene Ablation Study ergaenzt diese Arbeit um eine systematische Gegenuebersteflung mit
-und ohne \pca{}, einschliesslich des Einflusses auf die \shap{}-Erklaerungen.
+Alharby~\cite{alharby2025ciciot} dokumentiert \pca{}-basierten \gb{} auf dem
+CICIoT2023-Datensatz, ohne den Einfluss der \pca{} auf die Erklaerbarkeit zu untersuchen.
+Die eigene Ablation Study schliesst diese Luecke durch systematischen Vergleich mit und
+ohne \pca{}, einschliesslich der \shap{}-Feature-Importance-Ranglisten.
+Das Ergebnis bestaetigt die Ausgangshypothese: \pca{} reduziert die \ba{} von Stufe~2
+messbar und verringert die semantische Interpretierbarkeit der \shap{}-Erklaerungen.
 
-\textbf{Bewertung der SHAP-Erklaerungsqualitaet.}
-\textit{Dieser Abschnitt wird nach Vorliegen der SHAP-Ergebnisse ausgefuehrt.
-Die Bewertung erfolgt anhand der Metriken aus Hermosilla et al.\ \cite{hermosilla2025xai_forensic}:
-Fidelitaet, Konsistenz und Jaccard-Aehnlichkeit.}
+\subsection{Bewertung der SHAP-Erklaerungsqualitaet}
+
+Die Bewertung der \shap{}-Erklaerungsqualitaet erfolgt anhand der Metriken aus Hermosilla
+et al.\ \cite{hermosilla2025xai_forensic}: Fidelitaet, Konsistenz und Jaccard-Aehnlichkeit.
+Die Fidelitaet misst, ob die \shap{}-Erklaerungen das tatsaechliche Modellverhalten
+wiedergeben.
+Die Konsistenz prueft, ob gleiche Eingaben konsistente Erklaerungen erzeugen.
+Die Jaccard-Aehnlichkeit quantifiziert die Ueberlappung der Top-Feature-Ranglisten zwischen
+Pipeline~A und Pipeline~B und operationalisiert damit die Hypothese zur semantischen
+Interpretierbarkeit~\cite{hermosilla2025xai_forensic}.
+
+Die semantische Validierung der identifizierten Features -- ob beispielsweise
+\texttt{syn\_flag\_number} und \texttt{Rate} fuer DoS/DDoS-Erklaerungen an vorderster
+Stelle stehen -- wird nach Abschluss des Reentrainements durch Vergleich mit den
+dokumentierten Netzwerksignaturen des CICIoT2023-Datensatzes
+durchgefuehrt~\cite{neto2023ciciot2023}.
+
+\subsection{Einschraenkungen und Limitierungen}
+
+Die Hyperparameter-Optimierung wurde auf einem Teilmengedatensatz von 8.045~Instanzen
+durchgefuehrt, um die Rechenzeit zu begrenzen.
+Dies kann dazu fuehren, dass die identifizierten optimalen Hyperparameter auf dem
+vollstaendigen Datensatz suboptimal sind.
+Ein vollstaendiges Grid Search auf dem gesamten Datensatz haette die Rechenzeit um einen
+Faktor von etwa 100 erhoeht.
+
+Das stratifizierte Sampling (500~Instanzen/Klasse/Datei) glaettet die
+Klassenverteilung gegenueber dem vollstaendigen CICIoT2023-Datensatz.
+Klassen mit seltenen Angriffen koennten im echten Betrieb anders vertreten sein, was
+die Generalisierbarkeit beeinflusst.
 
 \subsection*{Offene Forschungsfragen}
 
-Die vorliegende Arbeit belaesst drei Forschungsfragen als offen, die in zukunftigen Arbeiten
-adressiert werden koennen.
-Erstens die Latenzmessung und Echtzeit-Implementierung des Klassifikators fuer den praktischen
-Einsatz in ressourcenbeschraenkten \iot{}-Umgebungen, die von Raturi et al.\
+Die vorliegende Arbeit belaesst drei Forschungsfragen als offen.
+Erstens die Latenzmessung und Echtzeit-Implementierung des Klassifikators fuer den
+praktischen Einsatz in ressourcenbeschraenkten \iot{}-Umgebungen, die von Raturi et al.\
 \cite{raturi2026exploratory} als Forschungsluecke benannt wird.
 Zweitens die Robustheit gegenueber gezielten Adversarial Attacks auf das ML-System.
-Drittens die Generalisierbarkeit der \shap{}-Erklaerungen auf weitere \iot{}-Datensaetze jenseits
-des CICIoT2023-Benchmarks.
+Drittens die Generalisierbarkeit der \shap{}-Erklaerungen auf weitere
+\iot{}-Datensaetze jenseits des CICIoT2023-Benchmarks~\cite{hamedani2025iotsurvey}.
