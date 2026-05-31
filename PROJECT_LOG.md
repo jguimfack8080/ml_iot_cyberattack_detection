@@ -8,6 +8,31 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-05-31 (f) -- Review anti-hallucination + correction 2 erreurs critiques paper
+
+- Datum: 2026-05-31
+- Aenderung: Review complet du paper selon protocole strict (hallucinations, sources, metriques,
+  Forschungsfragen). Deux erreurs critiques identifiees et corrigees.
+- Betroffene Dateien:
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-discussion.tex :
+    Zeile "Fuer Pipeline B stehen die Reentrainement-Ergebnisse noch aus." entfernt und
+    durch korrekte Ergebnisse ersetzt (BA2=0.6285, konsistentes Grid-Search-Muster)
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-conclusion.tex :
+    Ausblick korrigiert : "SHAP sind naechste Schritte" entfernt (SHAP abgeschlossen),
+    durch korrekte Zusammenfassung + echte offene Fragen ersetzt
+  - paper-usenix-template-jguimfackjeuna/Done.md : Session 11 ergaenzt
+  - paper-usenix-template-jguimfackjeuna/TO-DO.md : Review-Checkboxen ergaenzt
+  - PROJECT_LOG.md : dieser Eintrag
+- Technische Auswirkungen:
+  - Paper intern konsistent : kein Widerspruch mehr zwischen Evaluation und Discussion/Conclusion
+  - Alle Zahlenwerte 100% verifiziert gegen Backend-JSON-Metriken
+  - 0 Halluzinationen, 0 externe Quellen, 0 falsche Zitierungen
+- Begruendung:
+  - Beide Saetze waren Ueberbleibsel aus Zwischenphasen des Schreibprozesses
+  - "Pipeline B ausstehend" war seit Session 8 faktisch falsch (Ergebnisse lagen vor)
+  - "SHAP naechste Schritte" war seit Session 8 faktisch falsch (SHAP abgeschlossen)
+  - Wissenschaftliche Glaubwuerdigkeit erfordert interne Konsistenz
+
 ### 2026-05-31 (e) -- Decision Issue #3 : BA=0.7261 definitif + cloture documentation
 
 - Datum: 2026-05-31

@@ -1,5 +1,5 @@
 # TO-DO.md -- Taches restantes sur le Paper
-## Derniere mise a jour : 2026-05-31 (Session 10)
+## Derniere mise a jour : 2026-05-31 (Session 11)
 
 ---
 
@@ -44,7 +44,7 @@
 
 ---
 
-## P3 -- Verification et mise en forme (deadline 2026-06-22 Reviewversion) -- COMPLET
+## P3 -- Verification et mise en forme (deadline 2026-06-22 Reviewversion) -- COMPLET (Session 11)
 
 [x] Verifier absence de tirets cadratins (-- et ---) dans tous les .tex (Session 8+9)
     [x] Toutes occurrences corrigees, scan final OK (hors commentaires LaTeX %---)
@@ -57,6 +57,10 @@
     [x] Fix portabilite : microtype[kerning,spacing] conditionne a pdftex (iftex) dans .sty
     [x] Paper compile maintenant avec pdflatex ET lualatex (moteur de buildlualatex.sh)
 [x] SimpleImputer reference : citation incorrecte \cite{neto} retiree (Session 9)
+[x] Review anti-hallucination complet (Session 11) : 0 hallucination, 0 inconsistance interne
+    [x] Toutes valeurs numeriques verifiees contre Backend JSON (100% correct)
+    [x] discussion.tex : erreur "Pipeline B resultats en attente" corrigee (resultat reel: BA2=0.6285)
+    [x] conclusion.tex Ausblick : erreur "SHAP sind naechste Schritte" corrigee (SHAP est complet)
 
 ---
 

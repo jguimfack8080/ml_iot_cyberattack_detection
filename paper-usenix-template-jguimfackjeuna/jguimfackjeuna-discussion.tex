@@ -20,7 +20,12 @@ Dieses Ergebnis zeigt, dass Hyperparameter, die auf einem kleinen Subset (8.045~
 optimiert werden, nicht zwingend besser auf dem vollstaendigen Datensatz abschneiden.
 Die verbleibende Luecke zur Ziel-\ba{} von 0{,}952 (Raturi et al.) laesst sich damit nicht
 allein durch die Grid-Search-Optimierung schliessen.
-Fuer Pipeline~B stehen die Reentrainement-Ergebnisse noch aus.
+Fuer Pipeline~B bestaetigt das Reentrainement denselben Befund: die optimierten
+Hyperparameter liefern BA$_2$\,=\,0{,}6285, knapp unterhalb der Standard-\ba{} von
+0{,}6301~($-$0{,}16~Punkte).
+Dieses konsistente Muster in beiden Pipelines zeigt, dass ein Grid~Search auf einem kleinen
+Subset (8.045~Instanzen) keine reliablen Hyperparameter fuer den vollstaendigen
+CICIoT2023-Datensatz liefert~\cite{hosseini2025imbalance}.
 
 \textbf{Vergleich mit Almahaqeri et al.}
 Almahaqeri et al.\ \cite{almahaqeri2026gradient} verwenden stratifiziertes Undersampling

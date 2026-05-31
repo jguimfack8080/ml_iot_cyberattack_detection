@@ -32,10 +32,11 @@ und \shap{}-Analyse auf dem CICIoT2023-Datensatz stellt nach Kenntnis des Autors
 eigenstaendige Kombination in der Literatur dar.
 
 \textbf{Ausblick.}
-Die vollstaendige \shap{}-Analyse auf dem Gesamtmodell nach Reentrainement mit optimierten
-Hyperparametern und die Bewertung der Erklaerungsqualitaet nach Hermosilla et al.\
-\cite{hermosilla2025xai_forensic} (Fidelitaet, Konsistenz, Jaccard-Aehnlichkeit) sind
-naechste Schritte.
+Die \shap{}-Analyse und ihre Qualitaetsbewertung nach Hermosilla et al.\
+\cite{hermosilla2025xai_forensic} (Fidelitaet, Konsistenz) wurden fuer Pipeline~B
+abgeschlossen; die Jaccard-Aehnlichkeit ist methodisch nicht anwendbar, da \pca{}-Komponenten
+und Originalmerkmale verschiedene Feature-Raeume bilden (vgl.\ Kapitel~\ref{evaluation}).
 Offene Forschungsfragen bleiben die Latenzmessung fuer den Echtzeiteinsatz in
-ressourcenbeschraenkten \iot{}-Umgebungen~\cite{raturi2026exploratory} sowie die
-Generalisierbarkeit auf weitere \iot{}-Datensaetze~\cite{hamedani2025iotsurvey}.
+ressourcenbeschraenkten \iot{}-Umgebungen~\cite{raturi2026exploratory}, die Robustheit
+gegenueber gezielten Adversarial Attacks sowie die Generalisierbarkeit der
+\shap{}-Erklaerungen auf weitere \iot{}-Datensaetze~\cite{hamedani2025iotsurvey}.

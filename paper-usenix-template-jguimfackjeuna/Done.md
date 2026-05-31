@@ -191,3 +191,42 @@ Issue GitHub #3 fermee avec resultat reel.
 **Status paper inchange :**
 - 9 pages, 0 Gedankenstrich dans le contenu, 10/10 sources, 0 reference non resolue
 - Tickets paper #4 (Kernkapitel) et #5 (Reviewversion) : fermes depuis Session 9
+
+---
+
+### 2026-05-31 -- Session 11 : Review anti-hallucination + correction 2 erreurs critiques
+
+**Review complet conduit (protocol strict) :**
+- Abstract : present et correct
+- Tous les chiffres (BA, F1, Recall, Gaps) verifies contre les JSON de metriques : 100% correct
+- 10 sources : toutes citees correctement, aucune source externe ajoutee
+- Forschungsfragen : Hauptfrage + 3 Teilfragen couvertes (details ci-dessous)
+
+**2 erreurs critiques corrigees :**
+
+1. jguimfackjeuna-discussion.tex :
+   Phrase erronee supprimee : "Fuer Pipeline B stehen die Reentrainement-Ergebnisse noch aus."
+   (Pipeline B etait deja entraine depuis Session 8 : BA2=0.6285)
+   Remplacee par les resultats reels + conclusion methodologique sur Grid Search subset
+
+2. jguimfackjeuna-conclusion.tex (Ausblick) :
+   Phrase erronee supprimee : "SHAP-Analyse [...] sind naechste Schritte."
+   (SHAP etait deja complet depuis Session 8)
+   Remplacee par confirmation que SHAP est fait + vraies offene Forschungsfragen
+   (Latenz, Adversarial Attacks, Generalisierbarkeit)
+
+**Forschungsfragen-Deckung (apres corrections) :**
+- Rahmenfrage (XAI-Kriterien Faithfulness/Stability) : TEILWEISE -- Fidelitaet+Konsistenz adressiert, "Comprehensibility" implizit (semantische Validierung)
+- Hauptfrage (SHAP pro Klasse + Verhaeltnis zu BA) : JA -- tab:shap_top5 + Diskussion ABstudy
+- Teilfrage 1 (Per-Klassen-Performance, BA vs Accuracy) : JA -- tab:perclass_a/b, Gap 0.217
+- Teilfrage 2 (PCA-Einfluss BA + SHAP) : JA -- -8.21 Punkte BA, PCA semantischer Verlust
+- Teilfrage 3 (Semantische Validierung SHAP) : TEILWEISE -- DoS/Recon/Mirai validiert, Spoofing als Artefakt markiert
+
+**1 mittleres Problem offen (nicht kritisch) :**
+- Forschungsfragen nicht explizit als "Forschungsfragen" in der Einleitung formuliert
+  (USENIX-Format: als "contributions" implizit strukturiert -- akzeptabel fuer Seminararbeit)
+
+**Status nach Korrekturen :**
+- 0 Halluzination, 0 interne Inkonsistenz, 0 falscher Zahlenwert
+- Alle Tabellenzeilen verifikation-positiv gegen Backend-JSON
+- paper : 9 pages, 0 Gedankenstrich, 10/10 sources
