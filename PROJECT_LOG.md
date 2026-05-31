@@ -8,7 +8,29 @@ created: 2026-04-28
 
 ## Eintraege
 
-### 2026-05-31 -- Backend: Evaluation, SHAP, Tests, Docs (Issues #10, #11, #12 teilweise)
+### 2026-05-31 (b) -- Paper: Diskussion, Fazit, SHAP-Methodik, Gedankenstrich-Fix
+
+- Datum: 2026-05-31
+- Aenderung: Vollstaendige Fertigstellung der Paper-Sektionen fuer Issues #3, #4.
+- Betroffene Dateien:
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-evaluation.tex: SHAP-Sektion vollstaendig
+    (Explainer-Wahl, globale + lokale Erklaerungen, Ablation SHAP, Tabellen-Struktur)
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-discussion.tex: vollstaendige Diskussion
+    (Vergleiche Raturi/Almahaqeri/Alharby, SHAP-Qualitaet, Limitierungen, offene Fragen)
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-conclusion.tex: vollstaendiges Fazit
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-methodik.tex: PermutationExplainer Stufe 2
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-main.tex: Gedankenstrich-Fix Autorenzeile
+  - Alle .tex-Dateien: alle -- Gedankenstriche entfernt (6 Fixes in evaluation+discussion)
+- Technische Auswirkungen:
+  - Keine verbotenen Gedankenstriche mehr in Inhaltsbereichen der .tex-Dateien
+  - Tabelle 3 (SHAP Top-5 Features) hat Platzhalter; wird nach Reentrainement befuellt
+  - SHAP-Sektion beschreibt PermutationExplainer fuer Stufe 2 (ADR-005-Begruendung)
+- Begruendung:
+  - Issues #3 (Ergebnisfeststellung) und #4 (Kernkapitel) erfordern vollstaendige Paper-Sektionen.
+  - Deadline Issue #3: 2026-06-08. Alle methodischen Sektionen sind jetzt vollstaendig geschrieben.
+  - Zahlenwerte (SHAP Top-Features) werden nach Abschluss des Reentrainements eingefuegt.
+
+### 2026-05-31 (a) -- Backend: Evaluation, SHAP, Tests, Docs (Issues #10, #11, #12 teilweise)
 
 - Datum: 2026-05-31
 - Aenderung: Umfassende Backend-Erweiterung im Rahmen der Issues #10, #11, #12.
