@@ -41,7 +41,7 @@ def plot_summary_stage1(
         plot_type="dot",
     )
     plt.title(
-        f"SHAP Summary -- Stufe 1 (Pipeline {result.pipeline})\n"
+        f"SHAP Summary: Stufe 1 (Pipeline {result.pipeline})\n"
         "DoS/DDoS vs. non-DoS"
     )
     plt.tight_layout()
@@ -77,7 +77,7 @@ def plot_summary_stage2_per_class(
             plot_type="dot",
         )
         plt.title(
-            f"SHAP Summary -- {cls_name} (Pipeline {result.pipeline})\n"
+            f"SHAP Summary: {cls_name} (Pipeline {result.pipeline})\n"
             "Stufe 2 Feature Importance"
         )
         plt.tight_layout()
@@ -103,7 +103,7 @@ def plot_bar_global_importance(
 
     if result.stage == 1:
         importance = result.global_importance
-        title = f"Global SHAP Feature Importance -- Stufe 1 (Pipeline {result.pipeline})"
+        title = f"Global SHAP Feature Importance: Stufe 1 (Pipeline {result.pipeline})"
         fname = f"shap_global_stage1_pipeline{result.pipeline}.png"
     else:
         # Aggregate across classes: mean of per-class importances
@@ -113,7 +113,7 @@ def plot_bar_global_importance(
                 all_values.setdefault(feat, []).append(val)
         importance = {f: float(np.mean(v)) for f, v in all_values.items()}
         importance = dict(sorted(importance.items(), key=lambda x: x[1], reverse=True))
-        title = f"Global SHAP Feature Importance -- Stufe 2 (Pipeline {result.pipeline})"
+        title = f"Global SHAP Feature Importance: Stufe 2 (Pipeline {result.pipeline})"
         fname = f"shap_global_stage2_pipeline{result.pipeline}.png"
 
     features = list(importance.keys())[:top_k]
@@ -176,7 +176,7 @@ def plot_waterfall_misclassified(
     fig, _ = plt.subplots(figsize=(10, 6))
     shap.waterfall_plot(explanation, max_display=15, show=False)
     plt.title(
-        f"SHAP Waterfall -- Stufe {result.stage} Pipeline {result.pipeline}\n"
+        f"SHAP Waterfall: Stufe {result.stage} Pipeline {result.pipeline}\n"
         f"True: {true_label}  |  Predicted: {pred_label}"
     )
     plt.tight_layout()

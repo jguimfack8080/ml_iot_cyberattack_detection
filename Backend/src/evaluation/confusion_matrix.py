@@ -44,7 +44,7 @@ def plot_and_save_stage1(
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=_STAGE1_LABELS)
     disp.plot(ax=ax, colorbar=False, cmap="Blues")
     ax.set_title(
-        f"Konfusionsmatrix Stufe 1 -- Pipeline {trained.pipeline_name}\n"
+        f"Konfusionsmatrix Stufe 1: Pipeline {trained.pipeline_name}\n"
         f"(Balanced Accuracy = {trained.balanced_accuracy_stage1:.4f})"
     )
     fig.tight_layout()
@@ -84,7 +84,7 @@ def plot_and_save_stage2(
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
     disp.plot(ax=ax, colorbar=False, cmap="Blues", xticks_rotation=45)
     ax.set_title(
-        f"Konfusionsmatrix Stufe 2 -- Pipeline {trained.pipeline_name}\n"
+        f"Konfusionsmatrix Stufe 2: Pipeline {trained.pipeline_name}\n"
         f"(Balanced Accuracy = {trained.balanced_accuracy_stage2:.4f})"
     )
     fig.tight_layout()
