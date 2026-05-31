@@ -4,26 +4,18 @@ Klassische Intrusion Detection Systeme (\ids{}) auf Basis von Signaturvergleich 
 diesem Kontext methodische Grenzen, weshalb Machine Learning (ML) als datengetriebene
 Alternative untersucht wird~\cite{kikissagbe2024review}.
 Auf dem CICIoT2023-Datensatz~\cite{neto2023ciciot2023} zeigen Raturi et al.\
-\cite{raturi2026exploratory}, dass baumbasierte Modelle und \gb{} im Speziellen die hoechste
-\ba{} in der Mehrklassenklassifikation erzielen.
-Die Studie identifiziert jedoch drei methodische Luecken, darunter die fehlende Erklaerbarkeit
-der Modellentscheidungen~\cite{raturi2026exploratory}.
+\cite{raturi2026exploratory}, dass \gb{} die hoechste \ba{} in der Mehrklassenklassifikation
+erzielt, jedoch ohne Erklaerbarkeitskomponente.
 
-Die vorliegende Arbeit setzt an dieser Luecke an.
-Sie integriert SHapley Additive Explanations (\shap{}) als post-hoc-Erklaerungskomponente in
-einen \gb{}-Klassifikator auf dem CICIoT2023-Datensatz und bewertet die Modellleistung mit der
-\ba{} als primaerer Metrik.
+Die vorliegende Arbeit schliesst diese Forschungsluecke.
+Sie implementiert einen zweistufigen hierarchischen \gb{}-Klassifikator auf dem
+CICIoT2023-Datensatz (838.602~Instanzen), evaluiert ihn mit der \ba{} als primaerer Metrik
+und integriert \shap{} als post-hoc-Erklaerungskomponente.
+Eine Ablation Study zeigt, dass \pca{}-Reduktion (39 auf 16 Merkmale) die \ba{} von Stufe~2
+um 8{,}21~Prozentpunkte reduziert (0{,}6301 ohne \pca{} vs.\ 0{,}5480 mit \pca{}).
 Die methodische Vorlage fuer die \shap{}-Integration stuetzt sich auf Mohale und
-Obagbuwa~\cite{mohale2025xai}, die quantitative Bewertung der Erklaerungsqualitaet auf
-Hermosilla, Berrios und Allende-Cid~\cite{hermosilla2025xai_forensic}.
-Eine Ablation Study untersucht zusaetzlich den Einfluss der Principal Component Analysis
-(\pca{}) auf Modellleistung und Erklaerungen, da Raturi et al.\ \pca{} verwenden, ohne deren
-Wirkung systematisch zu analysieren~\cite{raturi2026exploratory}.
-Vergleichswerte fuer \gb{} und \pca{} auf dem CICIoT2023-Datensatz werden aus Alharby
-\cite{alharby2025ciciot} gewonnen.
-Der Umgang mit Klassenungleichgewicht wird im Diskussionsteil im Vergleich zu Almahaqeri et
-al.\ \cite{almahaqeri2026gradient} und unter Bezug auf Hosseini et al.\
-\cite{hosseini2025imbalance} reflektiert.
+Obagbuwa~\cite{mohale2025xai}, die Erklaerungsqualitaet wird anhand der Metriken von
+Hermosilla et al.~\cite{hermosilla2025xai_forensic} bewertet.
 
 \textbf{Schlusselworter:}
 Internet of Things, Machine Learning, Gradient Boosting, CICIoT2023, Balanced Accuracy,
