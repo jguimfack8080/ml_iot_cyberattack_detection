@@ -147,8 +147,8 @@ Backend/
 **Architecture P3 :** Pipeline B implémentée EN MÊME TEMPS que P2 grâce au pattern DRY
 (_core.py partagé). Les 2 pipelines ne diffèrent que par le preprocessor injecté.
 
-**URGENT — deadline 2026-06-01 :** Lancer l'entraînement sur MERGED_CSV réelles pour
-premiers résultats Balanced Accuracy du Motivationsreview.
+**URGENT -- deadline 2026-06-01 :** Lancer l'entrainement sur MERGED_CSV reelles pour
+premiers resultats Balanced Accuracy du Motivationsreview.
 
 ---
 
