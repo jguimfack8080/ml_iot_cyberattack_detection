@@ -41,14 +41,17 @@ messbar und verringert die semantische Interpretierbarkeit der \shap{}-Erklaerun
 
 \subsection{Bewertung der SHAP-Erklaerungsqualitaet}
 
-Die Bewertung der \shap{}-Erklaerungsqualitaet erfolgt anhand der Metriken aus Hermosilla
-et al.\ \cite{hermosilla2025xai_forensic}: Fidelitaet, Konsistenz und Jaccard-Aehnlichkeit.
+Die Bewertung der \shap{}-Erklaerungsqualitaet orientiert sich an den Metriken aus Hermosilla
+et al.\ \cite{hermosilla2025xai_forensic}: Fidelitaet und Konsistenz.
 Die Fidelitaet misst, ob die \shap{}-Erklaerungen das tatsaechliche Modellverhalten
 wiedergeben.
 Die Konsistenz prueft, ob gleiche Eingaben konsistente Erklaerungen erzeugen.
-Die Jaccard-Aehnlichkeit quantifiziert die Ueberlappung der Top-Feature-Ranglisten zwischen
-Pipeline~A und Pipeline~B und operationalisiert damit die Hypothese zur semantischen
-Interpretierbarkeit~\cite{hermosilla2025xai_forensic}.
+Die Jaccard-Aehnlichkeit zwischen Top-Feature-Ranglisten ist auf Pipeline~B anwendbar,
+nicht jedoch auf Pipeline~A, da deren Erklaerungen \pca{}-Komponenten benennen, die keine
+direkte semantische Entsprechung zu konkreten Netzwerkmerkmalen haben.
+Die Ablation Study erbringt den qualitativen Nachweis: Pipeline~A-Erklaerungen nennen
+PC1, PC2, \ldots als wichtigste Features, Pipeline~B benennt konkrete Netzwerkmerkmale,
+die mit bekannten Angriffssignaturen vergleichbar sind.
 
 Die semantische Validierung prueft, ob beispielsweise \texttt{syn\_flag\_number} und
 \texttt{Rate} fuer DoS/DDoS-Erklaerungen an vorderster Stelle stehen.
@@ -59,10 +62,13 @@ Netzwerksignaturen des CICIoT2023-Datensatzes durchgefuehrt~\cite{neto2023ciciot
 
 Die Hyperparameter-Optimierung wurde auf einem Teilmengedatensatz von 8.045~Instanzen
 durchgefuehrt, um die Rechenzeit zu begrenzen.
-Dies kann dazu fuehren, dass die identifizierten optimalen Hyperparameter auf dem
-vollstaendigen Datensatz suboptimal sind.
+Das Reentrainement von Pipeline~A mit den optimierten Hyperparametern auf dem vollstaendigen
+Datensatz (838.602~Instanzen) liefert BA$_2$\,=\,0{,}5364, was unter dem Standard-Wert
+von 0{,}5480 liegt.
+Dies belegt empirisch, dass auf dem Subset optimierte Hyperparameter auf dem vollstaendigen
+Datensatz nicht zwingend besser abschneiden.
 Ein vollstaendiges Grid Search auf dem gesamten Datensatz haette die Rechenzeit um einen
-Faktor von etwa 100 erhoeht.
+Faktor von etwa 100 erhoeht, was den zeitlichen Rahmen dieser Seminararbeit ueberschreitet.
 
 Das stratifizierte Sampling (500~Instanzen/Klasse/Datei) glaettet die
 Klassenverteilung gegenueber dem vollstaendigen CICIoT2023-Datensatz.
