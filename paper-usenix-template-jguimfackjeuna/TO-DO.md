@@ -1,5 +1,5 @@
 # TO-DO.md -- Taches restantes sur le Paper
-## Derniere mise a jour : 2026-05-31 (Session 11)
+## Derniere mise a jour : 2026-05-31 (Session 12)
 
 ---
 
@@ -61,6 +61,12 @@
     [x] Toutes valeurs numeriques verifiees contre Backend JSON (100% correct)
     [x] discussion.tex : erreur "Pipeline B resultats en attente" corrigee (resultat reel: BA2=0.6285)
     [x] conclusion.tex Ausblick : erreur "SHAP sind naechste Schritte" corrigee (SHAP est complet)
+[x] Corrections review (Session 12, branche fix/paper-review-vollstaendig, Issue #13)
+    [x] introduction.tex : Forschungsfragen explizit formuliert (Hauptfrage + TF1-3)
+    [x] evaluation.tex : \cite{hosseini2025imbalance} pour Klassengewichtung
+    [x] discussion.tex : mapping Faithfulness/Stability/Comprehensibility explicit
+[ ] Compilation papier verifiee apres corrections (max 10 pages)
+[ ] PR branch -> main apres validation compilfation
 
 ---
 

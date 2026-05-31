@@ -41,6 +41,17 @@ Sie entwickelt einen \gb{}-Klassifikator auf dem CICIoT2023-Datensatz, evaluiert
 Eine Ablation Study untersucht zusaetzlich den Einfluss der Principal Component Analysis
 (\pca{}) auf Modellleistung und Erklaerungen.
 
+\textbf{Forschungsfragen.}
+Die \textbf{Hauptforschungsfrage} lautet: Inwieweit ermoeglicht eine \shap{}-Analyse
+eines \gb{}-Klassifikators auf dem CICIoT2023-Datensatz eine pro-Angriffsklasse
+nachvollziehbare Zuordnung von Netzwerkmerkmalen zu Klassifikationsentscheidungen,
+und in welchem Verhaeltnis steht diese Erklaerbarkeit zur erreichten \ba{}?
+Drei Teilfragen konkretisieren diese:
+(1)~Welche Klassen werden durch das Klassenungleichgewicht systematisch schlechter erkannt?
+(2)~Welchen messbaren Einfluss hat \pca{} auf \ba{} und \shap{}-Interpretierbarkeit?
+(3)~Stimmen die identifizierten \shap{}-Top-Features mit den dokumentierten
+Angriffssignaturen des CICIoT2023 ueberein~\cite{neto2023ciciot2023}?
+
 \textbf{Struktur der Arbeit.}
 Kapitel~\ref{related_work} ordnet die zehn verwendeten Quellen thematisch in vier Cluster
 ein und arbeitet die Forschungsluecke heraus.

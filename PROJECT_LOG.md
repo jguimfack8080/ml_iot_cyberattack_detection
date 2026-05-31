@@ -8,6 +8,29 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-05-31 (g) -- Branche fix/paper-review-vollstaendig : Issue #13 corrections paper
+
+- Datum: 2026-05-31
+- Aenderung: 3 Korrekturen auf Branche fix/paper-review-vollstaendig (Issue #13).
+- Betroffene Dateien:
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-introduction.tex :
+    Absatz Forschungsfragen eingefuegt (Hauptfrage + TF1-3 explizit)
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-evaluation.tex :
+    \cite{hosseini2025imbalance} zu Klassengewichtungs-Satz hinzugefuegt
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-discussion.tex :
+    Mapping Faithfulness/Stability/Comprehensibility explizit eingefuegt
+  - paper-usenix-template-jguimfackjeuna/Done.md, TO-DO.md : Session 12
+  - PROJECT_LOG.md : dieser Eintrag
+- Technische Auswirkungen:
+  - Alle 5 Forschungsfragen der Rahmenfrage vollstaendig oder explizit adressiert
+  - 0 neue Quellen ausserhalb der 10 BibTeX-Eintraege
+  - Seitenzahl nach Kompilierung zu verifizieren (Ziel: max 10)
+- Begruendung:
+  - Review-Protokoll (Session 11) identifizierte 3 mittlere Probleme
+  - Explizite Forschungsfragen in der Einleitung sind akademischer Standard
+  - Rahmenfrage erfordert explizite Mapping der XAI-Kriterien
+  - Klassengewichtung braucht Literaturstutze (Hosseini et al. 2025)
+
 ### 2026-05-31 (f) -- Review anti-hallucination + correction 2 erreurs critiques paper
 
 - Datum: 2026-05-31

@@ -230,3 +230,30 @@ Issue GitHub #3 fermee avec resultat reel.
 - 0 Halluzination, 0 interne Inkonsistenz, 0 falscher Zahlenwert
 - Alle Tabellenzeilen verifikation-positiv gegen Backend-JSON
 - paper : 9 pages, 0 Gedankenstrich, 10/10 sources
+
+---
+
+### 2026-05-31 -- Session 12 : Branche fix/paper-review-vollstaendig -- Issue #13
+
+**Branche :** fix/paper-review-vollstaendig (issue GitHub #13)
+
+**3 corrections implementees :**
+
+1. jguimfackjeuna-introduction.tex :
+   Absatz "Forschungsfragen" eingefuegt (vor "Struktur der Arbeit")
+   Hauptforschungsfrage + Teilfragen (1-3) explizit formuliert
+   Zitation \cite{neto2023ciciot2023} fuer Teilfrage 3 (Angriffssignaturen)
+
+2. jguimfackjeuna-evaluation.tex :
+   Klassengewichtungs-Satz erhaelt \cite{hosseini2025imbalance}
+   Begruendet die Notwendigkeit von Klassenungleichgewicht-Gegenmassnahmen
+
+3. jguimfackjeuna-discussion.tex (Abschnitt 5.2) :
+   Satz eingefuegt : Mapping Faithfulness=Fidelitaet, Stability=Konsistenz,
+   Comprehensibility=semantische Validierung (ref. hermosilla2025xai_forensic)
+   Schliesst die Luecke zur expliziten Rahmenfrage-Deckung
+
+**Status nach Korrekturen (branch) :**
+- Alle 5 Forschungsfragen (Rahmenfrage, Hauptfrage, TF1-3) vollstaendig oder explizit adressiert
+- 0 Halluzination, 0 neue Quellen ausserhalb der 10 BibTeX-Eintraege
+- Seitenzahl : zu verifizierende nach Kompilierung (Ziel : max 10)
