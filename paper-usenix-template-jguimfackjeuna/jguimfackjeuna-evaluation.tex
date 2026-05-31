@@ -111,6 +111,37 @@ Dies legt nahe, dass die auf dem Teilmengedatensatz gefundenen Hyperparameter de
 Klassenungleichgewichten des vollstaendigen Datensatzes weniger gut begegnen.
 Die Diskussion in Kapitel~\ref{diskussion} geht auf diese Befunde ein.
 
+Tabelle~\ref{tab:perclass_a} zeigt die Klassenmetriken fuer Pipeline~A (Reentrainement
+mit optimierten Hyperparametern).
+Der starke Recall-Kontrast zwischen den Klassen bestaetigt das strukturelle
+Klassenungleichgewicht und erklaert die niedrige \ba{}:
+Mirai erzielt $R$\,=\,0{,}993, waehrend Web-based auf $R$\,=\,0{,}065 und Brute-Force auf
+$R$\,=\,0{,}263 abstuert.
+Zugleich zeigt die einfache Accuracy von 0{,}753 (gegenueber BA\,=\,0{,}536) eine Diskrepanz
+von 0{,}217, was die Einschraenkung der Accuracy als alleinige Metrik empirisch
+bestaetigt~\cite{hosseini2025imbalance}.
+
+\begin{table}[h]
+\centering
+\caption{Precision, Recall, F1 pro Klasse: Stufe~2 Pipeline~A (Best HP)}
+\label{tab:perclass_a}
+\begin{tabular}{lccc}
+\toprule
+Klasse & P & R & F1 \\
+\midrule
+Benign       & 0{,}557 & 0{,}370 & 0{,}445 \\
+Brute-Force  & 0{,}850 & 0{,}263 & 0{,}402 \\
+Mirai        & 1{,}000 & 0{,}993 & \textbf{0{,}997} \\
+Reconnaissance & 0{,}658 & 0{,}885 & 0{,}755 \\
+Spoofing     & 0{,}697 & 0{,}642 & 0{,}668 \\
+Web-based    & 0{,}789 & 0{,}065 & 0{,}120 \\
+\bottomrule
+\end{tabular}
+\smallskip\newline
+{\footnotesize P: Precision, R: Recall, F1: makro-gemittelt.
+Accuracy\,=\,0{,}753, BA\,=\,0{,}536 (Gap\,=\,0{,}217).}
+\end{table}
+
 Der Leistungsvorsprung von Pipeline~B gegenueber Pipeline~A bestaetigt die Ausgangshypothese:
 Die \pca{}-Dimensionsreduktion beeintraechtigt die Mehrklassenklassifikation messbar.
 Dieser Befund stimmt mit der Erwartung ueberein, dass die Projektion auf 16 Hauptkomponenten
@@ -120,18 +151,21 @@ ist.
 Abbildung~\ref{fig:cm_stage2_b} zeigt die Konfusionsmatrix von Stufe~2 fuer Pipeline~B
 nach dem Reentrainement mit optimierten Hyperparametern.
 
-% Konfusionsmatrix Stufe 2 Pipeline B (generiert durch evaluate_and_explain.py)
-% Datei: Backend/results/figures/confusion_matrix_stage2_pipelineB.png
-% Vor Buildlualatex: cp Backend/results/figures/confusion_matrix_stage2_pipelineB.png paper-usenix-template-jguimfackjeuna/figures/
+% Konfusionsmatrix Stufe 2 Pipeline A (verfuegbar: figures/confusion_matrix_stage2_pipelineA.png)
+% Konfusionsmatrix Stufe 2 Pipeline B: nach Reentrainement einfuegen
 \begin{figure}[h]
 \centering
-%\includegraphics[width=\columnwidth]{confusion_matrix_stage2_pipelineB}
-\fbox{\parbox{0.9\columnwidth}{\centering\small Konfusionsmatrix Stufe~2 Pipeline~B\\
-\textit{(Abbildung wird nach Reentrainement eingefuegt)}}}
-\caption{Konfusionsmatrix Stufe~2, Pipeline~B (39 Originalmerkmale).
-Bewertung auf wahren Nicht-DoS-Testinstanzen.}
-\label{fig:cm_stage2_b}
+\includegraphics[width=\columnwidth]{confusion_matrix_stage2_pipelineA}
+\caption{Konfusionsmatrix Stufe~2, Pipeline~A (PCA, Best HP).
+Bewertung auf wahren Nicht-DoS-Testinstanzen (69.773 Instanzen).}
+\label{fig:cm_stage2_a}
 \end{figure}
+
+% TODO: Konfusionsmatrix Pipeline B einfuegen sobald verfuegbar
+% \begin{figure}[h]\centering
+% \includegraphics[width=\columnwidth]{confusion_matrix_stage2_pipelineB}
+% \caption{Konfusionsmatrix Stufe~2, Pipeline~B (39 Originalmerkmale, Best HP).}\label{fig:cm_stage2_b}
+% \end{figure}
 
 \subsection{SHAP-Analyse}\label{shap_analyse}
 
