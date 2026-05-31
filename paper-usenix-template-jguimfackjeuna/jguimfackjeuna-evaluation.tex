@@ -192,14 +192,21 @@ Abweichungen zwischen erwarteten und beobachteten Top-Features werden als Hinwei
 auf Korrelationsartefakte im Datensatz interpretiert.
 
 \textbf{Ablation Study SHAP.}
-Der Vergleich der Feature-Importance-Ranglisten zwischen Pipeline~A (PCA-Komponenten)
-und Pipeline~B (Originalmerkmale) prueft, ob die \pca{}-Reduktion die semantische
-Interpretierbarkeit der Erklaerungen beeintraechtigt.
-Die Hypothese lautet: Pipeline~A-Erklaerungen sind semantisch nicht interpretierbar, da
-Hauptkomponenten keine direkte Entsprechung zu Netzwerkmerkmalen haben~\cite{alharby2025ciciot}.
-Die Jaccard-Aehnlichkeit zwischen den Top-10-Feature-Ranglisten beider Pipelines, wie von
-Hermosilla et al.\ \cite{hermosilla2025xai_forensic} empfohlen, wird nach Abschluss des
-Reentrainements berechnet und erlaeutert.
+Der Vergleich der \shap{}-Erklaerungen zwischen Pipeline~A und Pipeline~B zeigt den
+qualitativen Effekt der \pca{}-Reduktion auf die Interpretierbarkeit.
+Pipeline~A-Erklaerungen identifizieren Hauptkomponenten (PC1, PC2, \ldots, PC16) als
+wichtigste Features.
+Da Hauptkomponenten lineare Kombinationen der 39 Originalmerkmale sind, fehlt ihnen jede
+direkte semantische Bedeutung~\cite{alharby2025ciciot}.
+Pipeline~B-Erklaerungen benennen konkrete Netzwerkmerkmale wie \texttt{Rate},
+\texttt{syn\_flag\_number} oder \texttt{Number}, die unmittelbar mit bekannten
+Angriffssignaturen vergleichbar sind.
+Eine direkte Jaccard-Aehnlichkeit zwischen den Top-10-Ranglisten beider Pipelines ist
+methodisch nicht sinnvoll, da die Feature-Raeume (PCA-Komponenten vs.\ Originalmerkmale)
+nicht vergleichbar sind.
+Die Bewertungsmetriken nach Hermosilla et al.\ \cite{hermosilla2025xai_forensic}
+(Fidelitaet, Konsistenz) werden auf die Pipeline~B-Erklaerungen angewandt, da nur dort
+semantisch valide Erklaerungen vorliegen.
 
 \textbf{Lokale Erklaerungen.}
 Fuer die drei bis fuenf am staerksten fehlklassifizierten Instanzen pro Pipeline wird ein
