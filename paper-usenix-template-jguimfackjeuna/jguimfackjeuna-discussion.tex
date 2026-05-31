@@ -75,6 +75,16 @@ Klassenverteilung gegenueber dem vollstaendigen CICIoT2023-Datensatz.
 Klassen mit seltenen Angriffen koennten im echten Betrieb anders vertreten sein, was
 die Generalisierbarkeit beeinflusst.
 
+Die Klassenanalyse von Pipeline~A zeigt einen starken Recall-Kontrast:
+Mirai erzielt $R$\,=\,0{,}993, waehrend Web-based ($R$\,=\,0{,}065) und Brute-Force
+($R$\,=\,0{,}263) nahezu unerkannt bleiben.
+Dieser Befund illustriert die Einschraenkung der Balanced Accuracy als Durchschnittsmass:
+Die \ba{} von 0{,}536 verbirgt, dass einzelne sicherheitskritische Angriffskategorien
+(insbesondere Web-based Attacks) praktisch nicht erkannt werden.
+Im Einklang mit Hosseini et al.\ \cite{hosseini2025imbalance} zeigt die Diskrepanz von
+0{,}217 zwischen Accuracy (0{,}753) und \ba{} (0{,}536), dass die Accuracy als alleinige
+Metrik fuer unausgewogene \ids{}-Datensaetze systematisch in die Irre fuehrt.
+
 \subsection*{Offene Forschungsfragen}
 
 Die vorliegende Arbeit belaesst drei Forschungsfragen als offen.
