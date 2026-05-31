@@ -23,15 +23,14 @@
 [x] jguimfackjeuna-methodik.tex
     [x] PermutationExplainer pour Stufe 2 documente (ADR-005)
     [x] Ablation Study PCA correctement decrite
-[x] jguimfackjeuna-evaluation.tex -- PARTIELLEMENT COMPLETE
-    [x] Tableau 3 configs : Standard HP, Grid Search Subset, Best HP retrain
-    [x] Pipeline A retrain : BA1=0.9985 F1=0.9985 | BA2=0.5364 F1=0.5644
-    [x] Section SHAP-Analyse methodologie complete (Explainer-Wahl, global, local, ablation)
-    [x] Placeholders figures (fbox avec commentaires de remplacement)
-    [ ] Tableau ligne B (39f) Best HP : remplir quand reentrainement termine
-    [ ] tab:shap_top5 : remplir avec vraies valeurs de update_paper_results.py
-    [ ] Decommenter \includegraphics pour figures reelles (confusion matrix + SHAP)
-    [ ] Ajouter tableaux de resultats par classe (Precision, Recall, F1 per class Stufe 2)
+[x] jguimfackjeuna-evaluation.tex -- COMPLETE
+    [x] Tableau 4 configs : Standard, GS-Subset, Best HP, Balanced
+    [x] Pipeline A retrain : BA1=0.9985 BA2=0.5364 | Pipeline B retrain : BA1=0.9992 BA2=0.6285
+    [x] Klassengewichtung balanced : BA2 Pipeline B 0.6285 -> 0.7261 (+9.76 pts)
+    [x] Section SHAP-Analyse complete (Explainer-Wahl, global, local, ablation)
+    [x] tab:shap_top5 rempli avec features reelles modele balanced
+    [x] Figures reelles incluses (confusion matrix B, SHAP global A+B)
+    [x] tab:perclass_b : tradeoff Recall Best HP vs Balanced
 [x] jguimfackjeuna-discussion.tex -- COMPLETE
     [x] Comparaisons Raturi/Almahaqeri/Alharby
     [x] Observation retrain Pipeline A (HP subset ne generalisent pas)

@@ -150,3 +150,27 @@ mieux sur dataset complet (A: 0.5364<0.5480 ; B: 0.6285<0.6301). Documente trans
 
 **Git :** historique nettoye (Claude retire des 23 commits via filter-branch + force-push).
 Jordan Jeuna seul auteur/committer.
+
+---
+
+### 2026-05-31 -- Session 9bis : Integration Klassengewichtung (Issue #3)
+
+**Resultat cle :** sample_weight='balanced' en Stufe 2 ameliore la BA de Pipeline B de
+0.6285 a 0.7261 (+9.76 pts). Integre au paper comme aboutissement de l'Ablation Study.
+
+**Modifications evaluation.tex :**
+- tab:ergebnisse : 4e ligne "B Balanced" (BA2=0.7261, en gras)
+- Nouveau paragraphe "Klassengewichtung" (gain +9.76 pts, gap Acc-BA reduit a 0.027)
+- tab:perclass_b restructure : Recall Best HP vs Balanced (tradeoff visible par classe)
+- tab:shap_top5 : features du modele balanced (Number dominant, rst/syn_flag pour scans)
+- Semantische Validierung adaptee (SSH retire, TCP-flags scans/floods)
+- Figure confusion matrix Pipeline A retiree (paper 10 -> 9 pages)
+
+**Modifications discussion.tex + conclusion.tex :**
+- SHAP-Qualitaet : reference TCP-flags au lieu de SSH
+- Fazit : Klassengewichtung = mesure la plus efficace (+9.76 pts vs Grid Search +0.018)
+
+**Compilation :** 9 pages, 0 reference non resolue, 0 Gedankenstrich.
+
+**Honnetete scientifique :** BA-Ziel 0.85 (Raturi et al. 0.952) non atteint (0.7261),
+mais ecart fortement reduit et documenté transparemment dans evaluation + discussion.

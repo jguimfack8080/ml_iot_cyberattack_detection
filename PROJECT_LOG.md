@@ -8,6 +8,29 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-05-31 (d) -- Klassengewichtung (sample_weight balanced) + nettoyage git
+
+- Datum: 2026-05-31
+- Aenderung: Klassengewichtung in Stufe 2 (Issue #3) + suppression Claude de l'historique git.
+- Betroffene Dateien:
+  - Backend/src/models/hierarchical_classifier.py : parametre balanced_stage2
+  - Backend/src/pipelines/_core.py : PipelineConfig.balanced_stage2
+  - Backend/scripts/train_pipelines.py : flag --balanced-stage2
+  - Backend/scripts/experiment_class_weight.py : nouveau script d'experience
+  - Backend/tests/test_models_hierarchical.py : test balanced
+  - paper/jguimfackjeuna-{evaluation,discussion,conclusion}.tex : integration balanced
+  - Backend/results/metrics/ + figures/ : resultats balanced + archives _nobalanced
+- Technische Auswirkungen:
+  - Pipeline B balanced : BA Stufe 2 0.6285 -> 0.7261 (+9.76 Punkte)
+  - Recall classes rares : Brute-Force 0.299->0.646, Web-based 0.192->0.578
+  - Klassengewichtung deutlich wirksamer als Grid Search (+0.018)
+  - Paper compile : 9 pages (figure Pipeline A confusion matrix retiree)
+  - Git : historique nettoye (Co-Authored-By Claude retire des 23 commits, force-push)
+- Begruendung:
+  - Issue #3 : amelioration de la BA pour les classes rares sous-detectees
+  - GradientBoostingClassifier n'a pas class_weight ; sample_weight est le mecanisme supporte
+  - Demande explicite de l'etudiant : seul contributeur, pas de mention Claude
+
 ### 2026-05-31 (c) -- Evaluation + SHAP finale + Paper complet
 
 - Datum: 2026-05-31

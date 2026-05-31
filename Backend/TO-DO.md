@@ -131,6 +131,12 @@
     → Modeles + test_data_B.npz sauvegardes ✅
 [x] Analyse post-reentrainement Pipeline A : HP optimises sous-ensemble ne generalisent pas (BA2 0.5364 < 0.5480)
 [x] Analyse post-reentrainement Pipeline B : HP optimises sous-ensemble ne generalisent pas (BA2 0.6285 < 0.6301)
+[x] Klassengewichtung sample_weight='balanced' Stufe 2 (Issue #3, 2026-05-31)
+    → Code : balanced_stage2 param (hierarchical_classifier, _core, train_pipelines)
+    → Pipeline B balanced : BA2 0.6285 -> 0.7261 (+9.76 pts)
+    → Recall classes rares : Brute-Force 0.299->0.646, Web-based 0.192->0.578
+    → Amelioration la plus efficace contre le desequilibre (vs Grid Search +0.018)
+    → BA-Ziel 0.85 toujours non atteint mais ecart fortement reduit (documenté)
 
 ---
 

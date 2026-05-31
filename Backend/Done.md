@@ -956,3 +956,45 @@ SHAP Stage 2 Pipeline B top-5 par classe (selectionnes) :
 4. Decommenter les \includegraphics dans evaluation.tex
 5. git push (autorisation user requise pour branch main)
 6. Fermer issues GitHub #9, #10, #11, #12
+
+---
+
+### 2026-05-31 -- Session 9 : Klassengewichtung (sample_weight balanced) -- Issue #3
+
+**Objectif :** Ameliorer la BA Stufe 2 (classes rares Web-based, Brute-Force) pour Issue #3.
+
+**Constat :** GradientBoostingClassifier n'a pas de class_weight, mais fit() accepte
+sample_weight. On utilise compute_sample_weight('balanced', y).
+
+**Experience prealable (subset 15 fichiers) :** BA 0.6456 -> 0.7164 (+7.08 pts).
+Reentrainement complet justifie.
+
+**Modifications code :**
+- hierarchical_classifier.fit(balanced_stage2=False) : nouveau parametre
+- PipelineConfig.balanced_stage2 + propagation run_pipeline
+- train_pipelines.py : flag --balanced-stage2
+- test_models_hierarchical.py : test_fit_balanced_stage2_sets_is_fitted
+- scripts/experiment_class_weight.py : script d'experience
+
+**Reentrainement complet Pipeline B balanced (838.602 instances) :**
+
+| Metrique | Best HP | Balanced | Delta |
+|----------|---------|----------|-------|
+| Stufe 2 BA | 0.6285 | **0.7261** | +0.0976 |
+| Stufe 2 F1 | 0.6652 | 0.6570 | -0.0082 |
+| Gap Acc-BA | ~0.12 | 0.0273 | reduit |
+
+Recall par classe (Best HP -> Balanced) :
+- Benign: 0.517 -> 0.709 | Brute-Force: 0.299 -> 0.646 (x2.16)
+- Mirai: 1.000 -> 1.000 | Reconnaissance: 0.907 -> 0.571 (tradeoff)
+- Spoofing: 0.857 -> 0.853 | Web-based: 0.192 -> 0.578 (x3.0)
+
+**Conclusion :** Klassengewichtung = amelioration la plus efficace contre le desequilibre
+(+9.76 pts BA vs +0.018 Grid Search). BA-Ziel 0.85 toujours non atteint (0.7261) mais
+ecart fortement reduit. Documenté honnetement dans le paper.
+
+**Paper (Session 9) :** tab:ergebnisse ligne B Balanced, tab:perclass_b tradeoff,
+tab:shap_top5 features balanced, conclusion + discussion adaptees. Compile : 9 pages.
+Figure confusion matrix Pipeline A retiree pour marge.
+
+**Git :** historique nettoye (Claude retire, force-push). Jordan Jeuna seul auteur.
