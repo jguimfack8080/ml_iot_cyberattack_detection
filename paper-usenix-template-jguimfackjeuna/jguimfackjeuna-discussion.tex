@@ -13,10 +13,14 @@ in Pipeline~B von 0{,}6301 auf 0{,}6479~(+1{,}78~Prozentpunkte).
 Zweitens integrieren Raturi et al.\ keine Erklaerbarkeitskomponente; dieser methodische
 Beitrag ist der eigenstaendige Kernbeitrag der vorliegenden Arbeit.
 
-Die verbleibende Luecke zur Ziel-\ba{} von 0{,}952 erklaert sich dadurch, dass die
-Grid-Search auf einem Teilmengedatensatz durchgefuehrt wurde.
-Ein Reentrainement mit den optimierten Hyperparametern auf dem vollstaendigen Datensatz
-(838.602~Instanzen) ist als naechster Schritt vorgesehen.
+Das Reentrainement von Pipeline~A mit den optimierten Hyperparametern auf dem vollstaendigen
+Datensatz (838.602~Instanzen) ergibt BA$_2$\,=\,0{,}5364, was knapp unterhalb der
+Standard-\ba{} von 0{,}5480 liegt.
+Dieses Ergebnis zeigt, dass Hyperparameter, die auf einem kleinen Subset (8.045~Instanzen)
+optimiert werden, nicht zwingend besser auf dem vollstaendigen Datensatz abschneiden.
+Die verbleibende Luecke zur Ziel-\ba{} von 0{,}952 (Raturi et al.) laesst sich damit nicht
+allein durch die Grid-Search-Optimierung schliessen.
+Fuer Pipeline~B stehen die Reentrainement-Ergebnisse noch aus.
 
 \textbf{Vergleich mit Almahaqeri et al.}
 Almahaqeri et al.\ \cite{almahaqeri2026gradient} verwenden stratifiziertes Undersampling
