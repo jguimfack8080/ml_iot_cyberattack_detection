@@ -54,8 +54,10 @@
 [x] Verifier biblio complete : 10 sources, 10 DOIs (Session 9)
 [x] Corriger erreurs LaTeX : aucune ref/citation non resolue ; 1 Overfull mineur 19.6pt
 [x] Test de compilation : build.sh local (WSL pdflatex) reussi -- 9 pages (Session 9)
-[ ] buildlualatex.sh (remote SSH hopper) : non testable sans credentials -- a valider par etudiant
-[ ] SimpleImputer reference : verifier si \cite{neto2023ciciot2023} est correct ou a retirer
+[x] Compilation lualatex locale reussie -- 9 pages (Session 9bis)
+    [x] Fix portabilite : microtype[kerning,spacing] conditionne a pdftex (iftex) dans .sty
+    [x] Paper compile maintenant avec pdflatex ET lualatex (moteur de buildlualatex.sh)
+[x] SimpleImputer reference : citation incorrecte \cite{neto} retiree (Session 9)
 
 ---
 
