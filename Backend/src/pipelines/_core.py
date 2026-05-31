@@ -161,7 +161,7 @@ def run_pipeline(
     X_train_prep = preprocessor.fit_transform(X_train)
     X_test_prep = preprocessor.transform(X_test)
     logger.info(
-        "      Input shape: %s → Output shape: %s",
+        "      Input shape: %s -> Output shape: %s",
         X_train.shape,
         X_train_prep.shape,
     )

@@ -129,25 +129,23 @@
 
 ---
 
-## 🔵 P4 — Qualité & Robustesse (après A et B fonctionnels)
+## 🔵 P4 — Qualité & Robustesse (en cours — Issue Backend #10 et #11)
 
-[ ] src/evaluation/metrics.py
-    → balanced_accuracy_score, f1_score (macro), classification_report par classe
-    → Comparaison Accuracy vs. Balanced Accuracy (démonstration biais)
-[ ] src/evaluation/confusion_matrix.py
-    → Matrices de confusion séparées : Stufe 1 (binaire) et Stufe 2 (multiclasse)
-    → Export en PNG vers results/figures/
-[ ] src/explainability/shap_analysis.py
-    → SHAP TreeExplainer sur GradientBoosting (Stufe 1 et Stufe 2 séparément)
-    → Global : mean(|SHAP|) par feature et par classe
-    → Local : top-k instances mal classifiées, SHAP values par instance
-[ ] src/explainability/shap_visualizer.py
-    → Summary Plot (beeswarm) par classe
-    → Waterfall Plot pour instances individuelles (Fehlklassifikationen)
-    → Force Plot pour cas locaux sélectionnés
+[x] src/evaluation/metrics.py ✅
+    → evaluate_stage1(), evaluate_stage2(), accuracy_vs_balanced_accuracy(), full_report()
+    → 7 tests unitaires, 96% coverage
+[x] src/evaluation/confusion_matrix.py ✅
+    → plot_and_save_stage1(), plot_and_save_stage2() — export PNG vers results/figures/
+[x] src/explainability/shap_analysis.py ✅
+    → compute_stage1_shap(), compute_stage2_shap() via SHAP TreeExplainer
+    → ShapResult dataclass (shap_values, global_importance, misclassified_indices)
+    → get_misclassified_instances() pour analyse locale
+[x] src/explainability/shap_visualizer.py ✅
+    → plot_summary_stage1/2, plot_bar_global_importance, plot_waterfall_misclassified
     → Export PNG vers results/figures/
-[ ] src/utils/logger.py
-    → Logging centralisé : métriques, hyperparamètres, durées, chemins
+[x] src/utils/logger.py ✅ (Session 5)
+[ ] Executer SHAP sur modeles reentraines + generer les figures PNG
+[ ] tests/test_explainability.py (a ecrire)
 [ ] Validation sémantique SHAP
     → Comparer les top features SHAP par classe avec les signatures d'attaques documentées
     → DoS/DDoS : Rate, Number, syn_flag_number attendus en tête

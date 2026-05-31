@@ -22,6 +22,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import joblib
 
+from src.models.stage1_classifier import Stage1Config
+from src.models.stage2_classifier import Stage2Config
 from src.pipelines._core import PipelineConfig
 from src.pipelines.pipeline_a import run_pipeline_a
 from src.pipelines.pipeline_b import run_pipeline_b
@@ -62,7 +64,32 @@ def parse_args() -> argparse.Namespace:
                    help="Lignes échantillonnées par classe par fichier CSV (défaut: 500)")
     p.add_argument("--max-files", type=int, default=None,
                    help="Limiter le nombre de fichiers CSV (None = tous les 63)")
+    p.add_argument(
+        "--best-params-dir", type=Path, default=None,
+        help=(
+            "Charger les meilleurs hyperparametres depuis best_params_A.json "
+            "et best_params_B.json dans ce dossier (produit par grid_search.py)"
+        ),
+    )
     return p.parse_args()
+
+
+def _load_best_params(params_dir: Path, pipeline: str) -> tuple[Stage1Config, Stage2Config]:
+    """Charge les meilleurs HP depuis best_params_{pipeline}.json."""
+    path = params_dir / f"best_params_{pipeline}.json"
+    if not path.exists():
+        raise FileNotFoundError(
+            f"best_params_{pipeline}.json introuvable dans {params_dir}. "
+            "Lancer grid_search.py d'abord."
+        )
+    data = json.loads(path.read_text(encoding="utf-8"))
+    s1 = Stage1Config(**data["stage1"]["best_params"])
+    s2 = Stage2Config(**data["stage2"]["best_params"])
+    logging.getLogger(__name__).info(
+        "Pipeline %s -- best HP charges : Stufe1=%s | Stufe2=%s",
+        pipeline, data["stage1"]["best_params"], data["stage2"]["best_params"],
+    )
+    return s1, s2
 
 
 def save_result(result, models_dir: Path, results_dir: Path) -> None:
@@ -114,24 +141,44 @@ def main() -> int:
         log_training_error(root_logger, FileNotFoundError(str(args.data_dir)))
         return 1
 
-    config = PipelineConfig(
+    # Chargement des best HP si --best-params-dir fourni
+    stage1_cfg_a = stage2_cfg_a = stage1_cfg_b = stage2_cfg_b = None
+    if args.best_params_dir is not None:
+        if args.pipeline in ("A", "both"):
+            stage1_cfg_a, stage2_cfg_a = _load_best_params(args.best_params_dir, "A")
+        if args.pipeline in ("B", "both"):
+            stage1_cfg_b, stage2_cfg_b = _load_best_params(args.best_params_dir, "B")
+        logger.info("Mode : reentrainement avec hyperparametres optimises (Grid Search)")
+    else:
+        logger.info("Mode : entrainement avec hyperparametres par defaut")
+
+    config_a = PipelineConfig(
         data_dir=args.data_dir,
         n_per_class_per_file=args.n_per_class,
         max_files=args.max_files,
+        stage1_config=stage1_cfg_a,
+        stage2_config=stage2_cfg_a,
+    )
+    config_b = PipelineConfig(
+        data_dir=args.data_dir,
+        n_per_class_per_file=args.n_per_class,
+        max_files=args.max_files,
+        stage1_config=stage1_cfg_b,
+        stage2_config=stage2_cfg_b,
     )
 
     results = []
 
     try:
         if args.pipeline in ("A", "both"):
-            logger.info(">>> Démarrage Pipeline A (StandardScaler + PCA 39→16)")
-            result_a = run_pipeline_a(config)
+            logger.info(">>> Démarrage Pipeline A (StandardScaler + PCA 39->16)")
+            result_a = run_pipeline_a(config_a)
             save_result(result_a, args.models_dir, args.results_dir)
             results.append(result_a)
 
         if args.pipeline in ("B", "both"):
             logger.info(">>> Démarrage Pipeline B (StandardScaler, 39 features)")
-            result_b = run_pipeline_b(config)
+            result_b = run_pipeline_b(config_b)
             save_result(result_b, args.models_dir, args.results_dir)
             results.append(result_b)
 
