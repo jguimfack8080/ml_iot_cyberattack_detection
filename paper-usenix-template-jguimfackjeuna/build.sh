@@ -64,6 +64,22 @@ if [[ ! -f "references.bib" ]]; then
     exit 1
 fi
 
+# Verifier pdflatex
+if ! command -v pdflatex &>/dev/null; then
+    echo "[erreur] pdflatex introuvable. Installer TexLive :" >&2
+    echo "         sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-lang-german texlive-fonts-recommended latexmk" >&2
+    exit 1
+fi
+
+# Verifier le support de la langue allemande (babel ngerman)
+if ! kpsewhich ngerman.ldf &>/dev/null 2>&1; then
+    echo "" >&2
+    echo "[erreur] Support de l'allemand introuvable (ngerman.ldf)" >&2
+    echo "         Installer le paquet langue : sudo apt-get install -y texlive-lang-german" >&2
+    echo "" >&2
+    exit 1
+fi
+
 # -----------------------------------------------------------------------
 # Compilation
 # -----------------------------------------------------------------------

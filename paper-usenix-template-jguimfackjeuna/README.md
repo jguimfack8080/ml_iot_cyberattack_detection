@@ -39,12 +39,16 @@ wsl
 
 ### 2. Installer texlive et latexmk
 
+**IMPORTANT : `texlive-lang-german` est obligatoire** (le paper est en allemand et
+utilise `\usepackage[ngerman]{babel}`). Sans ce paquet, la compilation echoue avec :
+`! Package babel Error: Unknown option 'ngerman'`
+
 ```bash
 # Option recommandee : installation complete (environ 5 Go, installation unique)
 sudo apt-get update
 sudo apt-get install -y texlive-full
 
-# Option minimale (plus rapide, sufficient pour ce paper)
+# Option minimale (plus rapide, suffisante pour ce paper)
 sudo apt-get update
 sudo apt-get install -y \
     texlive-latex-base \
@@ -53,6 +57,11 @@ sudo apt-get install -y \
     texlive-fonts-recommended \
     texlive-bibtex-extra \
     latexmk
+```
+
+**Si l'erreur `Unknown option 'ngerman'` apparait malgre tout :**
+```bash
+sudo apt-get install -y texlive-lang-german
 ```
 
 ### 3. Verifier l'installation
@@ -174,6 +183,14 @@ Avec `latexmk` (recommande), toutes ces passes sont gerees automatiquement.
 ---
 
 ## Depannage
+
+### Erreur : `Unknown option 'ngerman'` (babel)
+
+Le paquet de langue allemande n'est pas installe :
+```bash
+sudo apt-get install -y texlive-lang-german
+bash build.sh
+```
 
 ### Erreur : "command not found: latexmk"
 
