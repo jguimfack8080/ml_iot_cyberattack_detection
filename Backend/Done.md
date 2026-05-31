@@ -907,16 +907,30 @@ Observation critique : les HP optimises sur subset (8045 lignes) ne generalisent
 mieux sur le dataset complet (838602 lignes). Stufe2 BA retrain < Standard HP.
 Cela montre la limite de l'optimisation sur sous-ensemble pour ce dataset.
 
-**Pipeline B retrain : en cours (best HP : Stufe1 lr=0.05 depth=5 n=100 | Stufe2 lr=0.05 depth=3 n=200)**
-Stage 1 demarre 09:17:50 (2026-05-31). Resultats attendus vers 10:15.
+**Pipeline B retrain : COMPLETE 09:53:12 (best HP : Stufe1 lr=0.05 depth=5 n=100 | Stufe2 lr=0.05 depth=3 n=200)**
+BA1=0.9992, BA2=0.6285, F1-2=0.6652, Duree=2317s
 
-**Fichiers produits :**
-- models_artifacts/preprocessor_A.pkl : reentrainement best HP ✅
-- models_artifacts/stage1_A.pkl : reentrainement best HP ✅
-- models_artifacts/stage2_A.pkl : reentrainement best HP ✅
-- models_artifacts/test_data_A.npz : X_test + labels sauvegardes ✅
-- results/metrics/metrics_pipeline_A.json : BA1=0.9985 BA2=0.5364 F1=0.5644 ✅
-- models_artifacts/test_data_B.npz : a creer apres fin reentrainement Pipeline B
+Observation cle Pipeline B : HP optimises sur subset aussi ne generalisent pas (0.6285 < 0.6301 standard)
+
+Per-class Pipeline B (best HP) :
+- Mirai: P=1.000 R=1.000 F1=1.000
+- Spoofing: P=0.911 R=0.857 F1=0.883
+- Reconnaissance: P=0.726 R=0.907 F1=0.806
+- Benign: P=0.605 R=0.517 F1=0.557
+- Brute-Force: P=0.832 R=0.299 F1=0.440
+- Web-based: P=0.739 R=0.192 F1=0.305
+
+SHAP Stage 1 Pipeline B top-5: Number, Protocol_Type, UDP, AVG, Min
+SHAP Stage 2 Pipeline B top-5 par classe (selectionnes) :
+- Brute-Force: SSH confirme signature attaque ✅
+- Mirai/Reconnaissance: Number dominant (scan/flood)
+- Spoofing: pas ARP/ICMP comme attendu (artefact possible)
+
+**Fichiers produits FINAL :**
+- models_artifacts/ : 6 .pkl + 2 .npz (test_data_A, test_data_B) ✅
+- results/metrics/ : full_report_{A,B}, shap_global_stage{1,2}_{A,B}, misclassified_{A,B} ✅
+- results/figures/ : 30 PNG (confusion + SHAP summary + waterfall) ✅
+- paper/figures/ : 6 PNG copies pour inclusion LaTeX ✅
 
 ---
 

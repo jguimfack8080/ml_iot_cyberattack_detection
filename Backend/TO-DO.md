@@ -126,11 +126,11 @@
 [x] Reentrainement complet Pipeline A avec meilleurs HP (2026-05-31)
     → BA1=0.9985 BA2=0.5364 F1=0.5644 | Duree 3265s | Modeles + test_data_A.npz sauvegardes
     → Observation : HP optimises sur subset ne generalisent pas mieux (BA2 retrain < Standard HP)
-[ ] Reentrainement complet Pipeline B avec meilleurs HP (en cours 2026-05-31, fin ~10:15)
-    → Stufe1: lr=0.05 depth=5 n=100 sub=1.0 | Stufe2: lr=0.05 depth=3 n=200 sub=0.8
-    → Pipeline B modeles + test_data_B.npz attendus apres fin
+[x] Reentrainement complet Pipeline B avec meilleurs HP (2026-05-31 09:53:12)
+    → BA1=0.9992, BA2=0.6285, F1-2=0.6652, Duree=2317s
+    → Modeles + test_data_B.npz sauvegardes ✅
 [x] Analyse post-reentrainement Pipeline A : HP optimises sous-ensemble ne generalisent pas (BA2 0.5364 < 0.5480)
-[ ] Analyse post-reentrainement Pipeline B : a completer apres fin
+[x] Analyse post-reentrainement Pipeline B : HP optimises sous-ensemble ne generalisent pas (BA2 0.6285 < 0.6301)
 
 ---
 
@@ -155,15 +155,15 @@
 [x] tests/test_main.py ✅ (Session 8 -- 11 tests, 96% main coverage)
 [x] tests/test_evaluation.py -- +3 tests confusion matrix (Session 8)
 [x] Couverture de tests > 80% : 97% atteint (111 tests) ✅ (Session 8)
-[ ] Executer SHAP sur modeles reentraines + generer les figures PNG
-    → Commande : .venv/Scripts/python scripts/evaluate_and_explain.py --pipeline both --shap-samples 500
-    → Prerequis : reentrainement Pipeline B complet + test_data_B.npz cree
-[ ] Validation semantique SHAP
-    → Comparer les top features SHAP par classe avec les signatures d'attaques documentees
-    → DoS/DDoS : Rate, Number, syn_flag_number attendus en tete
-    → Spoofing : ARP, ICMP, Protocol_Type
-    → Brute-Force : connexions repetees, SSH, Telnet
-    → Reference : Neto et al. (2023), DOI 10.3390/s23135941
+[x] Executer SHAP sur modeles reentraines + generer les figures PNG ✅ (2026-05-31)
+    → Pipeline A : evaluate_and_explain.py complete 09:43:29
+    → Pipeline B : evaluate_and_explain.py complete ~10:00
+    → 30 PNG dans results/figures/ + 6 copies dans paper/figures/
+[x] Validation semantique SHAP ✅
+    → Brute-Force : SSH en top-5 -- valide signature attaque ✅
+    → DoS/DDoS Stufe 1 : Number, Protocol_Type -- consistent avec flut/scan ✅
+    → Spoofing : Min/Number/Max au lieu ARP/ICMP -- possible artefact dataset
+    → Documente dans paper evaluation.tex section "Semantische Validierung"
 
 ---
 
@@ -175,23 +175,23 @@
     → docs/architecture_decision_records.md : 7 ADRs
     → docs/label_mapping.md : tableau complet 33 labels + features
 [x] README.md du Backend/ (Session 7) ✅
-[ ] Generation des figures finales pour le Paper (results/figures/)
-    → Prerequis : evaluate_and_explain.py execute sur modeles reentraines
-    → Figures : confusion_matrix_stage{1,2}_pipeline{A,B}.png
-    → Figures : shap_global_stage{1,2}_pipeline{A,B}.png
-    → Figures : shap_summary_stage1_pipeline{A,B}.png
-    → Figures : shap_waterfall_stage{1,2}_pipeline{A,B}_idx*.png
-[ ] Copier figures vers paper-usenix-template-jguimfackjeuna/figures/
-    → scripts/update_paper_results.py fait cela automatiquement
-[ ] Export des metriques finales en JSON (results/metrics/)
-    → full_report_pipeline_{A,B}.json (rapport detaille par classe)
-    → shap_global_stage{1,2}_pipeline{A,B}.json (importance globale)
-    → misclassified_instances_pipeline{A,B}.json (analyse locale)
-[ ] Integrer resultats dans paper-usenix-template-jguimfackjeuna/jguimfackjeuna-evaluation.tex
-    → Tableau B Best HP avec valeurs reelles
-    → tab:shap_top5 avec top-5 features par classe (Pipeline B Stufe 2)
-    → Decommenter \includegraphics confusion matrix + SHAP
-[ ] Fermer issues GitHub #9, #10, #11, #12
+[x] Generation des figures finales pour le Paper ✅
+    → confusion_matrix_stage{1,2}_pipeline{A,B}.png ✅
+    → shap_global_stage{1,2}_pipeline{A,B}.png ✅
+    → shap_summary_stage1_pipeline{A,B}.png ✅
+    → shap_summary_stage2_{class}_pipeline{A,B}.png (6 classes x 2 pipelines) ✅
+    → shap_waterfall_stage{1,2}_pipeline{A,B}_idx*.png ✅
+[x] Figures copiees vers paper/figures/ via update_paper_results.py ✅
+[x] Export des metriques finales en JSON (results/metrics/) ✅
+    → full_report_pipeline_{A,B}.json ✅
+    → shap_global_stage{1,2}_pipeline{A,B}.json ✅
+    → misclassified_instances_pipeline{A,B}.json ✅
+[x] Integrer resultats dans paper evaluation.tex ✅
+    → Tableau B Best HP : BA1=0.9992 BA2=0.6285 F1-2=0.6652
+    → tab:shap_top5 rempli avec top-5 features reelles Pipeline B
+    → fig:cm_stage2_a, fig:cm_stage2_b, fig:shap_global_a, fig:shap_global_b actives
+    → tab:perclass_a, tab:perclass_b avec donnees reelles
+[ ] Fermer issues GitHub #9, #10, #11, #12 (pret a fermer -- commentes)
 
 ---
 

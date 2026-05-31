@@ -8,6 +8,28 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-05-31 (c) -- Evaluation + SHAP finale + Paper complet
+
+- Datum: 2026-05-31
+- Aenderung: Reentrainement Pipeline B complet + evaluation + SHAP + paper finalisé.
+- Betroffene Dateien:
+  - Backend/models_artifacts/ : test_data_B.npz + modeles Pipeline B best HP
+  - Backend/results/metrics/ : full_report_{A,B}.json, shap_global_{stage1,stage2}_{A,B}.json
+  - Backend/results/figures/ : 30 PNG (confusion + SHAP)
+  - paper/figures/ : 6 PNG copies pour LaTeX
+  - paper/jguimfackjeuna-evaluation.tex : tab:perclass_b, tab:shap_top5 complets,
+    fig:cm_stage2_b et fig:shap_global_b actives
+  - Backend/Done.md, Backend/TO-DO.md : mis a jour finaux
+  - CLAUDE.md : regle Done.md/TO-DO.md obligation documentee
+- Technische Auswirkungen:
+  - Pipeline B Best HP retrain: BA1=0.9992, BA2=0.6285, F1-2=0.6652, 2317s
+  - Observation : HP optimises sur subset ne generalisent pas sur dataset complet (A et B)
+  - SHAP Stage 2 Pipeline B: SSH pour Brute-Force confirme signature d'attaque
+  - Paper evaluation.tex complet avec vraies valeurs experimentales
+- Begruendung:
+  - Issues #9, #10, #11, #12 (Issues Backend): tous criteres remplis
+  - Issues #3, #4 (Academic Paper): sections Evaluation et SHAP avec donnees reelles
+
 ### 2026-05-31 (b) -- Paper: Diskussion, Fazit, SHAP-Methodik, Gedankenstrich-Fix
 
 - Datum: 2026-05-31
