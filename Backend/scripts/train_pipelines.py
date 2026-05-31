@@ -21,6 +21,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 import joblib
+import numpy as np
 
 from src.models.stage1_classifier import Stage1Config
 from src.models.stage2_classifier import Stage2Config
@@ -93,19 +94,31 @@ def _load_best_params(params_dir: Path, pipeline: str) -> tuple[Stage1Config, St
 
 
 def save_result(result, models_dir: Path, results_dir: Path) -> None:
-    """Sauvegarde les modèles (.pkl) et les métriques (.json) sur disque."""
+    """Sauvegarde les modeles (.pkl), les donnees de test (.npz) et les metriques (.json)."""
     models_dir.mkdir(parents=True, exist_ok=True)
     results_dir.mkdir(parents=True, exist_ok=True)
 
     name = result.pipeline_name
     logger = logging.getLogger(__name__)
 
-    # Sérialisation des modèles
+    # Serialisation des modeles
     joblib.dump(result.preprocessor,       models_dir / f"preprocessor_{name}.pkl")
     joblib.dump(result.classifier.stage1,  models_dir / f"stage1_{name}.pkl")
     joblib.dump(result.classifier.stage2,  models_dir / f"stage2_{name}.pkl")
 
-    # Métriques JSON
+    # Donnees de test (necessaires pour evaluation et SHAP sans recharger le dataset)
+    test_data_path = models_dir / f"test_data_{name}.npz"
+    np.savez_compressed(
+        test_data_path,
+        X_test=result.X_test,
+        y_binary_test=result.y_binary_test,
+        y_category_test=result.y_category_test,
+        feature_names_in=np.array(result.feature_names_in),
+    )
+
+    # Metriques JSON
+    n_test = int(result.X_test.shape[0])
+    n_train_approx = int(round(n_test * (1.0 - result.config.test_size) / result.config.test_size))
     metrics = {
         "pipeline":                    name,
         "balanced_accuracy_stage1":    round(result.balanced_accuracy_stage1, 6),
@@ -113,16 +126,17 @@ def save_result(result, models_dir: Path, results_dir: Path) -> None:
         "f1_macro_stage1":             round(result.f1_macro_stage1, 6),
         "f1_macro_stage2":             round(result.f1_macro_stage2, 6),
         "training_time_seconds":       round(result.training_time_seconds, 2),
-        "n_train_samples":             int(result.X_test.shape[0]),
-        "n_test_samples":              int(result.X_test.shape[0]),
+        "n_train_samples":             n_train_approx,
+        "n_test_samples":              n_test,
         "n_features_in":               len(result.feature_names_in),
         "x_test_shape":                list(result.X_test.shape),
     }
     metrics_path = results_dir / f"metrics_pipeline_{name}.json"
     metrics_path.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
 
-    logger.info("Pipeline %s — modèles sauvegardés : %s", name, models_dir)
-    logger.info("Pipeline %s — métriques sauvegardées : %s", name, metrics_path)
+    logger.info("Pipeline %s -- modeles sauvegardes : %s", name, models_dir)
+    logger.info("Pipeline %s -- donnees test sauvegardees : %s", name, test_data_path)
+    logger.info("Pipeline %s -- metriques sauvegardees : %s", name, metrics_path)
 
 
 def main() -> int:

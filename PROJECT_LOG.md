@@ -6,7 +6,37 @@ created: 2026-04-28
 
 # PROJECT_LOG.md
 
-## Einträge
+## Eintraege
+
+### 2026-05-31 -- Backend: Evaluation, SHAP, Tests, Docs (Issues #10, #11, #12 teilweise)
+
+- Datum: 2026-05-31
+- Aenderung: Umfassende Backend-Erweiterung im Rahmen der Issues #10, #11, #12.
+- Betroffene Dateien:
+  - Backend/scripts/train_pipelines.py: save_result() speichert jetzt test_data_{A,B}.npz
+    (X_test, y_binary_test, y_category_test, feature_names); Bug n_train_samples behoben
+  - Backend/scripts/evaluate_and_explain.py: neues Script, laedt Modelle von Disk,
+    generiert Evaluation-Berichte + Konfusionsmatrizen + SHAP-Analysen (JSON + PNG)
+  - Backend/src/explainability/shap_analysis.py: compute_stage2_shap() nutzt jetzt
+    PermutationExplainer statt TreeExplainer (sklearn multiclass GBC nicht unterstuetzt)
+  - Backend/src/explainability/shap_analysis.py: ADR-005 dokumentiert die Entscheidung
+  - Backend/tests/test_explainability.py: neu, 21 Tests fuer shap_analysis + shap_visualizer
+  - Backend/tests/test_evaluation.py: 3 neue Konfusionsmatrix-Tests + matplotlib Agg fix
+  - Backend/tests/test_logger.py: neu, 9 Tests fuer utils/logger.py (100% coverage)
+  - Backend/tests/test_main.py: neu, 11 Tests fuer src/main.py (96% coverage)
+  - Backend/tests/conftest.py: matplotlib.use("Agg") fuer headless Test-Umgebung
+  - Backend/docs/architecture_decision_records.md: neu, 7 ADRs dokumentiert
+  - Backend/docs/label_mapping.md: neu, vollstaendige Label-Mapping-Dokumentation
+- Technische Auswirkungen:
+  - 111 Tests bestehen, 97% Couverture (Issue #12 Ziel: >80% erfuellt)
+  - SHAP Stage 2 nutzt PermutationExplainer (approximate aber korrekt in Erwartung)
+  - evaluate_and_explain.py benoetigt test_data_{A,B}.npz (nach Reentrainement vorhanden)
+  - Reentrainement mit best HP gestartet: train_pipelines.py --best-params-dir results/metrics
+- Begruendung:
+  - Issues #10 und #11 erfordern vollstaendige Evaluation und SHAP-Analyse.
+  - Issue #12 erfordert Coverage >80% und Modell-Export-Infrastruktur.
+  - sklearn's multiclass GradientBoostingClassifier wird von SHAP TreeExplainer nicht
+    unterstuetzt (SHAP 0.52.0); PermutationExplainer ist der wissenschaftlich valide Fallback.
 
 ### 2026-05-30 — Backend ML Initialisierung
 

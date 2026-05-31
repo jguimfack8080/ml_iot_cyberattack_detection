@@ -110,22 +110,29 @@ def compute_stage2_shap(
     trained: TrainedPipeline,
     max_samples: int = 500,
     random_state: int = 42,
+    background_samples: int = 100,
 ) -> ShapResult:
     """
     Compute SHAP values for Stage 2 (multiclass classifier).
 
-    Evaluates on TRUE non-DoS test instances to isolate Stage 2 behavior.
+    sklearn's multiclass GradientBoostingClassifier is not supported by
+    TreeExplainer. We use PermutationExplainer(predict_proba) instead, which
+    gives approximate but model-agnostic Shapley values.
+
+    shap_values stored as shape (n_classes, n_samples, n_features) for
+    consistency with downstream visualisation code.
 
     Args:
         trained: Fitted TrainedPipeline.
         max_samples: Max number of test instances to explain.
         random_state: Seed for subsampling reproducibility.
+        background_samples: Number of background samples for PermutationExplainer.
 
     Returns:
         ShapResult with per-class SHAP values and feature importance.
     """
     logger.info(
-        "Computing SHAP Stage 2 [Pipeline %s] -- up to %d samples...",
+        "Computing SHAP Stage 2 [Pipeline %s] -- up to %d samples (PermutationExplainer)...",
         trained.pipeline_name, max_samples
     )
 
@@ -133,17 +140,28 @@ def compute_stage2_shap(
     X_non_dos = trained.X_test[non_dos_mask]
     y_true_non_dos = trained.y_category_test[non_dos_mask]
 
-    # Subsample
     rng = np.random.default_rng(random_state)
     n = min(max_samples, len(X_non_dos))
     idx = rng.choice(len(X_non_dos), n, replace=False)
     X_sample = X_non_dos[idx]
     y_true_sample = y_true_non_dos[idx]
 
-    explainer = shap.TreeExplainer(trained.classifier.stage2)
-    shap_values = explainer.shap_values(X_sample)
-    # shap_values is list of arrays (one per class) for multiclass GradientBoosting
-    shap_array = np.array(shap_values)  # shape: (n_classes, n_samples, n_features)
+    # Background for masker
+    n_bg = min(background_samples, len(X_non_dos))
+    bg_idx = rng.choice(len(X_non_dos), n_bg, replace=False)
+    X_background = X_non_dos[bg_idx]
+
+    masker = shap.maskers.Independent(X_background)
+    explainer = shap.PermutationExplainer(
+        trained.classifier.stage2.predict_proba,
+        masker,
+        max_evals=2 * X_sample.shape[1] + 1,
+    )
+    sv_obj = explainer(X_sample)
+    # sv_obj.values shape: (n_samples, n_features, n_classes)
+    sv_raw = sv_obj.values  # (n_samples, n_features, n_classes)
+    # Transpose to (n_classes, n_samples, n_features) for downstream code
+    shap_array = np.transpose(sv_raw, (2, 0, 1))
 
     y_pred_sample = trained.classifier.stage2.predict(X_sample)
     misclassified = np.where(y_pred_sample != y_true_sample)[0]
@@ -154,6 +172,8 @@ def compute_stage2_shap(
         shap_array, feature_names, class_names
     )
 
+    base_values = sv_obj.base_values[0] if sv_obj.base_values is not None else np.zeros(len(class_names))
+
     logger.info(
         "Stage 2 SHAP done. %d misclassifications out of %d.",
         len(misclassified), n
@@ -163,7 +183,7 @@ def compute_stage2_shap(
         stage=2,
         pipeline=trained.pipeline_name,
         shap_values=shap_array,
-        base_values=np.array(explainer.expected_value),
+        base_values=np.array(base_values),
         feature_names=feature_names,
         class_names=class_names,
         X_test=X_sample,

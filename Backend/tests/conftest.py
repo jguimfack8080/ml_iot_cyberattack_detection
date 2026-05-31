@@ -4,6 +4,9 @@ Shared pytest fixtures for all tests.
 All fixtures use synthetic data — no dependency on the real 8.5 GB dataset.
 Fixtures follow the CICIoT2023 structure: 39 float features + Label column.
 """
+import matplotlib
+matplotlib.use("Agg")  # non-interactive backend for headless test environments
+
 import numpy as np
 import pandas as pd
 import pytest
