@@ -65,8 +65,11 @@
     [x] introduction.tex : Forschungsfragen explizit formuliert (Hauptfrage + TF1-3)
     [x] evaluation.tex : \cite{hosseini2025imbalance} pour Klassengewichtung
     [x] discussion.tex : mapping Faithfulness/Stability/Comprehensibility explicit
-[ ] Compilation papier verifiee apres corrections (max 10 pages)
-[ ] PR branch -> main apres validation compilfation
+[x] Compilation papier verifiee : 9 pages, 0 erreur, abstract = "Abstract" (Session 12)
+    [x] main.tex : \addto\captionsngerman pour Abstract (pas Zusammenfassung)
+    [x] discussion.tex §5.1 : \cite{hosseini2025imbalance} supprime (fausse attribution GS)
+    [x] discussion.tex §5.3 : redondance supprimee, Pipeline B ajoutee, ref tab:ergebnisse
+[ ] PR branch fix/paper-review-vollstaendig -> main (apres validation visuelle du PDF)
 
 ---
 

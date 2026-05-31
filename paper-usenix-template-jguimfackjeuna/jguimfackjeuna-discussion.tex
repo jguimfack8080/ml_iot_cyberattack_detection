@@ -25,7 +25,7 @@ Hyperparameter liefern BA$_2$\,=\,0{,}6285, knapp unterhalb der Standard-\ba{} v
 0{,}6301~($-$0{,}16~Punkte).
 Dieses konsistente Muster in beiden Pipelines zeigt, dass ein Grid~Search auf einem kleinen
 Subset (8.045~Instanzen) keine reliablen Hyperparameter fuer den vollstaendigen
-CICIoT2023-Datensatz liefert~\cite{hosseini2025imbalance}.
+CICIoT2023-Datensatz liefert.
 
 \textbf{Vergleich mit Almahaqeri et al.}
 Almahaqeri et al.\ \cite{almahaqeri2026gradient} verwenden stratifiziertes Undersampling
@@ -58,8 +58,8 @@ Die Ablation Study erbringt den qualitativen Nachweis: Pipeline~A-Erklaerungen n
 PC1, PC2, \ldots als wichtigste Features, Pipeline~B benennt konkrete Netzwerkmerkmale,
 die mit bekannten Angriffssignaturen vergleichbar sind.
 Im Kontext der Rahmenfrage entsprechen Fidelitaet und Konsistenz den XAI-Kriterien
-Faithfulness und Stability; die semantische Validierung der Feature-Importance-Ranglisten
-adressiert das Kriterium Comprehensibility~\cite{hermosilla2025xai_forensic}.
+Faithfulness und Stability~\cite{hermosilla2025xai_forensic}; Comprehensibility wird durch
+den Abgleich der \shap{}-Top-Features mit dokumentierten Angriffssignaturen adressiert~\cite{neto2023ciciot2023}.
 
 Die semantische Validierung bestaetigt die Erklaerungsqualitaet teilweise: Die TCP-Flags
 \texttt{rst\_flag\_number} und \texttt{syn\_flag\_number} erscheinen in den Top-5-Features
@@ -73,12 +73,10 @@ hindeutet und einer vertieften Untersuchung beduerfte.
 
 Die Hyperparameter-Optimierung wurde auf einem Teilmengedatensatz von 8.045~Instanzen
 durchgefuehrt, um die Rechenzeit zu begrenzen.
-Das Reentrainement von Pipeline~A mit den optimierten Hyperparametern auf dem vollstaendigen
-Datensatz (838.602~Instanzen) liefert BA$_2$\,=\,0{,}5364, was unter dem Standard-Wert
-von 0{,}5480 liegt.
-Dies belegt empirisch, dass auf dem Subset optimierte Hyperparameter auf dem vollstaendigen
-Datensatz nicht zwingend besser abschneiden.
-Ein vollstaendiges Grid Search auf dem gesamten Datensatz haette die Rechenzeit um einen
+Das Reentrainement beider Pipelines auf dem vollstaendigen Datensatz bestaetigt, dass
+auf einem kleinen Subset optimierte Hyperparameter nicht besser als Standardparameter
+generalisieren (vgl.\ Tabelle~\ref{tab:ergebnisse}).
+Ein vollstaendiges Grid~Search auf dem gesamten Datensatz haette die Rechenzeit um einen
 Faktor von etwa 100 erhoeht, was den zeitlichen Rahmen dieser Seminararbeit ueberschreitet.
 
 Das stratifizierte Sampling (500~Instanzen/Klasse/Datei) glaettet die

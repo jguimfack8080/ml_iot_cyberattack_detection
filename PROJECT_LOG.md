@@ -8,6 +8,27 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-05-31 (h) -- Final Review complet + 3 correctifs supplementaires (branch Issue #13)
+
+- Datum: 2026-05-31
+- Aenderung: Final review 100% safe sur branch fix/paper-review-vollstaendig.
+  3 correctifs supplementaires apres relecture profonde.
+- Betroffene Dateien:
+  - paper/jguimfackjeuna-main.tex : abstractname force a "Abstract" (babel override)
+  - paper/jguimfackjeuna-discussion.tex :
+    § 5.1 : hosseini2025imbalance retire du Grid-Search-Satz (fausse attribution)
+    § 5.3 : redondance BA-Zahlen supprimee, Pipeline B ajoute, ref tab:ergebnisse
+  - paper/Done.md, TO-DO.md : session 12 finalisee
+  - PROJECT_LOG.md : cet entree
+- Technische Auswirkungen:
+  - Abstract s'affiche "Abstract" (non "Zusammenfassung")
+  - 0 fausse citation, 0 redondance en §5.3
+  - Compilation : 9 pages, 0 erreur, 0 reference indefinie (WSL pdflatex)
+- Begruendung:
+  - babel[ngerman] ecrase \abstractname -> "Zusammenfassung" : non voulu pour USENIX
+  - hosseini2025imbalance ne traite pas de la generalisation Grid-Search (anti-hallucination)
+  - §5.3 repetait les memes chiffres BA que §5.1 (redondance detectee au review final)
+
 ### 2026-05-31 (g) -- Branche fix/paper-review-vollstaendig : Issue #13 corrections paper
 
 - Datum: 2026-05-31

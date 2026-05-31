@@ -253,7 +253,29 @@ Issue GitHub #3 fermee avec resultat reel.
    Comprehensibility=semantische Validierung (ref. hermosilla2025xai_forensic)
    Schliesst die Luecke zur expliziten Rahmenfrage-Deckung
 
-**Status nach Korrekturen (branch) :**
-- Alle 5 Forschungsfragen (Rahmenfrage, Hauptfrage, TF1-3) vollstaendig oder explizit adressiert
-- 0 Halluzination, 0 neue Quellen ausserhalb der 10 BibTeX-Eintraege
-- Seitenzahl : zu verifizierende nach Kompilierung (Ziel : max 10)
+**Zusaetzliche Korrekturen nach finalem Review (Session 12 komplett) :**
+
+4. jguimfackjeuna-main.tex :
+   \addto\captionsngerman{\renewcommand{\abstractname}{Abstract}}
+   Behebt : babel[ngerman] benennte den Abstract "Zusammenfassung"
+
+5. jguimfackjeuna-discussion.tex (§5.1) :
+   \cite{hosseini2025imbalance} aus Grid-Search-Satz entfernt
+   (Hosseini behandelt Klassenungleichgewicht, nicht Grid-Search-Generalisierung)
+
+6. jguimfackjeuna-discussion.tex (§5.3 Einschraenkungen) :
+   Redundanz behoben : BA-Zahlen nicht mehr wiederholt
+   Beide Pipelines erwaehnt (A und B)
+   Tabellen-Querverweis \ref{tab:ergebnisse} statt Sektions-Querverweis
+
+**Kompilierung (build.sh WSL) :**
+- 9 Seiten ✅ (Limit: 10)
+- 0 Fehler, 0 undefined references, 0 undefined citations
+- Underfull/Overfull-Warnings : typographisch, nicht blockierend (USENIX 2-Spalten, Deutsch)
+- "Abstract" korrekt angezeigt (nicht mehr "Zusammenfassung")
+
+**Status final (branch fix/paper-review-vollstaendig) :**
+- Alle 5 Forschungsfragen vollstaendig und explizit adressiert
+- 0 Halluzination, 0 falsche Zitation, 0 Redundanz in Kernaussagen
+- Alle 10 BibTeX-Quellen korrekt und konsistent verwendet
+- Paper kompiliert fehlerfrei : 9 Seiten, Abstract korrekt
