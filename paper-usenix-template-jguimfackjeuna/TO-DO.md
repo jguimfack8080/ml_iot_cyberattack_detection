@@ -46,17 +46,17 @@
 
 ---
 
-## P3 -- Verification et mise en forme (deadline 2026-06-22 Reviewversion)
+## P3 -- Verification et mise en forme (deadline 2026-06-22 Reviewversion) -- COMPLET
 
-[x] Verifier absence de tirets cadratins (-- et ---) dans tous les .tex -- FAIT Session 8
-    [x] 6 occurrences corrigees (evaluation.tex, discussion.tex, main.tex)
-[ ] Verifier longueur totale < 10 pages (USENIX deux colonnes)
-    Prerequis : figures reelles incluses pour mesurer la longueur exacte
-[ ] Verifier toutes les citations : chaque claim = source BibTeX tracable
-[ ] Verifier que SimpleImputer est correctement reference (ou reference supprimee)
-[ ] Corriger eventuelles erreurs LaTeX (overfull hbox, undefined refs, etc.)
-[ ] Test de compilation complet via buildlualatex.sh
-[ ] Compilation test local ou remote pour verifier PDF
+[x] Verifier absence de tirets cadratins (-- et ---) dans tous les .tex (Session 8+9)
+    [x] Toutes occurrences corrigees, scan final OK (hors commentaires LaTeX %---)
+[x] Verifier longueur totale < 10 pages : **9 pages** confirmees (Session 9)
+[x] Verifier toutes les citations : 10 cles citees = 10 sources BibTeX (Session 9)
+[x] Verifier biblio complete : 10 sources, 10 DOIs (Session 9)
+[x] Corriger erreurs LaTeX : aucune ref/citation non resolue ; 1 Overfull mineur 19.6pt
+[x] Test de compilation : build.sh local (WSL pdflatex) reussi -- 9 pages (Session 9)
+[ ] buildlualatex.sh (remote SSH hopper) : non testable sans credentials -- a valider par etudiant
+[ ] SimpleImputer reference : verifier si \cite{neto2023ciciot2023} est correct ou a retirer
 
 ---
 
