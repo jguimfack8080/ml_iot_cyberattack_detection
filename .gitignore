@@ -31,6 +31,7 @@ ENV/
 # =============================================================
 Backend/models_artifacts/*.pkl
 Backend/models_artifacts/*.joblib
+Backend/models_artifacts/*.npz
 
 # Donnees traitees (regenerables)
 Backend/data/processed/
@@ -84,6 +85,11 @@ Paper/hauptdatei.pdf
 Paper/jguimfackjeuna-related-work.pdf
 paper-usenix-template-jguimfackjeuna/*.pdf
 paper-usenix-template-jguimfackjeuna/build/
+
+# =============================================================
+# Config locale Claude Code (machine-specifique)
+# =============================================================
+.claude/
 
 # =============================================================
 # OS / IDE
