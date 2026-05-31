@@ -109,6 +109,22 @@ Dieser Befund stimmt mit der Erwartung ueberein, dass die Projektion auf 16 Haup
 klassentrennende Information verliert, die bei seltenen Angriffsklassen besonders relevant
 ist.
 
+Abbildung~\ref{fig:cm_stage2_b} zeigt die Konfusionsmatrix von Stufe~2 fuer Pipeline~B
+nach dem Reentrainement mit optimierten Hyperparametern.
+
+% Konfusionsmatrix Stufe 2 Pipeline B (generiert durch evaluate_and_explain.py)
+% Datei: Backend/results/figures/confusion_matrix_stage2_pipelineB.png
+% Vor Buildlualatex: cp Backend/results/figures/confusion_matrix_stage2_pipelineB.png paper-usenix-template-jguimfackjeuna/figures/
+\begin{figure}[h]
+\centering
+%\includegraphics[width=\columnwidth]{confusion_matrix_stage2_pipelineB}
+\fbox{\parbox{0.9\columnwidth}{\centering\small Konfusionsmatrix Stufe~2 Pipeline~B\\
+\textit{(Abbildung wird nach Reentrainement eingefuegt)}}}
+\caption{Konfusionsmatrix Stufe~2, Pipeline~B (39 Originalmerkmale).
+Bewertung auf wahren Nicht-DoS-Testinstanzen.}
+\label{fig:cm_stage2_b}
+\end{figure}
+
 \subsection{SHAP-Analyse}\label{shap_analyse}
 
 Die \shap{}-Analyse wird ausschliesslich auf den finalisierten Modellen nach dem
@@ -181,3 +197,20 @@ Reentrainements berechnet und erlaeutert.
 Fuer die drei bis fuenf am staerksten fehlklassifizierten Instanzen pro Pipeline wird ein
 Waterfall-Plot generiert, der zeigt, welche Features die Falschklassifikation verursachen.
 Diese lokale Analyse ergaenzt die globale Perspektive um individuelle Fehlermuster.
+
+Abbildung~\ref{fig:shap_global_b} zeigt die globale SHAP-Feature-Importance fuer
+Stufe~2 Pipeline~B nach dem Reentrainement.
+
+% SHAP Global Importance Bar Chart Stufe 2 Pipeline B (generiert durch evaluate_and_explain.py)
+% Datei: Backend/results/figures/shap_global_stage2_pipelineB.png
+% Vor Buildlualatex: cp Backend/results/figures/shap_global_stage2_pipelineB.png paper-usenix-template-jguimfackjeuna/figures/
+\begin{figure}[h]
+\centering
+%\includegraphics[width=\columnwidth]{shap_global_stage2_pipelineB}
+\fbox{\parbox{0.9\columnwidth}{\centering\small SHAP Global Feature Importance\\
+Stufe~2 Pipeline~B (39 Originalmerkmale)\\
+\textit{(Abbildung wird nach Reentrainement eingefuegt)}}}
+\caption{Globale \shap{}-Feature-Importance fuer Stufe~2, Pipeline~B:
+Betragsmittelwert der \shap{}-Werte pro Feature ueber alle Testinstanzen und Klassen.}
+\label{fig:shap_global_b}
+\end{figure}
