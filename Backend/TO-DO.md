@@ -1,5 +1,5 @@
 # TO-DO.md — Backlog Complet du Projet Backend ML IoT IDS
-## Dernière mise à jour : 2026-05-30
+## Derniere mise a jour : 2026-05-31 (Session 8)
 
 ---
 
@@ -123,49 +123,75 @@
                    Stufe2 HP={lr=0.05, max_depth=3, n_estimators=200, subsample=0.8} | BA=0.6479
     → Resultats sauvegardes : results/metrics/best_params_A.json + best_params_B.json
     → Note : Grid Search sur sous-ensemble (8 045 lignes). Reentrainement complet requis.
-[ ] Reentrainement complet avec meilleurs HP (Issue Backend #3, deadline 2026-06-08)
-    → python scripts/grid_search.py --pipeline both --max-files 15 --n-per-class 300 --retrain
-[ ] Analyse post-reentrainement : comparer A_optimise vs B_optimise (Ablation Study finale)
+[x] Reentrainement complet Pipeline A avec meilleurs HP (2026-05-31)
+    → BA1=0.9985 BA2=0.5364 F1=0.5644 | Duree 3265s | Modeles + test_data_A.npz sauvegardes
+    → Observation : HP optimises sur subset ne generalisent pas mieux (BA2 retrain < Standard HP)
+[ ] Reentrainement complet Pipeline B avec meilleurs HP (en cours 2026-05-31, fin ~10:15)
+    → Stufe1: lr=0.05 depth=5 n=100 sub=1.0 | Stufe2: lr=0.05 depth=3 n=200 sub=0.8
+    → Pipeline B modeles + test_data_B.npz attendus apres fin
+[x] Analyse post-reentrainement Pipeline A : HP optimises sous-ensemble ne generalisent pas (BA2 0.5364 < 0.5480)
+[ ] Analyse post-reentrainement Pipeline B : a completer apres fin
 
 ---
 
-## 🔵 P4 — Qualité & Robustesse (en cours — Issue Backend #10 et #11)
+## 🔵 P4 — Qualité et Robustesse (Issue Backend #10 et #11 -- essentiellement termines)
 
-[x] src/evaluation/metrics.py ✅
+[x] src/evaluation/metrics.py ✅ (Session 7)
     → evaluate_stage1(), evaluate_stage2(), accuracy_vs_balanced_accuracy(), full_report()
     → 7 tests unitaires, 96% coverage
-[x] src/evaluation/confusion_matrix.py ✅
-    → plot_and_save_stage1(), plot_and_save_stage2() — export PNG vers results/figures/
-[x] src/explainability/shap_analysis.py ✅
-    → compute_stage1_shap(), compute_stage2_shap() via SHAP TreeExplainer
-    → ShapResult dataclass (shap_values, global_importance, misclassified_indices)
-    → get_misclassified_instances() pour analyse locale
-[x] src/explainability/shap_visualizer.py ✅
+[x] src/evaluation/confusion_matrix.py ✅ (Session 7)
+    → plot_and_save_stage1(), plot_and_save_stage2() -- export PNG vers results/figures/
+    → Titres corriges (-- -> :) pour respect regle gedankenstriche
+[x] src/explainability/shap_analysis.py ✅ (Session 8 : correction ADR-005)
+    → compute_stage1_shap() : SHAP TreeExplainer (exact, Stage 1 binaire)
+    → compute_stage2_shap() : PermutationExplainer(predict_proba) (Stage 2 multiclass)
+    → ShapResult dataclass, get_misclassified_instances()
+[x] src/explainability/shap_visualizer.py ✅ (Session 8 : correction titres)
     → plot_summary_stage1/2, plot_bar_global_importance, plot_waterfall_misclassified
     → Export PNG vers results/figures/
 [x] src/utils/logger.py ✅ (Session 5)
+[x] tests/test_explainability.py ✅ (Session 8 -- 21 tests)
+[x] tests/test_logger.py ✅ (Session 8 -- 9 tests, 100% logger coverage)
+[x] tests/test_main.py ✅ (Session 8 -- 11 tests, 96% main coverage)
+[x] tests/test_evaluation.py -- +3 tests confusion matrix (Session 8)
+[x] Couverture de tests > 80% : 97% atteint (111 tests) ✅ (Session 8)
 [ ] Executer SHAP sur modeles reentraines + generer les figures PNG
-[ ] tests/test_explainability.py (a ecrire)
-[ ] Validation sémantique SHAP
-    → Comparer les top features SHAP par classe avec les signatures d'attaques documentées
-    → DoS/DDoS : Rate, Number, syn_flag_number attendus en tête
+    → Commande : .venv/Scripts/python scripts/evaluate_and_explain.py --pipeline both --shap-samples 500
+    → Prerequis : reentrainement Pipeline B complet + test_data_B.npz cree
+[ ] Validation semantique SHAP
+    → Comparer les top features SHAP par classe avec les signatures d'attaques documentees
+    → DoS/DDoS : Rate, Number, syn_flag_number attendus en tete
     → Spoofing : ARP, ICMP, Protocol_Type
-    → Brute-Force : connexions répétées, SSH, Telnet
-    → Référence : Neto et al. (2023), DOI 10.3390/s23135941
-[ ] Couverture de tests > 80% (pytest --cov=src)
+    → Brute-Force : connexions repetees, SSH, Telnet
+    → Reference : Neto et al. (2023), DOI 10.3390/s23135941
 
 ---
 
-## ⚪ P5 — Finalisation (dernière phase)
+## ⚪ P5 — Finalisation (Issue Backend #12 -- deadline 2026-06-22)
 
-[ ] Export et sérialisation des modèles (joblib, format .pkl → models_artifacts/)
-[ ] Documentation technique dans docs/
-    → architecture_decision_records.md
-    → label_mapping.md (tableau complet des 34 labels → 8 catégories)
-[ ] README.md du Backend/ (instructions d'installation et d'exécution)
-[ ] Génération des figures finales pour le Paper (results/figures/)
-[ ] Export des métriques finales en JSON/CSV (results/metrics/)
-[ ] Intégration des résultats dans Paper/src/methodik.tex et erwartete_ergebnisse.tex
+[x] Export et serialisation des modeles (joblib, format .pkl -> models_artifacts/) ✅ (Session 5+8)
+    → preprocessor_{A,B}.pkl, stage1_{A,B}.pkl, stage2_{A,B}.pkl sauvegardes
+[x] Documentation technique dans docs/ ✅ (Session 8)
+    → docs/architecture_decision_records.md : 7 ADRs
+    → docs/label_mapping.md : tableau complet 33 labels + features
+[x] README.md du Backend/ (Session 7) ✅
+[ ] Generation des figures finales pour le Paper (results/figures/)
+    → Prerequis : evaluate_and_explain.py execute sur modeles reentraines
+    → Figures : confusion_matrix_stage{1,2}_pipeline{A,B}.png
+    → Figures : shap_global_stage{1,2}_pipeline{A,B}.png
+    → Figures : shap_summary_stage1_pipeline{A,B}.png
+    → Figures : shap_waterfall_stage{1,2}_pipeline{A,B}_idx*.png
+[ ] Copier figures vers paper-usenix-template-jguimfackjeuna/figures/
+    → scripts/update_paper_results.py fait cela automatiquement
+[ ] Export des metriques finales en JSON (results/metrics/)
+    → full_report_pipeline_{A,B}.json (rapport detaille par classe)
+    → shap_global_stage{1,2}_pipeline{A,B}.json (importance globale)
+    → misclassified_instances_pipeline{A,B}.json (analyse locale)
+[ ] Integrer resultats dans paper-usenix-template-jguimfackjeuna/jguimfackjeuna-evaluation.tex
+    → Tableau B Best HP avec valeurs reelles
+    → tab:shap_top5 avec top-5 features par classe (Pipeline B Stufe 2)
+    → Decommenter \includegraphics confusion matrix + SHAP
+[ ] Fermer issues GitHub #9, #10, #11, #12
 
 ---
 

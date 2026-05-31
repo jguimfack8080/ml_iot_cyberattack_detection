@@ -317,6 +317,39 @@ Jede Aenderung im Projekt erfordert einen Eintrag in PROJECT_LOG.md mit:
 - Technische Auswirkungen
 - Begruendung
 
+## ABSOLUT VERBOTENE REGEL -- Done.md und TO-DO.md PFLICHTAKTUALISIERUNG
+
+**Diese Regel ist genauso streng wie die Gedankenstrich-Regel: keine Ausnahmen.**
+
+Am Ende JEDER Session muessen folgende Dateien aktualisiert werden:
+
+1. Backend/Done.md
+   - Neue Session-Sektion hinzufuegen (chronologisch, immuabel)
+   - Format: ### YYYY-MM-DD -- Session N : Titel
+   - Inhalt: implementierte Dateien, Resultate (BA, F1, Trainingszeit), Entscheidungen
+   - Alle Testergebnisse (Anzahl Tests, Coverage)
+
+2. Backend/TO-DO.md
+   - Erledigte Items: [ ] -> [x] mit Datum
+   - Neue Items aus der Session hinzufuegen
+   - Datum der letzten Aktualisierung oben aktualisieren
+
+3. paper-usenix-template-jguimfackjeuna/Done.md
+   - Gleiche Regel wie Backend/Done.md fuer alle Paper-Aenderungen
+   - Jede .tex-Aenderung dokumentieren
+
+4. paper-usenix-template-jguimfackjeuna/TO-DO.md
+   - Gleiche Regel wie Backend/TO-DO.md
+
+**Reihenfolge am Sessionende:**
+1. Done.md aktualisieren
+2. TO-DO.md aktualisieren
+3. PROJECT_LOG.md aktualisieren
+4. git commit mit allen Aenderungen (inkl. Done.md und TO-DO.md)
+
+**Konsequenz bei Nichteinhaltung:** Dokumentation divergiert vom Code.
+Dies ist kritisch fuer die wissenschaftliche Nachvollziehbarkeit der Seminararbeit.
+
 ---
 
 ## Paper Build (Remote SSH)

@@ -819,3 +819,126 @@ results/metrics/
 **Backend README.md cree.**
 
 **Issue GitHub #2 (Motivationsreview) fermee.**
+
+---
+
+### 2026-05-31 -- Session 8 : Evaluation + SHAP + Tests + Docs + Reentrainement best HP
+
+**Objectif :** Implémenter Issues #9 (retrain), #10 (evaluation), #11 (SHAP), #12 (tests/docs).
+
+---
+
+#### Nouveaux scripts crees
+
+| Fichier | Role |
+|---------|------|
+| scripts/evaluate_and_explain.py | Charge modeles disk, genere evaluation + confusion matrix + SHAP |
+| scripts/extract_test_data.py | Cree test_data_{A,B}.npz depuis preprocesseurs sauvegardes (backup) |
+| scripts/update_paper_results.py | Copie figures -> paper/figures/ + affiche SHAP top-5 pour paper |
+| scripts/wait_and_evaluate.sh | Monitore TRAINING COMPLETE + lance evaluate_and_explain.py auto |
+
+---
+
+#### Modules modifies/corriges
+
+**src/explainability/shap_analysis.py (ADR-005)**
+- compute_stage2_shap() : TreeExplainer remplace par PermutationExplainer
+- Raison : sklearn multiclass GradientBoostingClassifier non supporte par SHAP TreeExplainer 0.52
+- PermutationExplainer(stage2.predict_proba, masker) : valeurs Shapley correctes en esperance
+- Documente dans docs/architecture_decision_records.md (ADR-005)
+
+**src/evaluation/confusion_matrix.py**
+- Titres de figures : "Stufe 1 -- Pipeline" -> "Stufe 1: Pipeline" (regle gedankenstriche)
+
+**src/explainability/shap_visualizer.py**
+- Titres de figures : "SHAP Summary --" -> "SHAP Summary:" (regle gedankenstriche)
+
+**scripts/train_pipelines.py**
+- save_result() modifie : sauvegarde test_data_{name}.npz (X_test, y_binary_test, y_category_test)
+- Bug n_train_samples corrige : n_train_approx = n_test * (1-test_size) / test_size
+
+---
+
+#### Nouveaux fichiers de tests
+
+| Fichier | Tests | Coverage cible |
+|---------|-------|----------------|
+| tests/test_explainability.py | 21 | shap_analysis 96%, shap_visualizer 95% |
+| tests/test_logger.py | 9 | utils/logger.py 100% |
+| tests/test_main.py | 11 | src/main.py 96% |
+| tests/test_evaluation.py | +3 tests confusion matrix | confusion_matrix.py 100% |
+
+**Total cumulatif : 111 tests / 97% coverage global**
+
+**Correction conftest.py :** matplotlib.use("Agg") pour environnement headless (tests Tk error)
+
+---
+
+#### Documentation Backend
+
+**docs/architecture_decision_records.md cree :**
+7 ADRs documentes :
+- ADR-001 : Gradient Boosting comme modele principal (Raturi et al. 2026)
+- ADR-002 : Architecture hierarchique deux etages
+- ADR-003 : Balanced Accuracy comme metrique primaire
+- ADR-004 : Ablation Study PCA vs. sans PCA
+- ADR-005 : SHAP Stage 2 avec PermutationExplainer (multiclass GBC limitation)
+- ADR-006 : 39 features au lieu de 46 (divergence Lastenheft)
+- ADR-007 : Stratified Sampling 500 instances/classe/fichier
+
+**docs/label_mapping.md cree :**
+Tableau complet 33 labels -> 8 categories, structure Stage 1/2, 39 features normalisees
+
+---
+
+#### Reentrainement avec best HP (Issue #9)
+
+**Pipeline A (best HP : Stufe1 lr=0.1 depth=5 n=200 sub=0.8 | Stufe2 lr=0.05 depth=3 n=100 sub=1.0) :**
+
+| Metrique | Standard HP | Best HP (retrain complet) | Delta |
+|----------|-------------|--------------------------|-------|
+| Stufe 1 BA | 0.9971 | **0.9985** | +0.0014 |
+| Stufe 1 F1 | 0.9969 | **0.9985** | +0.0016 |
+| Stufe 2 BA | 0.5480 | **0.5364** | -0.0116 |
+| Stufe 2 F1 | 0.5784 | **0.5644** | -0.0140 |
+| Duree | 2240s | 3265s | +1025s |
+
+Observation critique : les HP optimises sur subset (8045 lignes) ne generalisent PAS
+mieux sur le dataset complet (838602 lignes). Stufe2 BA retrain < Standard HP.
+Cela montre la limite de l'optimisation sur sous-ensemble pour ce dataset.
+
+**Pipeline B retrain : en cours (best HP : Stufe1 lr=0.05 depth=5 n=100 | Stufe2 lr=0.05 depth=3 n=200)**
+Stage 1 demarre 09:17:50 (2026-05-31). Resultats attendus vers 10:15.
+
+**Fichiers produits :**
+- models_artifacts/preprocessor_A.pkl : reentrainement best HP ✅
+- models_artifacts/stage1_A.pkl : reentrainement best HP ✅
+- models_artifacts/stage2_A.pkl : reentrainement best HP ✅
+- models_artifacts/test_data_A.npz : X_test + labels sauvegardes ✅
+- results/metrics/metrics_pipeline_A.json : BA1=0.9985 BA2=0.5364 F1=0.5644 ✅
+- models_artifacts/test_data_B.npz : a creer apres fin reentrainement Pipeline B
+
+---
+
+#### Paper -- Mises a jour effectuees dans cette session
+
+| Fichier | Modifications cles |
+|---------|-------------------|
+| jguimfackjeuna-abstract.tex | Resultats numeriques inclus (8.21 pts PCA, BA valeurs) |
+| jguimfackjeuna-evaluation.tex | Tableau 3 configs (Standard/GS-Subset/Best HP), Pipeline A retrain, SHAP section complete, placeholders figures |
+| jguimfackjeuna-methodik.tex | PermutationExplainer pour Stufe 2 documente |
+| jguimfackjeuna-discussion.tex | Comparaisons litterature completes, observation retrain, Jaccard non-applicable PCA |
+| jguimfackjeuna-conclusion.tex | Conclusions definitives avec resultats chiffres |
+| jguimfackjeuna-main.tex | usepackage{graphicx} + graphicspath, correction -- autorenzeile |
+| Tous .tex | 6 corrections violations Gedankenstrich -- -> : |
+
+---
+
+#### Prochaines etapes critiques (apres fin reentrainement Pipeline B ~10:15)
+
+1. `cd Backend && .venv/Scripts/python scripts/evaluate_and_explain.py --pipeline both --shap-samples 500`
+2. `cd Backend && .venv/Scripts/python scripts/update_paper_results.py`
+3. Mettre a jour evaluation.tex tableau ligne "B (39f) Best HP" + tab:shap_top5
+4. Decommenter les \includegraphics dans evaluation.tex
+5. git push (autorisation user requise pour branch main)
+6. Fermer issues GitHub #9, #10, #11, #12
