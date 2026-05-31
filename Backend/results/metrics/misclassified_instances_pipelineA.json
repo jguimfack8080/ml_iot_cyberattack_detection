@@ -1,0 +1,114 @@
+{
+  "stage1": [
+    {
+      "index": 84,
+      "true_label": "0",
+      "predicted_label": "1",
+      "top_shap_features": [
+        {
+          "feature": "PC6",
+          "shap_value": -43181.694195
+        },
+        {
+          "feature": "PC1",
+          "shap_value": 24416.893487
+        },
+        {
+          "feature": "PC7",
+          "shap_value": 14322.31709
+        },
+        {
+          "feature": "PC3",
+          "shap_value": 3357.3888
+        },
+        {
+          "feature": "PC5",
+          "shap_value": 2.218188
+        }
+      ]
+    }
+  ],
+  "stage2": [
+    {
+      "index": 16,
+      "true_label": "Benign",
+      "predicted_label": "Reconnaissance",
+      "top_shap_features": [
+        {
+          "feature": "PC1",
+          "shap_value": 0.146847
+        },
+        {
+          "feature": "PC2",
+          "shap_value": 0.097914
+        },
+        {
+          "feature": "PC8",
+          "shap_value": -0.0836
+        },
+        {
+          "feature": "PC3",
+          "shap_value": -0.061665
+        },
+        {
+          "feature": "PC5",
+          "shap_value": -0.026463
+        }
+      ]
+    },
+    {
+      "index": 18,
+      "true_label": "Brute-Force",
+      "predicted_label": "Spoofing",
+      "top_shap_features": [
+        {
+          "feature": "PC2",
+          "shap_value": 0.20208
+        },
+        {
+          "feature": "PC11",
+          "shap_value": 0.096005
+        },
+        {
+          "feature": "PC13",
+          "shap_value": 0.069825
+        },
+        {
+          "feature": "PC5",
+          "shap_value": -0.058765
+        },
+        {
+          "feature": "PC16",
+          "shap_value": 0.052252
+        }
+      ]
+    },
+    {
+      "index": 29,
+      "true_label": "Reconnaissance",
+      "predicted_label": "Spoofing",
+      "top_shap_features": [
+        {
+          "feature": "PC1",
+          "shap_value": 0.252014
+        },
+        {
+          "feature": "PC6",
+          "shap_value": 0.050712
+        },
+        {
+          "feature": "PC5",
+          "shap_value": -0.049005
+        },
+        {
+          "feature": "PC2",
+          "shap_value": -0.041609
+        },
+        {
+          "feature": "PC7",
+          "shap_value": 0.028659
+        }
+      ]
+    }
+  ]
+}

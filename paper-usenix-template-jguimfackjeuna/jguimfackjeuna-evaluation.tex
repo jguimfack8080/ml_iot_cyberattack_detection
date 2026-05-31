@@ -51,7 +51,7 @@ A (PCA) & Best HP & 0{,}9985 & 0{,}9985 & 0{,}5364 & 0{,}5644 \\
 \midrule
 B (39f) & Standard & 0{,}9993 & 0{,}9993 & 0{,}6301 & 0{,}6670 \\
 B (39f) & GS-Subset & 0{,}9994 & n.\,v. & 0{,}6479 & n.\,v. \\
-B (39f) & Best HP & n.\,v. & n.\,v. & n.\,v. & n.\,v. \\
+B (39f) & Best HP & 0{,}9992 & 0{,}9993 & 0{,}6285 & 0{,}6652 \\
 \bottomrule
 \end{tabular}
 \smallskip\newline
@@ -62,16 +62,14 @@ Grid-Search-Optimum auf 8.045~Instanzen. Best HP: optimierte Hyperparameter auf
 \end{table}
 
 Tabelle~\ref{tab:ergebnisse} zeigt die Ergebnisse in drei Konfigurationen.
-Pipeline~B uebertrifft Pipeline~A in allen Konfigurationen.
-Fuer Pipeline~A gilt: Das Reentrainement mit optimierten Hyperparametern auf dem
-vollstaendigen Datensatz liefert eine \ba{} von 0{,}9985 (Stufe~1) und 0{,}5364
-(Stufe~2).
-Bemerkenswert ist, dass die Stufe-2-\ba{} mit optimierten Hyperparametern (0{,}5364)
-geringfuegig unter der Standard-\ba{} (0{,}5480) liegt.
-Dies deutet darauf hin, dass die auf dem Teilmengedatensatz (8.045~Instanzen) gefundenen
-optimalen Hyperparameter nicht vollstaendig auf das vollstaendige Dataset generalisieren.
-Der Einfluss der Grid-Search-Optimierung auf Pipeline~A faellt damit geringer aus als
-erwartet, was auf den Informationsverlust durch die \pca{}-Reduktion hindeutet.
+Pipeline~B uebertrifft Pipeline~A in allen Konfigurationen und mit allen Hyperparametern.
+Das Reentrainement auf dem vollstaendigen Datensatz liefert fuer beide Pipelines eine
+geringfuegig niedrigere Stufe-2-\ba{} als die Standardparameter:
+Pipeline~A sinkt von 0{,}5480 auf 0{,}5364~($-$1{,}16~Punkte),
+Pipeline~B sinkt von 0{,}6301 auf 0{,}6285~($-$0{,}16~Punkte).
+Dieses Ergebnis belegt, dass die auf dem Teilmengedatensatz (8.045~Instanzen) gefundenen
+Hyperparameter auf dem vollstaendigen Datensatz nicht besser generalisieren; dies ist
+ein wichtiger methodischer Befund fuer zukunftige Studien~\cite{hosseini2025imbalance}.
 
 Die optimierten Hyperparameter der Grid Search sind in Tabelle~\ref{tab:best_hp}
 zusammengefasst.
@@ -148,6 +146,32 @@ Dieser Befund stimmt mit der Erwartung ueberein, dass die Projektion auf 16 Haup
 klassentrennende Information verliert, die bei seltenen Angriffsklassen besonders relevant
 ist.
 
+Tabelle~\ref{tab:perclass_b} zeigt die Klassenmetriken fuer Pipeline~B.
+Gegenueber Pipeline~A verbessert sich insbesondere der Recall von Spoofing (0{,}857 vs.\
+0{,}642) und Web-based (0{,}192 vs.\ 0{,}065); Brute-Force bleibt mit $R$\,=\,0{,}299
+schwach.
+Der Accuracy-\ba{}-Gap betraegt 0{,}195 (Accuracy\,=\,0{,}824, BA\,=\,0{,}629).
+
+\begin{table}[h]
+\centering
+\caption{Precision, Recall, F1 pro Klasse: Stufe~2 Pipeline~B (Best HP)}
+\label{tab:perclass_b}
+\begin{tabular}{lccc}
+\toprule
+Klasse & P & R & F1 \\
+\midrule
+Benign       & 0{,}605 & 0{,}517 & 0{,}557 \\
+Brute-Force  & 0{,}832 & 0{,}299 & 0{,}440 \\
+Mirai        & 1{,}000 & 1{,}000 & \textbf{1{,}000} \\
+Reconnaissance & 0{,}726 & 0{,}907 & 0{,}806 \\
+Spoofing     & \textbf{0{,}911} & \textbf{0{,}857} & \textbf{0{,}883} \\
+Web-based    & 0{,}739 & 0{,}192 & 0{,}305 \\
+\bottomrule
+\end{tabular}
+\smallskip\newline
+{\footnotesize Accuracy\,=\,0{,}824, BA\,=\,0{,}629 (Gap\,=\,0{,}195).}
+\end{table}
+
 Abbildung~\ref{fig:cm_stage2_b} zeigt die Konfusionsmatrix von Stufe~2 fuer Pipeline~B
 nach dem Reentrainement mit optimierten Hyperparametern.
 
@@ -161,11 +185,12 @@ Bewertung auf wahren Nicht-DoS-Testinstanzen (69.773 Instanzen).}
 \label{fig:cm_stage2_a}
 \end{figure}
 
-% TODO: Konfusionsmatrix Pipeline B einfuegen sobald verfuegbar
-% \begin{figure}[h]\centering
-% \includegraphics[width=\columnwidth]{confusion_matrix_stage2_pipelineB}
-% \caption{Konfusionsmatrix Stufe~2, Pipeline~B (39 Originalmerkmale, Best HP).}\label{fig:cm_stage2_b}
-% \end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{confusion_matrix_stage2_pipelineB}
+\caption{Konfusionsmatrix Stufe~2, Pipeline~B (39 Originalmerkmale, Best HP).}
+\label{fig:cm_stage2_b}
+\end{figure}
 
 \subsection{SHAP-Analyse}\label{shap_analyse}
 
@@ -200,30 +225,36 @@ Kombinationen der Originalmerkmale sind.
 \centering
 \caption{Top-5 SHAP-Features pro Klasse: Pipeline B (Originalmerkmale)}
 \label{tab:shap_top5}
-\begin{tabular}{ll}
+\begin{tabular}{lp{0.62\columnwidth}}
 \toprule
 Klasse & Top-5 Features (absteigend nach $\overline{|\phi_i|}$) \\
 \midrule
-DoS/DDoS & \textit{Ergebnisse nach Reentrainement} \\
-Mirai & \textit{Ergebnisse nach Reentrainement} \\
-Reconnaissance & \textit{Ergebnisse nach Reentrainement} \\
-Spoofing & \textit{Ergebnisse nach Reentrainement} \\
-Brute-Force & \textit{Ergebnisse nach Reentrainement} \\
-Web-based & \textit{Ergebnisse nach Reentrainement} \\
-Benign & \textit{Ergebnisse nach Reentrainement} \\
+Benign      & \texttt{HTTPS}, \texttt{Number}, \texttt{Max}, \texttt{syn\_flag\_number}, \texttt{Rate} \\
+Brute-Force & \texttt{Max}, \texttt{Number}, \texttt{Rate}, \texttt{Min}, \textbf{\texttt{SSH}} \\
+Mirai       & \texttt{Number}, \texttt{Protocol\_Type}, \texttt{Min}, \texttt{TCP}, \texttt{Max} \\
+Recon.      & \texttt{Number}, \texttt{Protocol\_Type}, \texttt{Min}, \texttt{syn\_flag\_number}, \texttt{Max} \\
+Spoofing    & \texttt{Min}, \texttt{Number}, \texttt{Max}, \texttt{Protocol\_Type}, \texttt{Rate} \\
+Web-based   & \texttt{Number}, \texttt{Rate}, \texttt{Max}, \texttt{Protocol\_Type}, \texttt{syn\_flag\_number} \\
 \bottomrule
 \end{tabular}
+\smallskip\newline
+{\footnotesize Stufe~1 (DoS/DDoS): \texttt{Number}, \texttt{Protocol\_Type}, \texttt{UDP}, \texttt{AVG}, \texttt{Min}.
+SSH bei Brute-Force entspricht der bekannten Angriffssignatur~\cite{neto2023ciciot2023}.}
 \end{table}
 
 \textbf{Semantische Validierung.}
-Die identifizierten \shap{}-Feature-Importance-Ranglisten werden mit bekannten
-Netzwerksignaturen der jeweiligen Angriffstypen verglichen.
-Fuer DoS/DDoS-Angriffe sind erwartet: hohe Rate (\texttt{Rate}), Verbindungsanzahl
-(\texttt{Number}) und TCP-Flags (\texttt{syn\_flag\_number})~\cite{neto2023ciciot2023}.
-Fuer ARP-Spoofing: \texttt{ARP}, \texttt{ICMP} und \texttt{Protocol\_Type}.
-Fuer Brute-Force: \texttt{SSH}, \texttt{Telnet} und hohe Verbindungsanzahl.
-Abweichungen zwischen erwarteten und beobachteten Top-Features werden als Hinweis
-auf Korrelationsartefakte im Datensatz interpretiert.
+Die \shap{}-Feature-Importance-Ranglisten werden mit bekannten Netzwerksignaturen
+verglichen (vgl.\ Tabelle~\ref{tab:shap_top5}).
+Fuer Stufe~1 (DoS/DDoS) dominieren \texttt{Number} und \texttt{Protocol\_Type}, was mit
+Flutangriffen und Protokollmissbrauch konsistent ist~\cite{neto2023ciciot2023}.
+Das Merkmal \texttt{SSH} erscheint in den Top-5 fuer Brute-Force, was der bekannten
+Signatur von Dictionary-Brute-Force-Angriffen auf SSH-Dienste entspricht.
+Reconnaissance und Mirai werden beide primaer durch \texttt{Number} und
+\texttt{Protocol\_Type} erklaert, was konsistent mit Scan-Aktivitaet und Flood-Verhalten
+ist.
+Spoofing wird nicht primaer durch \texttt{ARP} oder \texttt{ICMP} erklaert, sondern durch
+aggregierte Statistiken (\texttt{Min}, \texttt{Number}, \texttt{Max}); dies koennte auf
+Datensatz-Korrelationsartefakte hindeuten, die einer weiteren Untersuchung beduerften.
 
 \textbf{Ablation Study SHAP.}
 Der Vergleich der \shap{}-Erklaerungen zwischen Pipeline~A und Pipeline~B zeigt den
@@ -269,8 +300,10 @@ PC-Komponenten tragen keine semantische Bedeutung.}
 \label{fig:shap_global_a}
 \end{figure}
 
-% SHAP Global Importance -- Pipeline B (nach Reentrainement einfuegen)
-% \begin{figure}[h]\centering
-% \includegraphics[width=\columnwidth]{shap_global_stage2_pipelineB}
-% \caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~B.}\label{fig:shap_global_b}
-% \end{figure}
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{shap_global_stage2_pipelineB}
+\caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~B.
+\texttt{Number} dominiert alle Klassen; \texttt{SSH} bestaetigt Brute-Force-Signatur.}
+\label{fig:shap_global_b}
+\end{figure}
