@@ -110,16 +110,22 @@
 [x] src/utils/logger.py — logging fichier implémenté
     → train_latest.log + train_YYYYMMDD_HHMMSS.log à chaque run
     → Sentinelles TRAINING STARTED / TRAINING COMPLETE / TRAINING FAILED
-[→] Grid Search Pipeline A + B (EN COURS -- scripts/grid_search.py lancé)
+[x] Grid Search Pipeline A + B (TERMINE)
     → Grille : n_estimators [100, 200], max_depth [3, 5], learning_rate [0.05, 0.1], subsample [0.8, 1.0]
     → 16 combinaisons x cv=3 x 2 etages = 96 fits par pipeline
     → Sous-ensemble : max_files=5, n_per_class=50 (~8 000 lignes) pour test rapide
     → Resultats -> results/metrics/best_params_A.json + best_params_B.json
     → Log -> results/logs/train_latest.log (sentinelle TRAINING COMPLETE)
     → Apres Grid Search : reentrainer sur dataset complet avec --retrain
-[ ] Reentrainement complet avec meilleurs HP (apres Grid Search)
-    → .venv/Scripts/python scripts/grid_search.py --pipeline both --max-files 10 --n-per-class 200 --retrain
-[ ] Analyse post-Grid Search : comparer A_optimise vs B_optimise (Ablation Study finale)
+    → Pipeline A : Stufe1 HP={lr=0.1, max_depth=5, n_estimators=200, subsample=0.8} | BA=0.9969
+                   Stufe2 HP={lr=0.05, max_depth=3, n_estimators=100, subsample=1.0} | BA=0.5384
+    → Pipeline B : Stufe1 HP={lr=0.05, max_depth=5, n_estimators=100, subsample=1.0} | BA=0.9994
+                   Stufe2 HP={lr=0.05, max_depth=3, n_estimators=200, subsample=0.8} | BA=0.6479
+    → Resultats sauvegardes : results/metrics/best_params_A.json + best_params_B.json
+    → Note : Grid Search sur sous-ensemble (8 045 lignes). Reentrainement complet requis.
+[ ] Reentrainement complet avec meilleurs HP (Issue Backend #3, deadline 2026-06-08)
+    → python scripts/grid_search.py --pipeline both --max-files 15 --n-per-class 300 --retrain
+[ ] Analyse post-reentrainement : comparer A_optimise vs B_optimise (Ablation Study finale)
 
 ---
 

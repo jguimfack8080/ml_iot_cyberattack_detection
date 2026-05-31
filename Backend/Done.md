@@ -764,3 +764,58 @@ results/metrics/
    → Objectif : atteindre BA ≥ 0.85 sur Stufe 2 (proche de Raturi et al. 0.952)
 2. Implémenter src/evaluation/metrics.py (rapport complet par classe)
 3. Implémenter src/explainability/shap_analysis.py (SHAP global + local)
+
+
+---
+
+### 2026-05-31 — Session 7 : Issue #2 Motivationsreview — Grid Search lance
+
+**Objectif :** Clore Issue #2 GitHub (Motivationsreview, deadline 2026-06-01).
+
+**Ce qui etait requis par l'issue :**
+1. [x] BA Stufe 1 + 2 Pipeline A et B documentees (Session 6)
+2. [x] jguimfackjeuna-methodik.tex complet (Session 6)
+3. [x] jguimfackjeuna-evaluation.tex avec resultats preliminaires (Session 6)
+4. [→] Grid Search demarre (cette session)
+
+**scripts/grid_search.py cree et lance :**
+- GridSearchCV(cv=3, scoring='balanced_accuracy') sur Stufe 1 et Stufe 2 separement
+- Grille : n_estimators [100, 200], max_depth [3, 5], learning_rate [0.05, 0.1], subsample [0.8, 1.0]
+- 16 combinaisons x 3 folds x 2 etages = 96 fits par pipeline
+- Sous-ensemble : max_files=5, n_per_class=50 (~8 200 lignes)
+- Resultats sauvegardes dans results/metrics/best_params_{A,B}.json
+- Logging via src/utils/logger.py (train_latest.log)
+
+**Commande lancee :**
+  .venv/Scripts/python scripts/grid_search.py --pipeline both --max-files 5 --n-per-class 50
+
+**Resultats Grid Search** : a completer quand le processus termine (voir section suivante).
+
+**Resultats Grid Search (sous-ensemble 8 045 lignes, 5 fichiers, cv=3) :**
+
+| Pipeline | Stufe | Meilleurs HP | BA (test) |
+|----------|-------|-------------|-----------|
+| A (PCA) | Stufe 1 | lr=0.1, max_depth=5, n_estimators=200, subsample=0.8 | 0.9969 |
+| A (PCA) | Stufe 2 | lr=0.05, max_depth=3, n_estimators=100, subsample=1.0 | 0.5384 |
+| B (39f) | Stufe 1 | lr=0.05, max_depth=5, n_estimators=100, subsample=1.0 | 0.9994 |
+| B (39f) | Stufe 2 | lr=0.05, max_depth=3, n_estimators=200, subsample=0.8 | **0.6479** |
+
+**Observations cles :**
+- Grid Search ameliore Pipeline B Stufe2 de 0.6301 -> 0.6479 (+0.018)
+- Grid Search ne ameliore pas significativement Pipeline A Stufe2 (0.5480 -> 0.5384, -0.0096)
+  Interpretation : PCA reduit la capacite du Grid Search a ameliorer la classification
+- Reentrainement sur dataset complet avec best HP requis (Issue Backend #9)
+
+**Fichiers produits :**
+  results/metrics/best_params_A.json
+  results/metrics/best_params_B.json
+
+**Nouvelles issues Backend creees :**
+  #9  [Backend] Grid Search + Reentrainement complet (deadline 2026-06-08)
+  #10 [Backend] Evaluation detaillee metrics.py + confusion_matrix.py (deadline 2026-06-15)
+  #11 [Backend] SHAP shap_analysis.py + shap_visualizer.py (deadline 2026-06-15)
+  #12 [Backend] Export modeles + tests finaux (deadline 2026-06-22)
+
+**Backend README.md cree.**
+
+**Issue GitHub #2 (Motivationsreview) fermee.**

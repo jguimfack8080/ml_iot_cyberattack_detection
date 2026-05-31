@@ -1,0 +1,48 @@
+{
+  "pipeline": "A",
+  "grid_search_subset": {
+    "max_files": "variable",
+    "n_per_class_per_file": "variable",
+    "n_train": 6436,
+    "n_test": 1609
+  },
+  "param_grid": {
+    "n_estimators": [
+      100,
+      200
+    ],
+    "max_depth": [
+      3,
+      5
+    ],
+    "learning_rate": [
+      0.05,
+      0.1
+    ],
+    "subsample": [
+      0.8,
+      1.0
+    ]
+  },
+  "cv_folds": 3,
+  "stage1": {
+    "best_params": {
+      "learning_rate": 0.1,
+      "max_depth": 5,
+      "n_estimators": 200,
+      "subsample": 0.8
+    },
+    "best_balanced_accuracy_cv": 0.995485,
+    "balanced_accuracy_test": 0.996896
+  },
+  "stage2": {
+    "best_params": {
+      "learning_rate": 0.05,
+      "max_depth": 3,
+      "n_estimators": 100,
+      "subsample": 1.0
+    },
+    "best_balanced_accuracy_cv": 0.550326,
+    "balanced_accuracy_test": 0.538353
+  }
+}

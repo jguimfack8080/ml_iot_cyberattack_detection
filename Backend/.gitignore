@@ -19,9 +19,10 @@ models_artifacts/*.pkl
 models_artifacts/*.joblib
 models_artifacts/*.json
 
-# Results (generated, not source)
-results/figures/
-results/metrics/
+# Results
+results/figures/        # PNG/graphiques lourds (regenerables)
+results/logs/           # Logs d'entrainement (bruyants, regenerables)
+# results/metrics/ est versionne -- JSON de resultats importants pour la tracabilite
 
 # Data (dataset not committed)
 data/raw/
