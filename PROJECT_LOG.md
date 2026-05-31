@@ -8,6 +8,50 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-05-31 (h) -- Final Review complet + 3 correctifs supplementaires (branch Issue #13)
+
+- Datum: 2026-05-31
+- Aenderung: Final review 100% safe sur branch fix/paper-review-vollstaendig.
+  3 correctifs supplementaires apres relecture profonde.
+- Betroffene Dateien:
+  - paper/jguimfackjeuna-main.tex : abstractname force a "Abstract" (babel override)
+  - paper/jguimfackjeuna-discussion.tex :
+    § 5.1 : hosseini2025imbalance retire du Grid-Search-Satz (fausse attribution)
+    § 5.3 : redondance BA-Zahlen supprimee, Pipeline B ajoute, ref tab:ergebnisse
+  - paper/Done.md, TO-DO.md : session 12 finalisee
+  - PROJECT_LOG.md : cet entree
+- Technische Auswirkungen:
+  - Abstract s'affiche "Abstract" (non "Zusammenfassung")
+  - 0 fausse citation, 0 redondance en §5.3
+  - Compilation : 9 pages, 0 erreur, 0 reference indefinie (WSL pdflatex)
+- Begruendung:
+  - babel[ngerman] ecrase \abstractname -> "Zusammenfassung" : non voulu pour USENIX
+  - hosseini2025imbalance ne traite pas de la generalisation Grid-Search (anti-hallucination)
+  - §5.3 repetait les memes chiffres BA que §5.1 (redondance detectee au review final)
+
+### 2026-05-31 (g) -- Branche fix/paper-review-vollstaendig : Issue #13 corrections paper
+
+- Datum: 2026-05-31
+- Aenderung: 3 Korrekturen auf Branche fix/paper-review-vollstaendig (Issue #13).
+- Betroffene Dateien:
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-introduction.tex :
+    Absatz Forschungsfragen eingefuegt (Hauptfrage + TF1-3 explizit)
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-evaluation.tex :
+    \cite{hosseini2025imbalance} zu Klassengewichtungs-Satz hinzugefuegt
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-discussion.tex :
+    Mapping Faithfulness/Stability/Comprehensibility explizit eingefuegt
+  - paper-usenix-template-jguimfackjeuna/Done.md, TO-DO.md : Session 12
+  - PROJECT_LOG.md : dieser Eintrag
+- Technische Auswirkungen:
+  - Alle 5 Forschungsfragen der Rahmenfrage vollstaendig oder explizit adressiert
+  - 0 neue Quellen ausserhalb der 10 BibTeX-Eintraege
+  - Seitenzahl nach Kompilierung zu verifizieren (Ziel: max 10)
+- Begruendung:
+  - Review-Protokoll (Session 11) identifizierte 3 mittlere Probleme
+  - Explizite Forschungsfragen in der Einleitung sind akademischer Standard
+  - Rahmenfrage erfordert explizite Mapping der XAI-Kriterien
+  - Klassengewichtung braucht Literaturstutze (Hosseini et al. 2025)
+
 ### 2026-05-31 (f) -- Review anti-hallucination + correction 2 erreurs critiques paper
 
 - Datum: 2026-05-31

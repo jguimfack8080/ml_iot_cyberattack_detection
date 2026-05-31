@@ -230,3 +230,52 @@ Issue GitHub #3 fermee avec resultat reel.
 - 0 Halluzination, 0 interne Inkonsistenz, 0 falscher Zahlenwert
 - Alle Tabellenzeilen verifikation-positiv gegen Backend-JSON
 - paper : 9 pages, 0 Gedankenstrich, 10/10 sources
+
+---
+
+### 2026-05-31 -- Session 12 : Branche fix/paper-review-vollstaendig -- Issue #13
+
+**Branche :** fix/paper-review-vollstaendig (issue GitHub #13)
+
+**3 corrections implementees :**
+
+1. jguimfackjeuna-introduction.tex :
+   Absatz "Forschungsfragen" eingefuegt (vor "Struktur der Arbeit")
+   Hauptforschungsfrage + Teilfragen (1-3) explizit formuliert
+   Zitation \cite{neto2023ciciot2023} fuer Teilfrage 3 (Angriffssignaturen)
+
+2. jguimfackjeuna-evaluation.tex :
+   Klassengewichtungs-Satz erhaelt \cite{hosseini2025imbalance}
+   Begruendet die Notwendigkeit von Klassenungleichgewicht-Gegenmassnahmen
+
+3. jguimfackjeuna-discussion.tex (Abschnitt 5.2) :
+   Satz eingefuegt : Mapping Faithfulness=Fidelitaet, Stability=Konsistenz,
+   Comprehensibility=semantische Validierung (ref. hermosilla2025xai_forensic)
+   Schliesst die Luecke zur expliziten Rahmenfrage-Deckung
+
+**Zusaetzliche Korrekturen nach finalem Review (Session 12 komplett) :**
+
+4. jguimfackjeuna-main.tex :
+   \addto\captionsngerman{\renewcommand{\abstractname}{Abstract}}
+   Behebt : babel[ngerman] benennte den Abstract "Zusammenfassung"
+
+5. jguimfackjeuna-discussion.tex (§5.1) :
+   \cite{hosseini2025imbalance} aus Grid-Search-Satz entfernt
+   (Hosseini behandelt Klassenungleichgewicht, nicht Grid-Search-Generalisierung)
+
+6. jguimfackjeuna-discussion.tex (§5.3 Einschraenkungen) :
+   Redundanz behoben : BA-Zahlen nicht mehr wiederholt
+   Beide Pipelines erwaehnt (A und B)
+   Tabellen-Querverweis \ref{tab:ergebnisse} statt Sektions-Querverweis
+
+**Kompilierung (build.sh WSL) :**
+- 9 Seiten ✅ (Limit: 10)
+- 0 Fehler, 0 undefined references, 0 undefined citations
+- Underfull/Overfull-Warnings : typographisch, nicht blockierend (USENIX 2-Spalten, Deutsch)
+- "Abstract" korrekt angezeigt (nicht mehr "Zusammenfassung")
+
+**Status final (branch fix/paper-review-vollstaendig) :**
+- Alle 5 Forschungsfragen vollstaendig und explizit adressiert
+- 0 Halluzination, 0 falsche Zitation, 0 Redundanz in Kernaussagen
+- Alle 10 BibTeX-Quellen korrekt und konsistent verwendet
+- Paper kompiliert fehlerfrei : 9 Seiten, Abstract korrekt
