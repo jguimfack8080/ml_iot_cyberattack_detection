@@ -173,3 +173,42 @@ Pipeline B est meilleur ET plus rapide.
 
 **Prochaine étape :** Grid Search (n_estimators, max_depth, lr, subsample) pour améliorer
 Stufe 2 BA (cible ≥ 0.85, Raturi et al. 2026 rapportent 0.952 avec optimisation).
+
+---
+
+### 2026-05-31 -- Session 7+8 : Grid Search + Reentrainement + Evaluation + SHAP + Paper
+
+**Grid Search (Session 7) -- resultats sur sous-ensemble (8 045 lignes) :**
+
+| Pipeline | Stufe | Best HP | BA (test subset) |
+|----------|-------|---------|-----------------|
+| A (PCA) | Stufe 1 | lr=0.1, depth=5, n=200, sub=0.8 | 0.9969 |
+| A (PCA) | Stufe 2 | lr=0.05, depth=3, n=100, sub=1.0 | 0.5384 |
+| B (39f) | Stufe 1 | lr=0.05, depth=5, n=100, sub=1.0 | 0.9994 |
+| B (39f) | Stufe 2 | lr=0.05, depth=3, n=200, sub=0.8 | 0.6479 |
+
+**Reentrainement Pipeline A best HP -- dataset complet (Session 8) :**
+
+| Pipeline | Stufe 1 BA | Stufe 2 BA | F1-1 | F1-2 | Duree |
+|----------|-----------|-----------|------|------|-------|
+| A best HP | **0.9985** | **0.5364** | 0.9985 | 0.5644 | 3265s |
+
+Observation cle : HP optimises sur sous-ensemble (8045 lignes) ne generalisent pas mieux
+sur le dataset complet (BA2 retrain = 0.5364 < Standard HP 0.5480).
+
+**Reentrainement Pipeline B best HP -- en cours (2026-05-31 ~09:26)**
+Resultats a documenter quand disponibles.
+
+**Backend Session 8 -- modules implementes :**
+- scripts/evaluate_and_explain.py : charge modeles disk, evaluation + confusion matrix + SHAP
+- scripts/extract_test_data.py : reconstruit test_data .npz depuis preprocesseurs
+- scripts/update_paper_results.py : copie figures + affiche SHAP top-5 pour paper
+- docs/architecture_decision_records.md : 7 ADRs documentes
+- docs/label_mapping.md : tableau complet 33 labels
+- 111 tests, 97% coverage (test_explainability, test_logger, test_main)
+- SHAP Stage 2 : PermutationExplainer (ADR-005, TreeExplainer limite multiclass)
+
+**Paper Session 8 -- sections finalisees :**
+- abstract, evaluation, discussion, conclusion, methodik : essentiellement complets
+- 6 violations Gedankenstrich corrigees dans les .tex
+- Figures : placeholders LaTeX crees, a remplacer apres evaluate_and_explain.py
