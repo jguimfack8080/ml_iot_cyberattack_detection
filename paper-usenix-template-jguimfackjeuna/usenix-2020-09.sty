@@ -25,7 +25,15 @@
 \usepackage[utf8]{inputenc}
 \usepackage{pslatex}
 % appearance
-\usepackage[kerning,spacing]{microtype} % more compact and arguably nicer
+% microtype: the "kerning" and "spacing" features only work with pdftex. Under
+% lualatex/xelatex they raise a fatal error, so we enable them conditionally and
+% fall back to microtype defaults (protrusion) for engine portability.
+\usepackage{iftex}
+\ifpdftex
+  \usepackage[kerning,spacing]{microtype} % more compact and arguably nicer
+\else
+  \usepackage{microtype}
+\fi
 % Uncomment the following line if you want the columns of the last page 
 % equal in size. But note that doing so may cause issues with some 
 % document-generating tools.
