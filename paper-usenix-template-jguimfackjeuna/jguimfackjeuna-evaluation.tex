@@ -252,19 +252,25 @@ Fuer die drei bis fuenf am staerksten fehlklassifizierten Instanzen pro Pipeline
 Waterfall-Plot generiert, der zeigt, welche Features die Falschklassifikation verursachen.
 Diese lokale Analyse ergaenzt die globale Perspektive um individuelle Fehlermuster.
 
-Abbildung~\ref{fig:shap_global_b} zeigt die globale SHAP-Feature-Importance fuer
-Stufe~2 Pipeline~B nach dem Reentrainement.
+Abbildung~\ref{fig:shap_global_a} zeigt die globale \shap{}-Feature-Importance fuer
+Stufe~2, Pipeline~A.
+Die dominanten Hauptkomponenten (PC2, PC1, PC7, PC6) illustrieren das
+Interpretierbarkeits-Problem der \pca{}: kein Feature traegt einen semantisch
+verstaendlichen Namen.
+Abbildung~\ref{fig:shap_global_b} fuer Pipeline~B (Originalmerkmale) wird nach Abschluss
+des Reentrainements ergaenzt.
 
-% SHAP Global Importance Bar Chart Stufe 2 Pipeline B (generiert durch evaluate_and_explain.py)
-% Datei: Backend/results/figures/shap_global_stage2_pipelineB.png
-% Vor Buildlualatex: cp Backend/results/figures/shap_global_stage2_pipelineB.png paper-usenix-template-jguimfackjeuna/figures/
+% SHAP Global Importance -- Pipeline A (verfuegbar)
 \begin{figure}[h]
 \centering
-%\includegraphics[width=\columnwidth]{shap_global_stage2_pipelineB}
-\fbox{\parbox{0.9\columnwidth}{\centering\small SHAP Global Feature Importance\\
-Stufe~2 Pipeline~B (39 Originalmerkmale)\\
-\textit{(Abbildung wird nach Reentrainement eingefuegt)}}}
-\caption{Globale \shap{}-Feature-Importance fuer Stufe~2, Pipeline~B:
-Betragsmittelwert der \shap{}-Werte pro Feature ueber alle Testinstanzen und Klassen.}
-\label{fig:shap_global_b}
+\includegraphics[width=\columnwidth]{shap_global_stage2_pipelineA}
+\caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~A (PCA).
+PC-Komponenten tragen keine semantische Bedeutung.}
+\label{fig:shap_global_a}
 \end{figure}
+
+% SHAP Global Importance -- Pipeline B (nach Reentrainement einfuegen)
+% \begin{figure}[h]\centering
+% \includegraphics[width=\columnwidth]{shap_global_stage2_pipelineB}
+% \caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~B.}\label{fig:shap_global_b}
+% \end{figure}
