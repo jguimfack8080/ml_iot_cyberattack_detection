@@ -53,9 +53,10 @@ Die Ablation Study erbringt den qualitativen Nachweis: Pipeline~A-Erklaerungen n
 PC1, PC2, \ldots als wichtigste Features, Pipeline~B benennt konkrete Netzwerkmerkmale,
 die mit bekannten Angriffssignaturen vergleichbar sind.
 
-Die semantische Validierung bestaetigt die Erklaerungsqualitaet teilweise: Das Merkmal
-\texttt{SSH} erscheint in den Top-5-Features der Brute-Force-Klasse, was der bekannten
-Signatur von Dictionary-Angriffen auf SSH-Dienste entspricht~\cite{neto2023ciciot2023}.
+Die semantische Validierung bestaetigt die Erklaerungsqualitaet teilweise: Die TCP-Flags
+\texttt{rst\_flag\_number} und \texttt{syn\_flag\_number} erscheinen in den Top-5-Features
+von Reconnaissance und Mirai, was den SYN-basierten Scan- und Flood-Signaturen
+entspricht~\cite{neto2023ciciot2023}.
 Demgegenueber wird Spoofing nicht primaer durch \texttt{ARP} oder \texttt{ICMP} erklaert,
 sondern durch aggregierte Paketstatistiken, was auf Korrelationsartefakte im Datensatz
 hindeutet und einer vertieften Untersuchung beduerfte.

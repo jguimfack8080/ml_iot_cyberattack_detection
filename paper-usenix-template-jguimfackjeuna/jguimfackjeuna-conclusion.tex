@@ -9,8 +9,12 @@ Die Ablation Study liefert ein klar messbares Ergebnis: \pca{} reduziert die \ba
 Stufe~2 um 8{,}21~Prozentpunkte (Pipeline~B: 0{,}6301 gegenueber Pipeline~A: 0{,}5480
 mit Standardparametern).
 Gleichzeitig trainiert Pipeline~B ohne \pca{} um 583~Sekunden schneller.
-Die Grid-Search-Optimierung verbessert die \ba{} von Stufe~2 in Pipeline~B um weitere
-1{,}78~Prozentpunkte auf 0{,}6479 (auf einem Teilmengedatensatz von 8.045~Instanzen).
+Die wirksamste Einzelmassnahme gegen das Klassenungleichgewicht ist die Klassengewichtung
+(\texttt{sample\_weight} balanced) in Stufe~2: Sie hebt die \ba{} von Pipeline~B von
+0{,}6285 auf 0{,}7261~($+$9{,}76~Prozentpunkte) und verbessert den Recall der seltenen
+Klassen Brute-Force und Web-based um mehr als das Doppelte.
+Die Grid-Search-Optimierung allein bringt dagegen keinen Gewinn auf dem vollstaendigen
+Datensatz.
 Diese Ergebnisse bestaetigen die Ausgangshypothese: \pca{} beeintraechtigt die
 Mehrklassenklassifikation messbar und gleichzeitig die semantische Interpretierbarkeit
 der \shap{}-Erklaerungen, da Hauptkomponenten keine direkte Entsprechung zu
