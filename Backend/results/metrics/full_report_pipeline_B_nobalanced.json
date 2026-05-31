@@ -26,20 +26,20 @@
     "stage": 2,
     "pipeline": "B",
     "n_test_instances": 69773,
-    "accuracy": 0.753443,
-    "balanced_accuracy": 0.726134,
-    "f1_macro": 0.656988,
+    "accuracy": 0.823542,
+    "balanced_accuracy": 0.628517,
+    "f1_macro": 0.665237,
     "per_class": {
       "Benign": {
-        "precision": 0.464063,
-        "recall": 0.709206,
-        "f1": 0.561025,
+        "precision": 0.605283,
+        "recall": 0.516508,
+        "f1": 0.557383,
         "support": 6300
       },
       "Brute-Force": {
-        "precision": 0.287364,
-        "recall": 0.645767,
-        "f1": 0.397737,
+        "precision": 0.832036,
+        "recall": 0.298722,
+        "f1": 0.439612,
         "support": 2504
       },
       "Mirai": {
@@ -49,21 +49,21 @@
         "support": 18900
       },
       "Reconnaissance": {
-        "precision": 0.897393,
-        "recall": 0.570956,
-        "f1": 0.697888,
+        "precision": 0.725485,
+        "recall": 0.906784,
+        "f1": 0.806066,
         "support": 25382
       },
       "Spoofing": {
-        "precision": 0.928249,
-        "recall": 0.852986,
-        "f1": 0.889027,
+        "precision": 0.911303,
+        "recall": 0.856813,
+        "f1": 0.883218,
         "support": 12543
       },
       "Web-based": {
-        "precision": 0.301599,
-        "recall": 0.577944,
-        "f1": 0.396359,
+        "precision": 0.739332,
+        "recall": 0.192326,
+        "f1": 0.305247,
         "support": 4144
       }
     }
@@ -76,9 +76,9 @@
       "gap": 9.3e-05
     },
     "stage2": {
-      "accuracy": 0.753443,
-      "balanced_accuracy": 0.726134,
-      "gap": 0.027309
+      "accuracy": 0.823542,
+      "balanced_accuracy": 0.628517,
+      "gap": 0.195025
     }
   }
 }
