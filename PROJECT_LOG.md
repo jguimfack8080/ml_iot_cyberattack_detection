@@ -8,6 +8,28 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-05-31 (e) -- Decision Issue #3 : BA=0.7261 definitif + cloture documentation
+
+- Datum: 2026-05-31
+- Aenderung: Decision academique apres brainstorming : BA=0.7261 (Pipeline B balanced)
+  acceptee comme resultat definitif. Cloture Issue #3. Documentation completement synchronisee.
+- Betroffene Dateien:
+  - Backend/Done.md : Session 10 ajoutee (tableau recapitulatif, raisonnement decision)
+  - Backend/TO-DO.md : Issue #3 marquee fermee, issues #9-12 confirmees fermees
+  - paper-usenix-template-jguimfackjeuna/Done.md : Session 10 ajoutee
+  - paper-usenix-template-jguimfackjeuna/TO-DO.md : 4 items EN ATTENTE -> FAIT, 2 items P1 marques done
+  - PROJECT_LOG.md : cette entree
+- Technische Auswirkungen:
+  - Aucune modification du code ou des modeles
+  - Documentation completement synchronisee avec l'etat reel du projet
+  - Tous les tickets Backend actionnables fermes (#3, #9, #10, #11, #12)
+- Begruendung:
+  - Brainstorming sur SMOTE, poids manuels, Grid Search complet : rendements decroissants,
+    risque data leakage SMOTE, Hosseini et al. (2025) documentent les limites oversampling
+    sur donnees reseau, Grid Search complet ~100h non realiste avant deadlines
+  - BA=0.7261 bien discute dans le paper est une contribution scientifique honnete et solide
+  - Discussion.tex documente deja les limites et offene Forschungsfragen
+
 ### 2026-05-31 (d) -- Klassengewichtung (sample_weight balanced) + nettoyage git
 
 - Datum: 2026-05-31

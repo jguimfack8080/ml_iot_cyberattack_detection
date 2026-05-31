@@ -174,3 +174,20 @@ Jordan Jeuna seul auteur/committer.
 
 **Honnetete scientifique :** BA-Ziel 0.85 (Raturi et al. 0.952) non atteint (0.7261),
 mais ecart fortement reduit et documenté transparemment dans evaluation + discussion.
+
+---
+
+### 2026-05-31 -- Session 10 : Aucune modification paper -- Decision Backend Issue #3
+
+Aucune modification des fichiers .tex dans cette session.
+
+**Decision Backend documentee ici pour reference :**
+BA=0.7261 (Pipeline B balanced) accepte comme resultat definitif par l'etudiant.
+Brainstorming conduit : SMOTE, poids manuels, Grid Search complet analyses et ecartes.
+Le paper documente deja honnettement ce resultat dans evaluation.tex (tab:ergebnisse,
+tab:perclass_b) et discussion.tex (Einschraenkungen, Offene Forschungsfragen).
+Issue GitHub #3 fermee avec resultat reel.
+
+**Status paper inchange :**
+- 9 pages, 0 Gedankenstrich dans le contenu, 10/10 sources, 0 reference non resolue
+- Tickets paper #4 (Kernkapitel) et #5 (Reviewversion) : fermes depuis Session 9

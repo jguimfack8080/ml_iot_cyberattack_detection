@@ -1,5 +1,5 @@
 # TO-DO.md -- Taches restantes sur le Paper
-## Derniere mise a jour : 2026-05-31 (Session 8)
+## Derniere mise a jour : 2026-05-31 (Session 10)
 
 ---
 
@@ -10,9 +10,8 @@
 [x] Premiers resultats experimentaux dans evaluation.tex (BA Pipeline A + B)
 [x] Grid Search termine (Backend) -- resultats dans best_params_A.json + best_params_B.json
 [x] Reentrainement Pipeline A avec best HP (BA1=0.9985 BA2=0.5364) -- 2026-05-31
-[ ] Reentrainement Pipeline B avec best HP -- en cours (fin ~09:40 le 2026-05-31)
-[ ] SHAP analyse complete (Backend) -- requis pour finaliser section SHAP dans evaluation.tex
-    Prerequis : reentrainement Pipeline B complet + evaluate_and_explain.py execute
+[x] Reentrainement Pipeline B avec best HP (COMPLETE 2026-05-31 : BA1=0.9992 BA2=0.6285)
+[x] SHAP analyse complete (Backend, Session 8 : 30 PNG + JSON generes, update_paper_results.py execute)
 
 ---
 
@@ -75,10 +74,10 @@
 |---|---|---|
 | Grid Search termine | evaluation.tex tableaux | [x] FAIT |
 | Reentrainement Pipeline A | evaluation.tex tab:ergebnisse Best HP | [x] FAIT |
-| Reentrainement Pipeline B | evaluation.tex tab:ergebnisse Best HP | [ ] EN ATTENTE |
-| SHAP global feature importance | evaluation.tex tab:shap_top5 | [ ] EN ATTENTE |
-| Figures confusion matrix PNG | evaluation.tex \includegraphics | [ ] EN ATTENTE |
-| Figures SHAP PNG | evaluation.tex \includegraphics | [ ] EN ATTENTE |
+| Reentrainement Pipeline B | evaluation.tex tab:ergebnisse Best HP | [x] FAIT (Session 8) |
+| SHAP global feature importance | evaluation.tex tab:shap_top5 | [x] FAIT (Session 9bis) |
+| Figures confusion matrix PNG | evaluation.tex \includegraphics | [x] FAIT (Session 8) |
+| Figures SHAP PNG | evaluation.tex \includegraphics | [x] FAIT (Session 8) |
 | Divergence 39 vs 46 features | methodik.tex | [x] FAIT |
 | BACKDOOR_MALWARE droppe | methodik.tex | [x] FAIT |
 | PermutationExplainer ADR-005 | methodik.tex | [x] FAIT |

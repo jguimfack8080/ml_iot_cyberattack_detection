@@ -998,3 +998,43 @@ tab:shap_top5 features balanced, conclusion + discussion adaptees. Compile : 9 p
 Figure confusion matrix Pipeline A retiree pour marge.
 
 **Git :** historique nettoye (Claude retire, force-push). Jordan Jeuna seul auteur.
+
+---
+
+### 2026-05-31 -- Session 10 : Decision Issue #3 -- Acceptance BA=0.7261 comme resultat definitif
+
+**Objectif :** Decider si le resultat BA=0.7261 (Pipeline B balanced) est acceptable comme
+resultat final, ou si des techniques additionnelles doivent etre investies.
+
+**Brainstorming mene -- Pour et Contre :**
+
+Arguments pour acceptance :
+- BA=0.7261 est le resultat reel, honnete, non falsifie sur 838 602 instances CICIoT2023
+- Desequilibre intrinseque dataset : Mirai 18 900 vs. Brute-Force 2 504 vs. Web-based 4 144
+- Deux techniques standards appliquees et documentees : Grid Search (+0.018) + Klassengewichtung (+0.0976)
+- Hosseini et al. (2025) (source #10) documentent les limites de l'oversampling sur donnees reseau :
+  echantillons SMOTE synthetiques ne correspondent pas a de vrais patterns d'attaque reseau
+- Grid Search complet sur dataset entier : estimation ~100h de calcul (non realiste avant deadlines)
+- Tradeoff deja observe avec balanced : Brute-Force +34.7 pts recall, Reconnaissance -33.6 pts
+  Augmenter les poids aggraverait ce tradeoff sans garantie de gain net sur la BA
+
+Arguments contre investissement supplementaire :
+- BA-Ziel 0.85 non atteint, ecart restant de 0.1239
+- SMOTE : risque de data leakage si applique apres split ; rendements decroissants previsibles
+- Poids manuels : speculatifs, non justifies par la litterature pour ce dataset
+
+**Decision finale de l'etudiant :** Accepter BA=0.7261 comme resultat definitif.
+Discuter honnettement dans le paper les limites (section Diskussion, Hosseini et al. 2025).
+
+**Etat final du projet Backend :**
+
+| Pipeline | Stufe 1 BA | Stufe 2 BA | F1-macro Stufe 2 | Configuration |
+|----------|-----------|-----------|-----------------|---------------|
+| A (PCA)  | 0.9985    | 0.5364    | 0.5644          | Best HP retrain |
+| B (39f)  | 0.9992    | 0.6285    | 0.6652          | Best HP retrain |
+| B (39f)  | 0.9992    | **0.7261**| 0.6570          | Balanced (definitif) |
+
+**Actions de cloture :**
+- Issue GitHub #3 fermee avec resultat reel documente (BA=0.7261, objectif 0.85 non atteint)
+- Aucune modification du code ou des modeles
+- Backend, Paper, PROJECT_LOG.md mis a jour

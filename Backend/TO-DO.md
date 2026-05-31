@@ -1,5 +1,5 @@
 # TO-DO.md — Backlog Complet du Projet Backend ML IoT IDS
-## Derniere mise a jour : 2026-05-31 (Session 8)
+## Derniere mise a jour : 2026-05-31 (Session 10)
 
 ---
 
@@ -137,6 +137,13 @@
     → Recall classes rares : Brute-Force 0.299->0.646, Web-based 0.192->0.578
     → Amelioration la plus efficace contre le desequilibre (vs Grid Search +0.018)
     → BA-Ziel 0.85 toujours non atteint mais ecart fortement reduit (documenté)
+[x] Decision Issue #3 (Session 10, 2026-05-31) : BA=0.7261 accepte comme resultat definitif
+    → Brainstorming : options SMOTE, poids manuels, Grid Search complet analysees
+    → SMOTE : Hosseini et al. (2025) documentent limites oversampling donnees reseau
+    → Grid Search complet : ~100h calcul, non realiste avant deadlines
+    → Tradeoff balanced deja observe (Reconnaissance -33.6 pts) -- augmenter aggraverait
+    → Decision etudiant : honneteté scientifique, 0.7261 defendable, discuter dans Diskussion
+    → Issue #3 fermee 2026-05-31 avec resultat reel documente
 
 ---
 
@@ -197,7 +204,8 @@
     → tab:shap_top5 rempli avec top-5 features reelles Pipeline B
     → fig:cm_stage2_a, fig:cm_stage2_b, fig:shap_global_a, fig:shap_global_b actives
     → tab:perclass_a, tab:perclass_b avec donnees reelles
-[ ] Fermer issues GitHub #9, #10, #11, #12 (pret a fermer -- commentes)
+[x] Fermer issues GitHub #9, #10, #11, #12 (fermees -- Session 8/9)
+[x] Fermer issue GitHub #3 (fermee Session 10, BA=0.7261 resultat definitif accepte)
 
 ---
 
