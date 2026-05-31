@@ -54,6 +54,7 @@ class HierarchicalClassifier:
         X: np.ndarray,
         y_binary: np.ndarray,
         y_category: np.ndarray,
+        balanced_stage2: bool = False,
     ) -> "HierarchicalClassifier":
         """
         Fit Stage 1 on all data, Stage 2 on true non-DoS/DDoS instances.
@@ -62,6 +63,11 @@ class HierarchicalClassifier:
             X: Feature matrix (preprocessed), shape (n_samples, n_features).
             y_binary: Binary labels — 1 for DoS/DDoS, 0 for non-DoS (Stage 1 target).
             y_category: Category string labels for Stage 2 non-DoS instances.
+            balanced_stage2: If True, weight Stage 2 training samples inversely to class
+                frequency (compute_sample_weight 'balanced'). Improves recall on rare
+                classes (Web-based, Brute-Force) at the cost of frequent classes.
+                GradientBoostingClassifier has no class_weight parameter, so sample_weight
+                is the supported mechanism.
 
         Returns:
             self (fitted).
@@ -95,11 +101,17 @@ class HierarchicalClassifier:
         X_stage2 = X[non_dos_mask]
         y_stage2 = y_category[non_dos_mask]
         logger.info(
-            "Fitting Stage 2 on %d non-DoS instances (%d unique categories)...",
+            "Fitting Stage 2 on %d non-DoS instances (%d unique categories)%s...",
             len(X_stage2),
             len(np.unique(y_stage2)),
+            " with balanced sample weights" if balanced_stage2 else "",
         )
-        self.stage2.fit(X_stage2, y_stage2)
+        if balanced_stage2:
+            from sklearn.utils.class_weight import compute_sample_weight
+            sample_weight = compute_sample_weight(class_weight="balanced", y=y_stage2)
+            self.stage2.fit(X_stage2, y_stage2, sample_weight=sample_weight)
+        else:
+            self.stage2.fit(X_stage2, y_stage2)
 
         self._is_fitted = True
         logger.info("HierarchicalClassifier fitted successfully.")

@@ -72,6 +72,13 @@ def parse_args() -> argparse.Namespace:
             "et best_params_B.json dans ce dossier (produit par grid_search.py)"
         ),
     )
+    p.add_argument(
+        "--balanced-stage2", action="store_true",
+        help=(
+            "Ponderer les instances de Stufe 2 inversement a la frequence des classes "
+            "(compute_sample_weight 'balanced'). Ameliore le recall des classes rares."
+        ),
+    )
     return p.parse_args()
 
 
@@ -172,6 +179,7 @@ def main() -> int:
         max_files=args.max_files,
         stage1_config=stage1_cfg_a,
         stage2_config=stage2_cfg_a,
+        balanced_stage2=args.balanced_stage2,
     )
     config_b = PipelineConfig(
         data_dir=args.data_dir,
@@ -179,6 +187,7 @@ def main() -> int:
         max_files=args.max_files,
         stage1_config=stage1_cfg_b,
         stage2_config=stage2_cfg_b,
+        balanced_stage2=args.balanced_stage2,
     )
 
     results = []

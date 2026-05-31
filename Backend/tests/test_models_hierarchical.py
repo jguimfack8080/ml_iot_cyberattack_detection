@@ -58,6 +58,18 @@ class TestHierarchicalClassifier:
         clf.fit(X_train, y_bin_train, y_cat_train)
         assert clf.is_fitted
 
+    def test_fit_balanced_stage2_sets_is_fitted(self, preprocessed_arrays) -> None:
+        X_train, X_test, y_bin_train, _, y_cat_train, _ = preprocessed_arrays
+        clf = HierarchicalClassifier(
+            stage1=build_stage1_classifier(),
+            stage2=build_stage2_classifier(),
+        )
+        clf.fit(X_train, y_bin_train, y_cat_train, balanced_stage2=True)
+        assert clf.is_fitted
+        # Predictions still valid after balanced training
+        preds = clf.predict(X_test)
+        assert len(preds) == len(X_test)
+
     def test_predict_returns_correct_length(self, fitted_hierarchical, preprocessed_arrays) -> None:
         _, X_test, *_ = preprocessed_arrays
         preds = fitted_hierarchical.predict(X_test)

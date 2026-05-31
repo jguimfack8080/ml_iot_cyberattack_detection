@@ -58,6 +58,7 @@ class PipelineConfig:
     stage2_config: Stage2Config | None = None
     n_pca_components: int = N_PCA_COMPONENTS
     max_files: int | None = None
+    balanced_stage2: bool = False
 
 
 @dataclass
@@ -174,7 +175,7 @@ def run_pipeline(
         stage1=build_stage1_classifier(config.stage1_config),
         stage2=build_stage2_classifier(config.stage2_config),
     )
-    clf.fit(X_train_prep, y_bin_train, y_cat_train)
+    clf.fit(X_train_prep, y_bin_train, y_cat_train, balanced_stage2=config.balanced_stage2)
 
     # ------------------------------------------------------------------
     # Step 7: Basic metrics (detailed metrics are P4 — evaluation module)
