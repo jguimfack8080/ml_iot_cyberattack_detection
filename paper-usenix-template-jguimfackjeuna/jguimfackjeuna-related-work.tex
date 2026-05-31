@@ -1,0 +1,115 @@
+\section{Related Work}\label{related_work}
+
+Die Erkennung von Cyberangriffen in \iot{}-Netzwerken mittels ML ist ein aktives und
+wachsendes Forschungsfeld.
+Die folgenden Abschnitte gliedern die zehn verwendeten Quellen in vier thematische Cluster:
+Datensaetze und Benchmarks, ML-basierte Ansaetze zur Angriffserkennung, Behandlung von
+Klassenungleichgewicht sowie Erklaerbarkeit von \ids{}-Modellen.
+
+\subsection{Datensaetze und Benchmarks fuer IoT-Sicherheit}
+
+Die empirische Forschung im Bereich \iot{}-Sicherheit ist grundlegend auf realistische und
+repraesentative Benchmarkdatensaetze angewiesen.
+Neto et al.\ \cite{neto2023ciciot2023} haben mit dem CICIoT2023-Datensatz einen umfassenden
+Benchmark entwickelt, der Netzwerkverkehr von 105 realen \iot{}-Geraeten unter 33
+verschiedenen Angriffsbedingungen enthaelt.
+Die Angriffe sind in sieben Kategorien organisiert: Distributed Denial of Service (DDoS),
+Denial of Service (DoS), Mirai, Reconnaissance, Spoofing, Brute-Force und Web-based Attacks.
+Ein zentrales Merkmal des Datensatzes ist, dass die Angriffe ausschliesslich von \iot{}-Geraeten
+gegen andere \iot{}-Geraete ausgefuehrt wurden, was eine besonders realitaetsnahe Abbildung
+realer Bedrohungsszenarien ermoeglicht~\cite{neto2023ciciot2023}.
+Der CICIoT2023-Datensatz weist ein ausgepraegtes Klassenungleichgewicht auf, das bei der
+Modellbewertung methodische Herausforderungen mit sich bringt.
+
+\subsection{ML-basierte Ansaetze zur Angriffserkennung in IoT-Netzwerken}
+
+Hamedani et al.\ \cite{hamedani2025iotsurvey} liefern mit ihrer umfassenden
+Uebersichtsarbeit einen systematischen Ueberblick ueber ML-basierte Sicherheitsloesungen fuer
+\iot{}-Netzwerke aus den Jahren 2020 bis 2024.
+Die Autoren klassifizieren ML-Techniken nach ihrer spezifischen Anwendung in der
+\iot{}-Sicherheit und identifizieren offene Forschungsfragen, darunter insbesondere den Mangel
+an interpretierbaren Modellen fuer ressourcenbeschraenkte Umgebungen~\cite{hamedani2025iotsurvey}.
+Kikissagbe und Adda~\cite{kikissagbe2024review} ergaenzen diesen Ueberblick durch eine
+systematische Analyse von supervised, unsupervised und hybriden ML-Ansaetzen fuer \ids{} in
+\iot{}-Umgebungen.
+Ihre Arbeit zeigt, dass baumbasierte Ensemble-Methoden konsistent zu den
+leistungsstaerksten Ansaetzen gehoeren, gleichzeitig aber Fragen der Interpretierbarkeit
+und Ressourceneffizienz weitgehend unbeantwortet bleiben~\cite{kikissagbe2024review}.
+
+Auf dem CICIoT2023-Datensatz selbst haben Raturi et al.\ \cite{raturi2026exploratory} eine
+vergleichende Evaluation mehrerer ML-Algorithmen durchgefuehrt.
+Sie zeigen, dass baumbasierte Modelle und Ensemble-Methoden die hoechsten \ba{}-Werte
+erreichen, wobei \gb{} in der Mehrklassenklassifikation den besten Wert unter den getesteten
+Modellen erzielt~\cite{raturi2026exploratory}.
+Die Autoren fuehren einen zweistufigen hierarchischen Klassifikationsansatz ein, der das starke
+Klassenungleichgewicht des Datensatzes strukturell adressiert: In Stufe~1 wird zwischen
+DoS/DDoS-Verkehr und Nicht-DoS-Verkehr unterschieden, in Stufe~2 erfolgt die
+Mehrklassenklassifikation der verbleibenden Kategorien~\cite{raturi2026exploratory}.
+Almahaqeri et al.\ \cite{almahaqeri2026gradient} evaluieren ebenfalls \gb{} auf dem
+CICIoT2023-Datensatz und waehlen eine andere Strategie zur Behandlung des
+Klassenungleichgewichts, naemlich stratifiziertes Undersampling.
+Alharby~\cite{alharby2025ciciot} vergleicht auf demselben Datensatz mehrere ML-Modelle
+einschliesslich \gb{} und Decision Trees unter Einsatz von \pca{} als
+Dimensionsreduktionstechnik und dokumentiert zusaetzlich Trainings- und Vorhersagezeiten.
+
+\subsection{Behandlung von Klassenungleichgewicht in IDS-Datensaetzen}
+
+Das Klassenungleichgewicht stellt eine der zentralen methodischen Herausforderungen bei der
+Entwicklung ML-basierter \ids{} dar.
+Hosseini et al.\ \cite{hosseini2025imbalance} untersuchen systematisch die Auswirkungen
+verschiedener Grade von Klassenungleichgewicht auf die Leistung von ML-Algorithmen in
+\ids{}-Datensaetzen.
+Ihre Ergebnisse zeigen, dass die einfache Accuracy als Bewertungsmetrik bei unausgewogenen
+Datensaetzen zu systematisch verzerrten Urteilen fuehrt~\cite{hosseini2025imbalance}.
+Raturi et al.\ \cite{raturi2026exploratory} greifen diese Problematik auf und schlagen die \ba{}
+als fairere Bewertungsgrundlage vor.
+Sie belegen empirisch am Beispiel des Hidden Markov Models, dass ein Modell trotz eines
+Recall-Werts von 0{,}999 fuer DoS-Angriffe in der Mehrklassenklassifikation auf einen
+Recall-Wert von 0{,}13 einbrechen kann~\cite{raturi2026exploratory}.
+Almahaqeri et al.\ \cite{almahaqeri2026gradient} verfolgen einen alternativen Ansatz und setzen
+stratifiziertes Undersampling ein, um das Klassenungleichgewicht zu reduzieren, anstatt eine
+hierarchische Klassifikationsarchitektur zu verwenden.
+
+\subsection{Erklaerbarkeit von ML-basierten IDS}
+
+Der Einsatz von Methoden der erklaerbaren Kuenstlichen Intelligenz (XAI) in \ids{} ist ein
+juengeres, aber rasch wachsendes Forschungsfeld.
+Ogunseyi et al.\ \cite{ogunseyi2026xai_review} analysieren in einem PRISMA-basierten
+systematischen Review 129 peer-reviewte Studien aus den Jahren 2018 bis 2025 und stellen fest,
+dass \shap{} und Local Interpretable Model-agnostic Explanations (LIME) in 98~Prozent aller
+untersuchten XAI-IDS-Studien eingesetzt werden~\cite{ogunseyi2026xai_review}.
+Ein zentrales Ergebnis ihrer Analyse ist, dass die Integration von post-hoc-XAI-Methoden die
+Erkennungsgenauigkeit der zugrundeliegenden Modelle nicht beeintraechtigt~\cite{ogunseyi2026xai_review}.
+Mohale und Obagbuwa~\cite{mohale2025xai} evaluieren mehrere ML-Modelle, darunter Decision Trees
+und XGBoost, gemeinsam mit \shap{}, LIME und ELI5 auf einem \ids{}-Datensatz und zeigen, dass
+\shap{} die konsistentesten und zuverlaessigsten Erklaerungen liefert.
+Hermosilla et al.\ \cite{hermosilla2025xai_forensic} vergleichen \shap{} und LIME auf
+XGBoost- und TabNet-Modellen im Kontext der forensischen Intrusion Detection und fuehren drei
+quantitative Metriken zur Bewertung der Erklaerungsqualitaet ein: Fidelitaet, Konsistenz und
+Jaccard-Aehnlichkeit.
+Ihre Ergebnisse zeigen, dass \shap{} eine hoehere Fidelitaet und Konsistenz erzielt als
+LIME~\cite{hermosilla2025xai_forensic}.
+
+\subsection{Identifizierte Forschungsluecken und Positionierung}
+
+Die Analyse der bestehenden Literatur offenbart eine konsistente und direkt belegbare
+Forschungsluecke: Keine der identifizierten Studien vereint gleichzeitig alle drei folgenden
+Elemente auf dem CICIoT2023-Datensatz.
+Erstens die Verwendung der \ba{} als primaere Bewertungsmetrik.
+Zweitens die Integration von \shap{} als post-hoc-Erklaerungskomponente.
+Drittens eine systematische Ablation Study, die den Einfluss der \pca{}-Dimensionsreduktion
+auf Modellleistung und \shap{}-Feature-Importance quantifiziert.
+
+Raturi et al.\ \cite{raturi2026exploratory} verwenden zwar die \ba{} und den
+CICIoT2023-Datensatz, verzichten jedoch vollstaendig auf jede Form der
+Erklaerbarkeitsanalyse.
+Almahaqeri et al.\ \cite{almahaqeri2026gradient} und Alharby~\cite{alharby2025ciciot} arbeiten
+ebenfalls auf demselben Datensatz, integrieren aber weder \ba{} als primaere Metrik noch eine
+\shap{}-Komponente.
+Mohale und Obagbuwa~\cite{mohale2025xai} sowie Hermosilla et al.\ \cite{hermosilla2025xai_forensic}
+liefern fundierte \shap{}-Integrationen mit quantitativer Qualitaetsbewertung, arbeiten
+jedoch nicht auf dem CICIoT2023-Datensatz.
+
+Die vorliegende Arbeit schliesst diese Luecke, indem sie einen \gb{}-Klassifikator auf dem
+CICIoT2023-Datensatz mit \ba{} als primaerer Bewertungsmetrik und einer vollstaendigen
+\shap{}-Analyse auf beiden Klassifikationsstufen verbindet.

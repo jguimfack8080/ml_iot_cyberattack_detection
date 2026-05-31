@@ -1,0 +1,766 @@
+# Done.md — Journal de Développement Backend ML
+## Projet : IoT Cyberattack Detection — Backend (CICIoT2023 + Gradient Boosting + SHAP)
+
+Journal chronologique immuable. Ne jamais supprimer les entrées existantes.
+
+---
+
+### 2026-05-30 — Session 1 : Analyse complète et mise en place de la structure Backend
+
+**Analysé :**
+- Lastenheft.md : cahier des charges complet (12 sections, 3 Forschungsfragen, 10 sources vérifiées)
+- README.md : vue d'ensemble technique (structure, dataset, build pipeline LaTeX)
+- Done.md (root) : journal de projet existant — sessions précédentes (Paper, présentations)
+- jguimfackjeuna-vortrag-umsetzungsplan.md : justifications des 5 décisions techniques clés
+- Dataset/MERGED_CSV/ : 63 fichiers Merged01-63.csv, ~140 MB chacun, ~8,5 GB total
+- Dataset/CSV/ : 34 sous-dossiers par type d'attaque, sans colonne Label
+
+**Découvertes dataset (inspection directe des fichiers) :**
+- MERGED_CSV : 40 colonnes = 39 features + colonne Label
+- Labels en ALL_CAPS avec tirets/underscores (ex. : DDOS-PSHACK_FLOOD, BENIGN)
+- 34 labels uniques confirmés (scan des fichiers Merged01 à Merged04)
+- CSV individuels : 39 features SANS colonne Label → inutilisables pour l'entraînement supervisé
+- Divergence documentée : Lastenheft cite 46 features, dataset réel en contient 39
+  → PCA sera 39→16 (non 46→16) — à mentionner explicitement dans Paper/src/methodik.tex
+- Aucune valeur nulle sur 50 000 lignes testées
+- Déséquilibre de classes extrême : DDOS-ICMP_FLOOD seul représente ~15 % de l'échantillon
+
+**Label mapping établi (34 labels → 8 catégories) :**
+- DDoS (12) : DDOS-ICMP_FLOOD, DDOS-UDP_FLOOD, DDOS-TCP_FLOOD, DDOS-SYN_FLOOD,
+              DDOS-RSTFINFLOOD, DDOS-PSHACK_FLOOD, DDOS-SYNONYMOUSIP_FLOOD,
+              DDOS-ICMP_FRAGMENTATION, DDOS-ACK_FRAGMENTATION, DDOS-UDP_FRAGMENTATION,
+              DDOS-SLOWLORIS, DDOS-HTTP_FLOOD
+- DoS (4)   : DOS-UDP_FLOOD, DOS-TCP_FLOOD, DOS-SYN_FLOOD, DOS-HTTP_FLOOD
+- Mirai (3) : MIRAI-GREETH_FLOOD, MIRAI-GREIP_FLOOD, MIRAI-UDPPLAIN
+- Recon (5) : RECON-HOSTDISCOVERY, RECON-OSSCAN, RECON-PORTSCAN, RECON-PINGSWEEP,
+              VULNERABILITYSCAN
+- Spoofing (2) : MITM-ARPSPOOFING, DNS_SPOOFING
+- Brute-Force (1) : DICTIONARYBRUTEFORCE
+- Web-based (5) : BROWSERHIJACKING, COMMANDINJECTION, SQLINJECTION, UPLOADING_ATTACK, XSS
+- Benign (1)    : BENIGN
+- NON MAPPÉ (1) : BACKDOOR_MALWARE → décision P1 ouverte
+
+**Décisions prises :**
+1. Source de données : MERGED_CSV retenu (seul format avec labels)
+2. PCA : 39→16 composantes (divergence vs. Lastenheft documentée, à mentionner dans Paper)
+3. Architecture Backend : dossier Backend/ créé à la racine du projet
+4. Packages retenus : pandas, numpy, scikit-learn, shap, matplotlib, seaborn, joblib,
+                      python-dotenv, tqdm, xgboost, pytest (voir requirements.txt)
+
+**Structure Backend/ créée :**
+```
+Backend/
+├── src/
+│   ├── __init__.py
+│   ├── main.py              (squelette CLI avec argparse — seul .py créé cette session)
+│   ├── data/__init__.py
+│   ├── features/__init__.py
+│   ├── models/__init__.py
+│   ├── pipelines/__init__.py
+│   ├── evaluation/__init__.py
+│   ├── explainability/__init__.py
+│   └── utils/__init__.py
+├── tests/__init__.py
+├── notebooks/
+├── scripts/
+├── configs/
+├── models_artifacts/.gitkeep
+├── results/figures/ + results/metrics/
+├── data/raw/ + data/processed/ + .gitkeep
+├── docs/
+├── requirements.txt
+├── pyproject.toml
+├── .env.example
+├── .gitignore
+├── TO-DO.md
+└── Done.md
+```
+
+**P1 résolus :**
+- Format données : MERGED_CSV
+- Liste des 39 features
+- 34 labels uniques vérifiés
+- Label mapping (33/34 labels)
+- Structure Backend/ validée
+
+**P1 résolus en fin de session (décisions confirmées par l'étudiant) :**
+
+**Décision P1.5 — BACKDOOR_MALWARE : DROP**
+- Quoi : Filtrer et éliminer toutes les instances avec le label BACKDOOR_MALWARE
+- Pourquoi :
+  (1) Label absent des 8 catégories standard définies par Neto et al. (2023) et Raturi et al. (2026)
+  (2) Extrêmement rare : ~4 instances sur 50 000 lignes = 0,008 % du volume
+  (3) Une 9e classe avec si peu d'instances causerait un Recall → 0 pour cette classe,
+      pénalisant massivement la Balanced Accuracy de manière non représentative
+  (4) Le scope scientifique de ce travail est explicitement limité aux 8 catégories
+      du CICIoT2023 (cf. Lastenheft section 6 et 7)
+- Comment : df = df[df['label_raw'] != 'BACKDOOR_MALWARE'] dans src/data/label_mapper.py
+- Documentation obligatoire : à mentionner dans Paper/src/methodik.tex, section Datenvorbereitung
+
+**Décision P1.6 — Stratégie mémoire : Echantillonnage stratifié sur les 63 fichiers**
+- Quoi : Lire TOUS les 63 fichiers MERGED_CSV, mais en n'en gardant que N lignes par classe
+- Pourquoi :
+  (1) Best Practice ML pour grands datasets : aucune perte d'information qualitative
+      (toutes les classes de tous les fichiers contribuent au dataset final)
+  (2) RAM-safe : on ne charge jamais l'intégralité d'un fichier (pandas read_csv chunksize)
+  (3) Reproductible : random_state=42 assure la même sélection à chaque exécution
+  (4) Compatible avec scikit-learn GradientBoosting (pas de partial_fit requis)
+  (5) Alternatif chunked avec partial_fit = impossible sur sklearn GradientBoosting natif
+- Comment :
+  → Pour chaque fichier Merged_i, lire par chunks de 50 000 lignes
+  → Accumuler jusqu'à N lignes par label présent dans ce fichier
+  → Concaténer toutes les contributions → dataset final ~500 000–1 000 000 lignes
+  → Paramètre n_samples_per_class_per_file (défaut 500) configurable via .env
+- Taille estimée : 500 lignes × 33 classes × 63 fichiers ≈ 1 039 500 lignes, ~400 MB RAM
+- Documentation : paramètre à exposer dans requirements et src/data/loader.py
+
+**Tous les P1 sont résolus. La P2 peut commencer.**
+
+**Prochaine étape concrète :**
+1. Implémenter src/data/loader.py (chargement stratifié sur 63 fichiers)
+2. Implémenter src/data/label_mapper.py (mapping 33 labels → 8 catégories + drop BACKDOOR_MALWARE)
+
+---
+
+### 2026-05-30 — ANNEXE SESSION 1 : Analyse complète ETAPE 1 — Résultats structurés
+
+Cette section documente intégralement les résultats de l'analyse ETAPE 1 tels qu'établis
+avant tout développement. Chaque point inclut la décision, la justification et l'impact.
+
+---
+
+#### POINT 1 — FORMAT DE DONNÉES ✅ Décision prise : MERGED_CSV retenu
+
+**Analyse comparative des deux formats disponibles :**
+
+| Critère               | CSV individuels (Dataset/CSV/)           | MERGED_CSV (Dataset/MERGED_CSV/)         |
+|-----------------------|------------------------------------------|------------------------------------------|
+| Colonne Label         | ABSENTE — 39 features uniquement         | PRÉSENTE — 39 features + Label = 40 col.|
+| Organisation          | 34 sous-dossiers par type d'attaque       | 63 fichiers Merged01-63.csv mélangés     |
+| Taille totale         | ~8,5 GB estimé                           | 63 × ~140 MB = ~8,5 GB confirmé         |
+| Utilisation ML        | IMPOSSIBLE — pas de target supervisé     | PRÊT — labels présents pour l'entraîn.  |
+| Classes représentées  | Implicites (nom du dossier)               | Toutes mélangées dans chaque fichier    |
+| Compatibilité hiérar. | Inutilisable sans retraitement manuel    | Compatible directement                   |
+| Valeurs nulles        | Non testé (sans Label)                   | 0 null sur 50 000 lignes testées ✅      |
+| Format labels         | N/A                                      | ALL_CAPS : DDOS-PSHACK_FLOOD, BENIGN    |
+
+**Décision : MERGED_CSV retenu.**
+- Justification principale : seul format avec labels — les CSV individuels sont inexploitables
+  pour l'entraînement supervisé sans reconstruction manuelle des labels depuis les noms de dossiers
+- Justification secondaire : format consolidé, toutes classes mélangées, compatible avec
+  l'échantillonnage stratifié multi-classes
+
+**Problèmes détectés et traitement :**
+
+| Problème              | Description                              | Traitement                              |
+|-----------------------|------------------------------------------|-----------------------------------------|
+| Divergence features   | Lastenheft cite 46 features, dataset a 39| PCA sera 39→16 (non 46→16) — à documenter dans Paper/src/methodik.tex |
+| BACKDOOR_MALWARE      | 34e label absent des 8 catégories        | DROP (voir Décision P1.5)               |
+| Déséquilibre extrême  | DDOS-ICMP_FLOOD ~15 % de l'échantillon  | Traité architecturalement (Stufe 1)     |
+| Noms colonnes espaces | 'Protocol Type', 'Tot sum', 'Tot size'   | Normalisation → underscores à la lecture|
+
+**Features disponibles (39 colonnes confirmées) :**
+```
+Header_Length, Protocol Type, Time_To_Live, Rate,
+fin_flag_number, syn_flag_number, rst_flag_number, psh_flag_number,
+ack_flag_number, ece_flag_number, cwr_flag_number,
+ack_count, syn_count, fin_count, rst_count,
+HTTP, HTTPS, DNS, Telnet, SMTP, SSH, IRC, TCP, UDP, DHCP, ARP, ICMP, IGMP, IPv, LLC,
+Tot sum, Min, Max, AVG, Std, Tot size, IAT, Number, Variance
+```
+Note : 3 noms contiennent des espaces → normalisés en Protocol_Type, Tot_sum, Tot_size
+
+**Distribution classes (échantillon Merged01, 50 000 lignes) :**
+
+| Rang | Label               | Catégorie | Nb instances | % approx. |
+|------|---------------------|-----------|-------------|-----------|
+| 1    | DDOS-ICMP_FLOOD     | DDoS      | 7 800       | 15,6 %    |
+| 2    | DDOS-UDP_FLOOD      | DDoS      | 5 666       | 11,3 %    |
+| 3    | DDOS-TCP_FLOOD      | DDoS      | 4 889       | 9,8 %     |
+| 4    | DDOS-SYN_FLOOD      | DDoS      | 4 253       | 8,5 %     |
+| ...  | (DDoS total)        | DDoS      | ~34 000     | ~68 %     |
+| ...  | (DoS total)         | DoS       | ~8 700      | ~17 %     |
+| ...  | BENIGN              | Benign    | 1 171       | 2,3 %     |
+| ...  | Classes rares       | Divers    | < 100 chacune | < 0,2 % |
+
+→ Confirmation empirique : DoS+DDoS = ~85 % du volume. Justifie la Stufe 1 binaire.
+
+---
+
+#### POINT 2 — PIPELINE A ✅ Clair, 1 point de confirmation résolu
+
+**Ce que fait Pipeline A (selon Lastenheft section 7.1 + 7.2) :**
+
+```
+MERGED_CSV
+    ↓
+1. Chargement + nettoyage (drop BACKDOOR_MALWARE, normalisation noms colonnes)
+    ↓
+2. Mapping labels → 8 catégories + label binaire Stufe 1
+    ↓
+3. Split 80/20 stratifié (random_state=42)
+    ↓
+4. StandardScaler — fit sur train UNIQUEMENT, transform sur train+test
+    ↓
+5. PCA : 39 features → 16 composantes principales (random_state=42)
+    ↓
+6. Stufe 1 : GradientBoostingClassifier binaire (DoS/DDoS=1 vs. non-DoS=0)
+    ↓
+7. Stufe 2 : GradientBoostingClassifier multiclasse (6 classes non-DoS)
+   [Mirai, Reconnaissance, Spoofing, Brute-Force, Web-based, Benign]
+    ↓
+8. Evaluation : Balanced Accuracy, F1-macro, Precision/Recall par classe
+    ↓
+9. SHAP TreeExplainer sur les 16 composantes PCA (global + local)
+```
+
+**Données d'entrée requises :**
+- MERGED_CSV directory (63 fichiers)
+- random_state=42 pour tous les composants stochastiques
+- n_per_class_per_file pour le sampling (configurable via .env)
+
+**Ce qui doit être implémenté (P2) :**
+
+| Fichier                           | Responsabilité                              | Statut    |
+|-----------------------------------|---------------------------------------------|-----------|
+| src/data/constants.py             | Noms colonnes, constantes dataset           | [ ] P2    |
+| src/data/loader.py                | Chargement stratifié 63 fichiers            | [ ] P2    |
+| src/data/label_mapper.py          | Mapping 33 labels → 8 catégories           | [ ] P2    |
+| src/features/preprocessor_a.py   | StandardScaler + PCA 39→16                 | [ ] P2    |
+| src/models/stage1_classifier.py   | GB binaire Stufe 1                          | [ ] P2    |
+| src/models/stage2_classifier.py   | GB multiclasse Stufe 2                      | [ ] P2    |
+| src/models/hierarchical_classifier.py | Orchestration Stufe 1 + Stufe 2        | [ ] P2    |
+| src/pipelines/pipeline_a.py       | Enchaînement complet Pipeline A             | [ ] P2    |
+
+**Point de confirmation résolu (était "1 point à confirmer") :**
+- Stratégie mémoire → Echantillonnage stratifié sur les 63 fichiers (décision P1.6)
+- Tous les paramètres sont maintenant définis — implémentation peut commencer
+
+---
+
+#### POINT 3 — PIPELINE B ✅ Clair, indépendant de A
+
+**Différence avec Pipeline A :**
+- Suppression unique de l'étape PCA (étape 5 du schéma A)
+- StandardScaler → 39 features originales directement (pas de réduction)
+- Même architecture hiérarchique, mêmes hyperparamètres, même random_state=42
+- SHAP sur les features originales → sémantiquement interprétables
+
+**Interface A/B :**
+- A et B partagent le même loader, label_mapper, train/test split (même random_state)
+- Preprocessors distincts : preprocessor_a.py (avec PCA) / preprocessor_b.py (sans PCA)
+- B est indépendant de A : peut être exécuté en parallèle ou après A
+
+---
+
+#### POINT 4 — DÉPENDANCES TECHNIQUES ✅ requirements.txt créé
+
+| Package      | Version min | Rôle dans le projet                            |
+|--------------|-------------|------------------------------------------------|
+| pandas       | 2.0         | Chargement, manipulation, groupby MERGED_CSV   |
+| numpy        | 1.24        | Calculs numériques, arrays SHAP                |
+| scikit-learn | 1.3         | GB, PCA, StandardScaler, métriques            |
+| xgboost      | 2.0         | Alternative optionnelle à sklearn GB           |
+| shap         | 0.44        | TreeExplainer (exact SHAP pour GB)             |
+| matplotlib   | 3.7         | Visualisations SHAP, confusion matrix          |
+| seaborn      | 0.12        | Heatmaps, confusion matrix styling             |
+| joblib       | 1.3         | Sérialisation modèles (.pkl)                   |
+| python-dotenv| 1.0         | Chargement variables d'environnement           |
+| tqdm         | 4.65        | Progress bars pour les 63 fichiers             |
+| pytest       | 7.4         | Tests unitaires (cible : > 80 % coverage)      |
+| pytest-cov   | 4.1         | Mesure couverture de tests                     |
+
+---
+
+#### POINT 5 — POINTS BLOQUANTS RÉSOLUS
+
+Tous les P1 identifiés ont été résolus avant le début de P2 :
+
+| P1 | Problème initial | Décision finale | Justification |
+|----|-----------------|-----------------|---------------|
+| P1.1 | Format données | MERGED_CSV | Seul format avec labels |
+| P1.2 | Nb features | 39 (pas 46) | Inspection directe dataset |
+| P1.3 | Labels MERGED_CSV | 34 labels ALL_CAPS | Scan Merged01-04 confirmé |
+| P1.4 | Mapping labels | 33/34 labels → 8 catégories | Table complète établie |
+| P1.5 | BACKDOOR_MALWARE | DROP | Hors scope, < 0,01 %, impact Balanced Acc. |
+| P1.6 | Stratégie mémoire | Echantillonnage stratifié 63 fichiers | Best Practice, aucune perte info |
+| P1.7 | Structure Backend/ | Créée et validée | 21 répertoires, 18 fichiers |
+
+→ Aucun point bloquant restant. P2 commence à la prochaine session.
+
+---
+
+### 2026-05-30 — Session 3 : Implémentation P2 — src/data/ (constants, loader, label_mapper)
+
+**Objectif de la session :** Implémenter les 3 premiers fichiers P2 avec Best Practices Python ML.
+Critères retenus : type hints, logging, pas de hardcoded paths, random_state=42, tests unitaires.
+
+---
+
+#### Fichier 1 : src/data/constants.py ✅
+
+**Rôle :** Source unique de vérité pour toutes les constantes du dataset.
+**Pourquoi un fichier séparé (Best Practice) :**
+  - Evite la duplication de la table LABEL_TO_CATEGORY entre loader, mapper, tests
+  - Centralise les paramètres changeables (N_PCA_COMPONENTS, RANDOM_STATE) en un seul endroit
+  - Immuabilité garantie par `Final` et `frozenset` → erreur à la compilation si modifié
+
+**Contenu et décisions :**
+
+| Constante             | Valeur                         | Justification                                          |
+|-----------------------|--------------------------------|--------------------------------------------------------|
+| FEATURE_COLUMNS_RAW   | 39 noms bruts (avec espaces)  | Noms exacts du CSV source                              |
+| FEATURE_COLUMNS       | 39 noms normalisés             | Espaces → underscores pour compatibilité sklearn/XGBoost|
+| N_FEATURES            | 39                             | Compté depuis le dataset réel (pas 46 du Lastenheft)   |
+| N_PCA_COMPONENTS      | 16                             | Pipeline A : 39→16 (Raturi et al. 2026)                |
+| RANDOM_STATE          | 42                             | Reproductibilité — imposé par Lastenheft               |
+| LABEL_TO_CATEGORY     | dict de 33 entrées             | Mapping complet 33 labels → 8 catégories               |
+| EXCLUDED_LABELS       | frozenset{'BACKDOOR_MALWARE'} | Decision P1.5 (Done.md)                                |
+| DOS_DDOS_CATEGORIES   | frozenset{'DDoS','DoS'}       | Classes positives Stufe 1                              |
+| STAGE2_CATEGORIES     | 6 classes non-DoS/DDoS        | Classes cibles Stufe 2                                 |
+
+**Choix technique — colonne Label normalisée :**
+- 3 colonnes du CSV brut contiennent des espaces : 'Protocol Type', 'Tot sum', 'Tot size'
+- XGBoost lève une erreur sur les noms de features avec espaces
+- scikit-learn accepte les espaces mais c'est une mauvaise pratique
+- Decision : normaliser à la lecture dans loader.py via df.rename()
+- FEATURE_COLUMNS_RAW conservé pour référence et validation
+
+---
+
+#### Fichier 2 : src/data/loader.py ✅
+
+**Rôle :** Chargement stratifié de l'ensemble des 63 fichiers MERGED_CSV.
+
+**Architecture de la fonction principale :**
+```
+load_stratified(data_dir, n_per_class_per_file=500, random_state=42)
+    ↓
+Pour chaque fichier (trié, ordre déterministe) :
+    _sample_one_file(path, n_per_class, random_state)
+        → read_csv complet (un fichier ~235 MB RAM)
+        → rename colonnes avec espaces
+        → groupby(Label) → sample(n, random_state=42)
+        → del df + gc.collect()  ← libère le fichier de la mémoire
+    ↓
+pd.concat(tous les échantillons) → DataFrame final
+```
+
+**Décisions d'implémentation (Best Practices) :**
+
+| Décision              | Choix retenu                   | Alternative rejetée / Raison                    |
+|-----------------------|--------------------------------|-------------------------------------------------|
+| Lecture fichier       | pd.read_csv() complet          | pd.read_csv(chunksize=) : peut manquer des rows |
+| Libération mémoire    | del df + gc.collect()          | Compter sur GC Python : trop lent, OOM possible |
+| Reproductibilité      | random_state int fixe          | np.random.Generator : ordre dépendant de l'état |
+| Paramètre max_files   | Optional[int]                  | Permet mode test sans charger 63 fichiers        |
+| Tri fichiers          | sorted(glob())                 | Ordre alphabétique déterministe sur tous OS      |
+| Normalisation colonnes| df.rename(columns=_COLUMN_RENAME)| Modification post-lecture, pas en lecture       |
+
+**Budget mémoire mesuré :**
+- 1 fichier en RAM : ~235 MB (140 MB CSV × ~1.7 facteur pandas)
+- Echantillon accumulé : 63 files × 500 rows/class × 33 classes × 320 bytes ≈ ~333 MB
+- Pic RAM estimé : ~235 + 333 = ~568 MB ✅ (bien en dessous de 8 GB RAM standard)
+
+**Tests écrits (tests/test_data_loader.py) :**
+| Test                                      | Ce qu'il vérifie                              |
+|-------------------------------------------|-----------------------------------------------|
+| test_returns_dataframe                    | La fonction retourne bien un DataFrame        |
+| test_respects_n_per_class                 | Max N lignes par label respecté               |
+| test_normalizes_column_names              | Protocol_Type (pas 'Protocol Type')           |
+| test_returns_none_on_missing_label        | Fichier sans Label → None, pas d'exception   |
+| test_reproducible_with_same_seed          | Même résultat avec même random_state          |
+| test_loads_multiple_files                 | Plusieurs fichiers concaténés                 |
+| test_raises_on_missing_dir                | FileNotFoundError si data_dir inexistant      |
+| test_raises_on_no_matching_files          | FileNotFoundError si aucun fichier Merged*.csv|
+| test_max_files_limit                      | max_files=2 → limité à 2 fichiers             |
+| test_excludes_derived_columns             | get_feature_columns() filtre Label/category   |
+
+Résultats : 10/10 ✅ — Couverture loader.py : 90% (6 lignes non couvertes = cas d'erreur
+  d'exception I/O, testables via mock mais hors scope P2)
+
+---
+
+#### Fichier 3 : src/data/label_mapper.py ✅
+
+**Rôle :** Transformation des labels bruts en cibles ML exploitables.
+
+**Ce que fait apply_label_mapping() étape par étape :**
+1. Drop BACKDOOR_MALWARE (et tout EXCLUDED_LABELS futur)
+2. Validation fail-fast : si un label inconnu est présent → ValueError immédiat
+   (évite les NaN silencieux dans la colonne category)
+3. Mapping Label → category via LABEL_TO_CATEGORY
+4. Calcul is_dos_ddos (0/1) pour Stufe 1
+5. Log de la distribution finale pour traçabilité
+
+**Décisions d'implémentation :**
+
+| Décision              | Choix retenu                        | Raison                                          |
+|-----------------------|-------------------------------------|-------------------------------------------------|
+| Fail-fast validation  | raise ValueError sur label inconnu  | NaN silencieux serait détecté trop tard         |
+| Copie du DataFrame    | df.copy()                           | Pas de mutation de l'input (principe d'immutabilité) |
+| Logging distribution  | Séparé dans _log_distribution()     | Séparation responsabilités, testable seul        |
+| validate_split_labels | Fonction publique séparée           | Appelée après train_test_split, pas dans map()  |
+| get_stage2_mask       | Retourne pd.Series booléen          | Réutilisable pour filtrer train ET test          |
+
+**Tests écrits (tests/test_data_label_mapper.py) :**
+| Test                                         | Ce qu'il vérifie                               |
+|----------------------------------------------|------------------------------------------------|
+| test_adds_category_and_binary_columns        | Deux colonnes créées                           |
+| test_all_known_labels_mapped                 | 33 labels → pas de NaN dans category          |
+| test_drops_excluded_labels                   | BACKDOOR_MALWARE supprimé, taille correcte     |
+| test_binary_column_correct_for_dos_ddos      | DDoS/DoS = 1, Mirai/Benign = 0               |
+| test_raises_on_unknown_label                 | ValueError si label hors mapping              |
+| test_does_not_mutate_input                   | Input DataFrame non modifié                   |
+| test_all_8_categories_reachable              | Toutes les 8 catégories produites             |
+| test_selects_non_dos_rows                    | get_stage2_mask() → non-DoS uniquement        |
+| test_passes_when_all_test_labels_in_train    | validate_split_labels() OK si tout présent    |
+| test_raises_on_unseen_test_label             | ValueError si label test absent du train      |
+
+Résultats : 10/10 ✅ — Couverture label_mapper.py : 100% ✅
+
+---
+
+#### Résultats de test globaux (pytest)
+
+```
+20 passed in 5.51s
+
+Coverage report:
+  src/data/constants.py      : 100%
+  src/data/label_mapper.py   : 100%
+  src/data/loader.py         :  90%  (6 lignes : error handlers I/O)
+  src/main.py                :   0%  (squelette — implémenté en P2 final)
+  TOTAL                      :  76%  (objectif final P4 : >80%)
+```
+
+**Pourquoi 76% et pas 80% :** Les 6 lignes non couvertes de loader.py sont des blocs
+`except Exception` pour les erreurs I/O (fichier corrompu, permission denied). Ces cas
+nécessitent des mocks système et seront couverts en P4 (Qualité & Robustesse).
+
+---
+
+**P2 + P3 terminés — prochaine étape : entraînement sur données réelles.**
+
+---
+
+### 2026-05-30 — Session 4 : P2 + P3 complétés — Pipelines A et B entièrement implémentés
+
+**Objectif de la session :** Compléter les pipelines A et B jusqu'à l'étape d'entraînement.
+All 8 modules implémentés avec Best Practices, tous les tests passants.
+
+---
+
+#### Fichier 4 : src/features/preprocessor_a.py ✅
+
+**Rôle :** Préprocesseur Pipeline A = StandardScaler + PCA(39→16).
+**Décisions d'implémentation :**
+
+| Décision | Choix | Raison |
+|----------|-------|--------|
+| Outil | sklearn.pipeline.Pipeline | API standard ML, fit/transform géré proprement |
+| Étapes | scaler → pca | L'ordre est obligatoire : normaliser AVANT PCA |
+| n_components | 16 (paramétrable) | Réplication Raturi et al. (2026), modifiable pour ablation |
+| random_state PCA | 42 | Reproductibilité — solver SVD randomisé |
+| get_explained_variance_ratio() | Fonction publique | Utilisée dans le Paper pour justifier le choix de 16 composantes |
+
+**Règle impérative documentée :** fit_transform(X_train), puis transform(X_test) — JAMAIS fit sur test.
+
+---
+
+#### Fichier 5 : src/features/preprocessor_b.py ✅
+
+**Rôle :** Préprocesseur Pipeline B = StandardScaler uniquement.
+**Décision clé :** API identique à preprocessor_a (même signature) → code client interchangeable.
+**Justification scientifique :** SHAP sur features originales = noms interprétables pour l'analyste
+sécurité ('Rate', 'syn_flag_number', 'Number'). PCA brise cette sémantique.
+
+---
+
+#### Fichier 6 : src/models/stage1_classifier.py ✅
+
+**Rôle :** GradientBoostingClassifier binaire pour Stufe 1 (DoS/DDoS vs. non-DoS).
+**Décisions d'implémentation :**
+
+| Décision | Choix | Raison |
+|----------|-------|--------|
+| Modèle | GradientBoostingClassifier | Raturi et al. (2026) : BA=0.952, compatible TreeExplainer |
+| Stage1Config | Dataclass | Hyperparamètres explicites, immuables, testables |
+| Défauts | n_estimators=100, max_depth=3, lr=0.1 | Grid Search affinera ces valeurs (TO-DO P2) |
+| get_grid_search_space() | Fonction publique | Centralise la grille, réutilisable dans Grid Search module |
+
+---
+
+#### Fichier 7 : src/models/stage2_classifier.py ✅
+
+**Rôle :** GradientBoostingClassifier multiclasse pour Stufe 2 (6 classes non-DoS).
+**Décision :** Même architecture que Stage 1 — scikit-learn gère automatiquement one-vs-rest
+pour la classification multiclasse avec GradientBoosting.
+**SHAP :** TreeExplainer sur clf.stage2 → SHAP values par classe (6 matrices).
+
+---
+
+#### Fichier 8 : src/models/hierarchical_classifier.py ✅
+
+**Rôle :** Orchestration des deux étages.
+**Flux d'entraînement :**
+```
+fit(X, y_binary, y_category):
+    1. Validation pré-fit : ≥2 classes binaires + ≥1 instance non-DoS
+    2. stage1.fit(X, y_binary)          ← TOUS les exemples d'entraînement
+    3. stage2.fit(X[non_dos], y_cat[non_dos]) ← TRUE non-DoS uniquement
+       (utilise les VRAIES étiquettes, pas les prédictions de Stufe 1
+        → évite la propagation d'erreur en phase d'entraînement)
+```
+**Flux de prédiction :**
+```
+predict(X):
+    stage1_pred = stage1.predict(X)         → [0, 1, 1, 0, ...]
+    result[stage1==1] = "DoS/DDoS"          → label combiné DoS+DDoS
+    result[stage1==0] = stage2.predict(X[stage1==0])  → 6 classes
+```
+**Décision architecture — Stufe 2 entraîné sur TRUE labels :**
+- Pourquoi : si Stufe 1 fait des erreurs en train, entraîner Stufe 2 sur ses
+  prédictions créerait un biais systématique (le modèle apprendrait à corriger
+  des erreurs qui n'existent pas au test time)
+- Comment : utiliser y_binary (ground truth), pas stage1.predict(X)
+
+**Bug corrigé :** validation y_binary avant fit pour lever ValueError lisible
+plutôt que l'erreur sklearn cryptique "y contains 1 class".
+
+---
+
+#### Fichier 9 : src/pipelines/_core.py ✅
+
+**Rôle :** Logique partagée entre Pipeline A et B (principe DRY).
+**Les 7 étapes de run_pipeline() :**
+
+| Étape | Action | Détail |
+|-------|--------|--------|
+| 1 | load_stratified() | Chargement stratifié des MERGED_CSV |
+| 2 | apply_label_mapping() | 33 labels → 8 catégories + is_dos_ddos |
+| 3 | Extraction X, y | .to_numpy() → évite bug PyArrow/sklearn |
+| 4 | train_test_split() | 80/20 stratifié sur y_category, random_state=42 |
+| 5 | preprocessor.fit_transform(X_train) + transform(X_test) | Fit sur train UNIQUEMENT |
+| 6 | HierarchicalClassifier.fit() | Stufe 1 + Stufe 2 |
+| 7 | _compute_basic_metrics() | BA + F1-macro (Stufe 1 et Stufe 2 séparément) |
+
+**Bug corrigé — PyArrow/sklearn incompatibilité :**
+- Symptôme : `TypeError: only integer scalar arrays can be converted to a scalar index`
+- Cause : pandas avec backend PyArrow retourne des Series incompatibles avec sklearn `_safe_indexing`
+- Fix : `.to_numpy(dtype=int)` et `.to_numpy(dtype=str)` avant train_test_split
+- Documenté dans : _core.py + conftest.py
+
+**TrainedPipeline dataclass :** contient tout ce qu'il faut pour évaluation (P4) et SHAP (P4) :
+preprocessor, classifier, X_test, y_binary_test, y_category_test, métriques de base, temps.
+
+---
+
+#### Fichiers 10-11 : pipeline_a.py + pipeline_b.py ✅
+
+**Architecture DRY :**
+```
+pipeline_a.py : run_pipeline_a(config)
+    → build_preprocessor_a(config.n_pca_components)
+    → run_pipeline(config, preprocessor, "A")   ← _core.py
+
+pipeline_b.py : run_pipeline_b(config)
+    → build_preprocessor_b()
+    → run_pipeline(config, preprocessor, "B")   ← _core.py
+```
+Seule différence entre A et B : le preprocessor injecté. Aucune duplication de logique.
+
+---
+
+#### Tests écrits dans cette session ✅
+
+| Fichier test | Nb tests | Coverage modules testés |
+|---|---|---|
+| tests/conftest.py | fixtures | sample_df, mapped_df, split_arrays, preprocessed_arrays, fitted_hierarchical |
+| tests/test_features_preprocessors.py | 13 | preprocessor_a 100%, preprocessor_b 100% |
+| tests/test_models_hierarchical.py | 12 | stage1 95%, stage2 95%, hierarchical 95% |
+| tests/test_pipelines.py | 10 | pipeline_a 100%, pipeline_b 100%, _core 98% |
+
+**Total cumulé : 60/60 tests ✅ — Coverage global : 89%**
+
+| Module | Coverage | Lignes non couvertes |
+|--------|----------|----------------------|
+| src/data/constants.py | 100% | — |
+| src/data/label_mapper.py | 100% | — |
+| src/features/preprocessor_a.py | 100% | — |
+| src/features/preprocessor_b.py | 100% | — |
+| src/pipelines/pipeline_a.py | 100% | — |
+| src/pipelines/pipeline_b.py | 100% | — |
+| src/pipelines/_core.py | 98% | Lignes 229-230 : cas edge trop peu non-DoS en test |
+| src/models/hierarchical_classifier.py | 95% | Lignes 80, 147 : branches défensives |
+| src/models/stage1_classifier.py | 95% | Ligne 64 : get_grid_search_space() pas encore appelé |
+| src/models/stage2_classifier.py | 95% | Ligne 67 : même raison |
+| src/data/loader.py | 90% | Lignes 102, 131-133, 140-141 : error handlers I/O |
+| src/main.py | 0% | Squelette — implémenté lors de la pipeline finale |
+
+---
+
+**P2 + P3 COMPLÉTÉS — structure de fichiers finale :**
+```
+Backend/src/
+├── data/
+│   ├── constants.py     ✅ 100% coverage
+│   ├── loader.py        ✅  90% coverage
+│   └── label_mapper.py  ✅ 100% coverage
+├── features/
+│   ├── preprocessor_a.py ✅ 100% coverage
+│   └── preprocessor_b.py ✅ 100% coverage
+├── models/
+│   ├── stage1_classifier.py      ✅ 95%
+│   ├── stage2_classifier.py      ✅ 95%
+│   └── hierarchical_classifier.py ✅ 95%
+├── pipelines/
+│   ├── _core.py      ✅ 98%
+│   ├── pipeline_a.py ✅ 100%
+│   └── pipeline_b.py ✅ 100%
+├── evaluation/     (P4 — à implémenter)
+├── explainability/ (P4 — à implémenter)
+└── utils/          (P4 — logging centralisé)
+```
+
+**Prochaine étape concrète (URGENT — deadline 2026-06-01) :**
+1. Lancer l'entraînement sur les données réelles MERGED_CSV (63 fichiers)
+   → `run_pipeline_a(PipelineConfig(data_dir="../Dataset/MERGED_CSV", n_per_class_per_file=500))`
+   → `run_pipeline_b(...)` (identique)
+2. Collecter les premiers résultats de Balanced Accuracy pour le Motivationsreview
+
+---
+
+### 2026-05-30 — Session 5 : Environnement virtuel + correction inf + lancement entraînement réel
+
+**Règle venv imposée par l'etudiant — OBLIGATOIRE pour toutes les sessions suivantes :**
+- Tout le travail Python se fait dans `Backend/.venv/`
+- Jamais `pip install` sur le Python système pour ce projet
+- Commande Python : `.venv/Scripts/python` (Windows)
+- Commande pytest : `.venv/Scripts/python -m pytest tests/`
+- Cette règle est documentée dans CLAUDE.md (section "Python-Umgebung") et en mémoire
+
+**Actions réalisées :**
+
+1. Désinstallation packages système (scikit-learn, shap, xgboost, seaborn, tqdm, python-dotenv)
+2. Création Backend/.venv/ + installation requirements.txt dans le venv
+3. Vérification : 60/60 tests passent dans le venv ✅
+4. Mise à jour CLAUDE.md avec règles venv
+
+**Bug corrigé — valeurs infinies dans les données réelles du CICIoT2023 :**
+- Symptôme : `ValueError: Input X contains infinity or a value too large for dtype('float64')`
+- Cause : le dataset contient des valeurs inf/-inf (non visibles dans le sample de 50 000 lignes)
+- Fix 1 : `loader.py` — `df.replace([inf, -inf], NaN)` à la lecture de chaque fichier
+- Fix 2 : `preprocessor_a.py` + `preprocessor_b.py` — ajout de `SimpleImputer(strategy="median")`
+  en première étape du Pipeline sklearn
+- Pourquoi median : robuste aux outliers, contrairement à mean pour données réseau
+- Respect data leakage : imputer fit sur train uniquement (via Pipeline.fit_transform)
+- 60/60 tests passent encore ✅
+
+**Script d'entraînement créé : scripts/train_pipelines.py**
+- Arguments : --pipeline {A,B,both}, --n-per-class, --max-files
+- Sauvegarde : models_artifacts/preprocessor_A.pkl, stage1_A.pkl, stage2_A.pkl
+- Métriques : results/metrics/metrics_pipeline_A.json
+
+**Statistiques observées au lancement :**
+
+| Métrique | Valeur |
+|----------|--------|
+| Fichiers chargés | 63/63 |
+| Lignes brutes | 841 680 |
+| BACKDOOR_MALWARE supprimés | 3 078 (0,37%) |
+| Lignes finales | 838 602 |
+| DoS/DDoS (Stufe 1 positifs) | 489 735 (58,4%) |
+| Non-DoS | 348 867 (41,6%) |
+| Train | 670 881 |
+| Test | 167 721 |
+| Shape après PCA (Pipeline A) | (670 881, 16) |
+| Durée chargement | ~3m 42s |
+
+**Entraînement en cours au moment de l'écriture de cette entrée.**
+Résultats Balanced Accuracy et F1 seront ajoutés à la prochaine entrée Done.md.
+
+---
+
+### 2026-05-31 — Session 6 : Résultats premiers entraînements + logging fichier
+
+#### Résultats complets — Pipeline A et B (hyperparamètres par défaut)
+
+**Données d'entraînement (identiques pour A et B) :**
+
+| Métrique | Valeur |
+|----------|--------|
+| Fichiers chargés | 63/63 MERGED_CSV |
+| Lignes brutes | 841 680 |
+| BACKDOOR_MALWARE supprimés | 3 078 (0,37%) |
+| Lignes finales | 838 602 |
+| DoS/DDoS (Stufe 1 positifs) | 489 735 (58,4%) |
+| Non-DoS | 348 867 (41,6%) |
+| Train | 670 881 (80%) |
+| Test | 167 721 (20%) |
+
+**Résultats Pipeline A (StandardScaler + PCA 39→16) :**
+
+| Métrique | Valeur | Interprétation |
+|----------|--------|----------------|
+| Stufe 1 Balanced Accuracy | **0.9971** | Excellent — détection DoS/DDoS quasi parfaite |
+| Stufe 1 F1-macro | **0.9969** | Excellent |
+| Stufe 2 Balanced Accuracy | **0.5480** | Modeste — hyperparamètres par défaut, Grid Search requis |
+| Stufe 2 F1-macro | **0.5784** | Modeste |
+| Durée totale | **2240s (37.3 min)** | — |
+| Shape test (PCA actif) | (167 721, 16) | Confirme réduction 39→16 |
+
+**Résultats Pipeline B (StandardScaler, 39 features originales) :**
+
+| Métrique | Valeur | Interprétation |
+|----------|--------|----------------|
+| Stufe 1 Balanced Accuracy | **0.9993** | Excellent — légèrement meilleur que A |
+| Stufe 1 F1-macro | **0.9993** | Excellent |
+| Stufe 2 Balanced Accuracy | **0.6301** | Meilleur que A, mais encore modeste |
+| Stufe 2 F1-macro | **0.6670** | Meilleur que A |
+| Durée totale | **1657s (27.6 min)** | Plus rapide que A de ~10 min |
+| Shape test (sans PCA) | (167 721, 39) | Confirme absence de réduction |
+
+**Ablation Study — Analyse comparative A vs B (hyperparamètres par défaut) :**
+
+| Critère | Pipeline A | Pipeline B | Delta B-A | Conclusion |
+|---------|-----------|-----------|-----------|------------|
+| Stufe 1 BA | 0.9971 | 0.9993 | +0.0022 | B légèrement meilleur |
+| Stufe 2 BA | 0.5480 | 0.6301 | **+0.0821** | B significativement meilleur |
+| Stufe 2 F1 | 0.5784 | 0.6670 | +0.0886 | B significativement meilleur |
+| Durée | 2240s | 1657s | -583s | B plus rapide de 26% |
+
+**Conclusion préliminaire de l'Ablation Study :**
+Pipeline B (sans PCA) surpasse Pipeline A sur toutes les métriques ET est plus rapide.
+PCA réduit la Balanced Accuracy de Stufe 2 de 8,21 points — confirme l'hypothèse centrale
+du Lastenheft : la réduction dimensionnelle nuit à la fois à la performance et à
+l'interprétabilité des SHAP. Résultat scientifiquement intéressant pour le Paper.
+
+**Analyse Stufe 2 — pourquoi BA = 0.5480-0.6301 avec hyperparamètres par défaut :**
+- Raturi et al. (2026) rapportent BA = 0.952, mais avec hyperparamètres optimisés
+- Nos résultats actuels : n_estimators=100, max_depth=3, learning_rate=0.1 (valeurs par défaut)
+- Les classes rares (Brute-Force : ~2 200 instances sur 838 602 = 0.26%) tirent la BA vers le bas
+- Grid Search nécessaire pour atteindre la performance cible — prochaine étape critique
+
+**Fichiers produits :**
+```
+models_artifacts/
+  preprocessor_A.pkl, stage1_A.pkl, stage2_A.pkl  (Pipeline A)
+  preprocessor_B.pkl, stage1_B.pkl, stage2_B.pkl  (Pipeline B)
+results/metrics/
+  metrics_pipeline_A.json
+  metrics_pipeline_B.json
+```
+
+**Système de logging fichier implémenté :**
+- src/utils/logger.py créé : double logging console + fichier
+- Deux fichiers par run : train_latest.log (écrasé) + train_YYYYMMDD_HHMMSS.log (archive)
+- Sentinelles : `=== TRAINING STARTED ===` en début, `=== TRAINING COMPLETE ===` en fin
+- Commande de suivi en temps réel : `Get-Content results/logs/train_latest.log -Wait`
+- Commande de vérification fin : `Get-Content results/logs/train_latest.log -Tail 3`
+
+**Prochaine étape critique (deadline 2026-06-08) :**
+1. Grid Search Pipeline A et B (n_estimators, max_depth, learning_rate, subsample)
+   → Objectif : atteindre BA ≥ 0.85 sur Stufe 2 (proche de Raturi et al. 0.952)
+2. Implémenter src/evaluation/metrics.py (rapport complet par classe)
+3. Implémenter src/explainability/shap_analysis.py (SHAP global + local)

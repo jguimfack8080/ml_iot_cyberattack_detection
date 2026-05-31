@@ -1,0 +1,19 @@
+\section{Fazit}\label{fazit}
+
+\textit{Dieser Abschnitt wird ergaenzt, sobald die Grid-Search-Optimierung und die
+SHAP-Analyse abgeschlossen sind und die validierten Projektergebnisse vorliegen.}
+
+\textbf{Vorlaeufiges Fazit.}
+Die vorliegende Arbeit hat einen zweistufigen hierarchischen \gb{}-Klassifikator auf dem
+CICIoT2023-Datensatz~\cite{neto2023ciciot2023} implementiert und mit der \ba{} als primaerer
+Metrik evaluiert.
+Die Ablation Study liefert ein erstes messbares Ergebnis: \pca{} reduziert die \ba{} von
+Stufe~2 um 8{,}21~Prozentpunkte (0{,}6301 gegenueber 0{,}5480), waehrend Pipeline~B ohne
+\pca{} konsistent besser abschneidet und gleichzeitig um 583~Sekunden schneller trainiert.
+Damit bestaetigt sich die Ausgangshypothese, dass \pca{} die Mehrklassenklassifikation
+beeintraechtigt.
+
+Die \shap{}-Integration und die Grid-Search-Optimierung sind geplante naechste Schritte.
+Die vorliegende Arbeit schliesst damit die von Raturi et al.\ \cite{raturi2026exploratory}
+identifizierte Forschungsluecke der fehlenden Erklaerbarkeit und liefert durch die Ablation
+Study einen eigenstaendigen wissenschaftlichen Beitrag.

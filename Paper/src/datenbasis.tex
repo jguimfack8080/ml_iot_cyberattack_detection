@@ -1,0 +1,17 @@
+\section{Datenbasis und Vorverarbeitung}\label{datenbasis}
+
+\subsection{Beschreibung des CICIoT2023-Datensatzes}
+
+Der CICIoT2023-Datensatz wird vom Canadian Institute for Cybersecurity der University of New Brunswick bereitgestellt \cite{neto2023ciciot2023}. Er enthält Netzwerkverkehr von 105 realen IoT-Geräten, die im Rahmen einer kontrollierten Testumgebung sowohl als Angreifer als auch als Opfer eingesetzt wurden \cite{neto2023ciciot2023}. Ein zentrales Merkmal des Datensatzes ist, dass die Angriffe ausschließlich von IoT-Geräten gegen andere IoT-Geräte ausgeführt wurden, was eine realitätsnahe Abbildung realer Bedrohungsszenarien in IoT-Infrastrukturen ermöglicht \cite{neto2023ciciot2023}.
+
+Der Datensatz umfasst 33 spezifische Angriffsklassen, die von Neto et al. \cite{neto2023ciciot2023} in sieben übergeordnete Angriffskategorien gruppiert sind: Distributed Denial of Service (DDoS), Denial of Service (DoS), Mirai, Reconnaissance, Spoofing, Brute-Force und Web-based Attacks. Hinzu kommt die Kategorie Benign für gutartigen Netzwerkverkehr. In der vorliegenden Arbeit werden diese sieben Angriffskategorien zusammen mit der Benign-Kategorie als acht übergeordnete Klassen behandelt. Jede Instanz enthält 46 vorextrahierte Netzwerkmerkmale.
+
+\subsection{Klassenungleichgewicht}
+
+Der CICIoT2023-Datensatz weist ein ausgeprägtes Klassenungleichgewicht auf, da DoS- und DDoS-Angriffe das Datenmaterial erheblich dominieren \cite{raturi2026exploratory}. Hosseini et al. \cite{hosseini2025imbalance} zeigen empirisch, dass solche Klassenverteilungen bei der Bewertung von ML-Modellen mit der einfachen Accuracy zu verzerrten Ergebnissen führen können, da Modelle, die seltene Klassen vernachlässigen, dennoch rechnerisch hohe Accuracy-Werte erzielen. Raturi et al. \cite{raturi2026exploratory} schlagen aus diesem Grund die Balanced Accuracy als geeignetere primäre Bewertungsmetrik für diesen Datensatz vor, da sie das arithmetische Mittel der klassenspezifischen Recall-Werte bildet und seltene Klassen damit gleichgewichtig in die Bewertung einbezieht.
+
+\subsection{Geplante Vorverarbeitung}
+
+\textit{Dieser Abschnitt wird mit validierten Ergebnissen ergänzt, sobald die Implementierungsphase abgeschlossen ist. Die geplante Vorverarbeitung umfasst die folgenden Schritte.}
+
+Die 33 Originalklassen werden auf 8 übergeordnete Kategorien gemäß Neto et al. \cite{neto2023ciciot2023} reduziert. Die 46 Netzwerkmerkmale werden anschließend mittels StandardScaler auf Mittelwert null und Standardabweichung eins normalisiert. Es werden zwei parallele Preprocessing-Pipelines aufgebaut. Pipeline A reduziert die Merkmalsdimension mittels PCA von 46 auf 16 Hauptkomponenten, analog zu Raturi et al. \cite{raturi2026exploratory}. Pipeline B verwendet alle 46 Originalmerkmale als Kontrollbedingung für die Ablation Study. Die PCA-Variante dient der Reproduktion des Rahmens aus Raturi et al. \cite{raturi2026exploratory}, während Pipeline B die Grundlage für den Vergleich mit Alharby \cite{alharby2025ciciot} bildet, der ebenfalls PCA auf dem CICIoT2023-Datensatz einsetzt.

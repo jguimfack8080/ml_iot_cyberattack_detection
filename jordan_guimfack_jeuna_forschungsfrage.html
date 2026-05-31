@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Machine Learning zur Erkennung von Cyberangriffen in IoT-Netzwerken</title>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="css/hbv-light.css">
+    <link rel="stylesheet" href="css/svg.css">
+    <meta name="author" content="Jordan Guimfack Jeuna">
+    <meta name="keywords" content="it-security, iot, ids, xai, shap, ciciot2023">
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section><!-- Title slide -->
+        <!-- Matrikelnummer: 38184 -->
+        <h1>Machine Learning zur Erkennung von Cyberangriffen in IoT-Netzwerken</h1>
+        <h2>Entwicklung und Evaluation eines erklärbaren Gradient-Boosting-Klassifikators mit SHAP-Analyse auf dem CICIoT2023-Datensatz</h2>
+        <p>Jordan Guimfack Jeuna</p>
+        </section>
+
+        <section>
+          <h2>Forschungsplan</h2>
+          <table>
+            <tr>
+              <th>Phase</th>
+              <th>Status</th>
+              <th>Inhalt</th>
+              <th>Artefakte</th>
+              <th>Dozent</th>
+              <th>Abgabe</th>
+            </tr>
+            <tr>
+              <td>Phase 1: Fundament</td>
+              <td>abgeschlossen</td>
+              <td>Literatur/BibTeX; Forschungsfragen/Projektziel; Abgrenzung zu Raturi et al. (2026).</td>
+              <td>BibTeX, Fragen</td>
+              <td>Prof. Dr. Lars Fischer</td>
+              <td>04.05.2026</td>
+            </tr>
+            <tr>
+              <td>Phase 2: Theoretischer Teil</td>
+              <td>bis 11.05.2026</td>
+              <td>Related Work (10 Quellen); Grundlagen/XAI-Kriterien ins LaTeX.</td>
+              <td>RW, LaTeX</td>
+              <td>Prof. Dr. Lars Fischer</td>
+              <td>11.05.2026</td>
+            </tr>
+            <tr>
+              <td>Phase 3: Implementierung</td>
+              <td>bis 01.06.2026</td>
+              <td>CICIoT2023; Pipelines: PCA(16) vs. 46; GB + Tuning; BA/Recall/F1; SHAP global/lokal; XAI-Vergleich.</td>
+              <td>Code, Metriken, SHAP</td>
+              <td>Prof. Dr. Lars Fischer</td>
+              <td>01.06.2026</td>
+            </tr>
+            <tr>
+              <td>Phase 4: Paper schreiben</td>
+              <td>bis 15.06.2026</td>
+              <td>Schreiben parallel; Diskussion: SHAP-Ranking vs. CIC/IDS-Signaturen; Reviewversion.</td>
+              <td>Paper</td>
+              <td>Prof. Dr. Lars Fischer</td>
+              <td>15.06.2026</td>
+            </tr>
+          </table>
+        </section>
+        <section>
+          <h2>Forschungsfragen</h2>
+          <p><b>Rahmenfrage:</b> Wie kann ein ML-basiertes Intrusion Detection System für IoT-Netzwerke so gestaltet werden, dass es nicht nur leistungsfähig ist, sondern seine Klassifikationsentscheidungen für Sicherheitsanalysten anhand messbarer XAI-Kriterien (Faithfulness, Stability, Comprehensibility) nachvollziehbar werden?</p>
+          <p><b>Hauptforschungsfrage:</b> Inwieweit ermöglicht eine SHapley-Additive-Explanations-Analyse (SHAP) eines Gradient-Boosting-Klassifikators auf dem CICIoT2023-Datensatz eine pro-Angriffsklasse nachvollziehbare Zuordnung von Netzwerkmerkmalen zu Klassifikationsentscheidungen, und in welchem Verhältnis steht diese Erklärbarkeit zur erreichten Balanced Accuracy des Modells?</p>
+          <p><b>Teilfragen:</b></p>
+          <ol>
+            <li>Welche Non-DoS-Angriffsklassen des CICIoT2023-Datensatzes (Mirai, Reconnaissance, Spoofing, Web-Based, Brute-Force, Benign) werden durch das vorhandene Klassenungleichgewicht von einem Gradient-Boosting-Klassifikator systematisch schlechter erkannt, wenn die Bewertung von Accuracy auf Balanced Accuracy und klassenspezifische Recall-Werte umgestellt wird, und in welchem Ausmaß weicht die Per-Klassen-Performance von der aggregierten Balanced Accuracy ab?</li>
+            <li>Welchen messbaren Einfluss hat die Principal-Component-Analysis-basierte Dimensionsreduktion von 46 auf 16 Merkmale auf (a) die Balanced Accuracy des Gradient-Boosting-Modells und (b) die Stabilität sowie Interpretierbarkeit der SHAP-Erklärungen, wenn die Ergebnisse mit einer Pipeline ohne PCA unter Verwendung aller 46 Originalmerkmale verglichen werden?</li>
+            <li>Welche Netzwerkmerkmale des CICIoT2023-Datensatzes haben gemäß SHAP den größten Einfluss auf die Klassifikation der einzelnen Angriffstypen, und stimmen diese Merkmale mit den in der CIC-Dokumentation des Datensatzes sowie in etablierten IDS-Referenzwerken beschriebenen charakteristischen Netzwerksignaturen der jeweiligen Angriffe überein?</li>
+          </ol>
+        </section>
+        
+<!--
+        <section>
+          <h2>Abschnitt</h2>
+        </section>
+
+        <section>
+          <section>
+            <h2>Abschnitt mit Downwards</h2>
+          </section>
+          <section>
+            <h2>Downward 1</h2>
+          </section>
+        </section>
+        <section>
+          <h2>Two-column slide</h2>
+            <div class="row">
+              <div class="column" style="width:30%">
+                Column Left
+              </div>
+              <div class="column" style="width:70%">
+                Column Right
+              </div>
+            </div>
+        </section>
+        -->
+      </div>
+    </div>
+    <script src="dist/reveal.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+  </body>
+</html>

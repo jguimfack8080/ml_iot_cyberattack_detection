@@ -1,0 +1,5 @@
+svg text {
+    fill: var(--white);
+    font-size: 25%;
+    font-weight: bold;
+}

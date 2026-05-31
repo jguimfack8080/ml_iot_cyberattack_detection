@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Umsetzungsplan</title>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="css/hbv-light.css">
+    <link rel="stylesheet" href="css/svg.css">
+    <meta name="author" content="Jordan Guimfack Jeuna">
+    <meta name="keywords" content="it-security, umsetzungsplan">
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section><!-- Title slide -->
+        <h1>Machine Learning zur Erkennung von Cyberangriffen in IoT-Netzwerken</h1>
+        <h2>Umsetzungsplan</h2>
+        <p>Jordan Guimfack Jeuna</p>
+        </section>
+
+        <section>
+          <section>
+            <h2>Umsetzung</h2>
+            <p>Liste von Teilaufgaben und Zeitplan für die praktische Umsetzung des Projekts.</p>
+          </section>
+          <section>
+            <h3>Burndown (Praktisches Experiment)</h3>
+            <ul>
+              <li>Vorbereitung der Datenbasis</li>
+              <li>Implementierung der Vorverarbeitungspipeline (mit/ohne PCA)</li>
+              <li>Implementierung des Gradient-Boosting-Klassifikators</li>
+              <li>Hyperparameteroptimierung</li>
+              <li>Experimentdurchführung Pipeline A (mit PCA, 16 Komponenten)</li>
+              <li>Experimentdurchführung Pipeline B (ohne PCA, 46 Merkmale)</li>
+              <li>SHAP-Analyse (global und lokal)</li>
+              <li>Datenauswertung und Metriken</li>
+              <li>Grafische Darstellungen</li>
+              <li>Ausarbeitung Methodik</li>
+              <li>Ausarbeitung Ergebnisse</li>
+              <li>Ausarbeitung Diskussion</li>
+              <li>Einleitung, Zusammenfassung</li>
+              <li>Abstract</li>
+              <li>Schlusskorrektur</li>
+              <li>Freigabe und Druck</li>
+            </ul>
+            <aside class="notes">
+              Modellwahl: Gradient Boosting nach Raturi et al. (2026), höchste Balanced Accuracy auf CICIoT2023.
+              Nativ kompatibel mit SHAP TreeExplainer (exakt, keine Approximation).
+
+              Zweistufige Hierarchie: Stufe 1 trennt DoS/DDoS von allem anderen (strukturelle Behandlung
+              des Klassenungleichgewichts). Stufe 2 klassifiziert Nicht-DoS-Instanzen in Mirai,
+              Reconnaissance, Spoofing, Brute-Force, Web-based, Benign.
+
+              Zwei parallele Pipelines (Ablation Study):
+              Pipeline A: PCA-Reduktion 46 auf 16 Hauptkomponenten (Replikation Raturi et al.).
+              Pipeline B: alle 46 Originalmerkmale, SHAP semantisch interpretierbar
+              (Rate, syn_flag_number, Number statt PC1, PC2).
+
+              Balanced Accuracy als primäre Metrik nach Hosseini et al. (2025).
+              SHAP-Qualitätsbewertung: Fidelität, Konsistenz, Jaccard-Ähnlichkeit nach Hermosilla et al. (2025).
+            </aside>
+          </section>
+          <section>
+            <h3>Zeitplan</h3>
+            <table>
+              <tr>
+                <th>Datum</th>
+                <th>Meilenstein/Deliverable</th>
+              </tr>
+              <tr>
+                <td>bis 11.05.2026</td>
+                <td>Phase 2: Theoretischer Teil (Related Work, Grundlagen, LaTeX)</td>
+              </tr>
+              <tr>
+                <th>18.05.2026 bis 25.05.2026</th>
+                <th>Vorbereitung Datenbasis + Implementierung Vorverarbeitungspipeline</th>
+              </tr>
+              <tr>
+                <td>25.05.2026 bis 01.06.2026</td>
+                <td>Implementierung Gradient-Boosting-Klassifikator + Hyperparameteroptimierung</td>
+              </tr>
+              <tr>
+                <th>01.06.2026 bis 08.06.2026</th>
+                <th>Phase 3: Experimentdurchführung (beide Pipelines) + SHAP-Analyse</th>
+              </tr>
+              <tr>
+                <td>08.06.2026 bis 11.06.2026</td>
+                <td>Datenauswertung + Grafische Darstellungen</td>
+              </tr>
+              <tr>
+                <th>11.06.2026 bis 13.06.2026</th>
+                <th>Ausarbeitung Methodik, Ergebnisse, Diskussion</th>
+              </tr>
+              <tr>
+                <td>13.06.2026 bis 15.06.2026</td>
+                <td>Einleitung, Fazit, Abstract, Schlusskorrektur</td>
+              </tr>
+              <tr>
+                <th>15.06.2026</th>
+                <th>Phase 4: Abgabe der fertigen Arbeit</th>
+              </tr>
+            </table>
+          </section>
+        </section>
+
+<!--
+        <section>
+          <h2>Abschnitt</h2>
+        </section>
+
+        <section>
+          <section>
+            <h2>Abschnitt mit Downwards</h2>
+          </section>
+          <section>
+            <h2>Downward 1</h2>
+          </section>
+        </section>
+        <section>
+          <h2>Two-column slide</h2>
+            <div class="row">
+              <div class="column" style="width:30%">
+                Column Left
+              </div>
+              <div class="column" style="width:70%">
+                Column Right
+              </div>
+            </div>
+        </section>
+        -->
+      </div>
+    </div>
+    <script src="dist/reveal.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+  </body>
+</html>

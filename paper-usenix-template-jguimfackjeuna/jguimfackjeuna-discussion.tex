@@ -1,0 +1,40 @@
+\section{Diskussion}\label{diskussion}
+
+\textit{Die vollstaendige Diskussion wird ergaenzt, sobald die Grid-Search-Optimierung und
+die SHAP-Analyse abgeschlossen sind. Bereits jetzt belegbar sind die folgenden methodischen
+Bezugspunkte.}
+
+\textbf{Vergleich mit Raturi et al.}
+Raturi et al.\ \cite{raturi2026exploratory} fuehren die \ba{} als Metrik ein und berichten eine
+\ba{} von 0{,}952 in der Mehrklassenklassifikation, jedoch mit optimierten Hyperparametern.
+Die vorliegenden Ergebnisse mit Standardparametern liegen darunter (Pipeline~B: 0{,}6301),
+was die Notwendigkeit der Grid-Search-Optimierung bestaetigt.
+Darueber hinaus verzichten Raturi et al.\ vollstaendig auf eine Erklaerbarkeitskomponente,
+was den eigenstaendigen Beitrag der vorliegenden Arbeit begruendet.
+
+\textbf{Vergleich mit Almahaqeri et al.}
+Almahaqeri et al.\ \cite{almahaqeri2026gradient} waehlen stratifiziertes Undersampling als
+Strategie gegen Klassenungleichgewicht statt einer hierarchischen Klassifikationsarchitektur.
+Die eigene hierarchische Architektur adressiert das Klassenungleichgewicht strukturell, ohne
+Information durch Undersampling zu verlieren.
+
+\textbf{Vergleich mit Alharby.}
+Alharby~\cite{alharby2025ciciot} dokumentiert \pca{}-basierten \gb{} auf dem CICIoT2023-Datensatz.
+Die eigene Ablation Study ergaenzt diese Arbeit um eine systematische Gegenuebersteflung mit
+und ohne \pca{}, einschliesslich des Einflusses auf die \shap{}-Erklaerungen.
+
+\textbf{Bewertung der SHAP-Erklaerungsqualitaet.}
+\textit{Dieser Abschnitt wird nach Vorliegen der SHAP-Ergebnisse ausgefuehrt.
+Die Bewertung erfolgt anhand der Metriken aus Hermosilla et al.\ \cite{hermosilla2025xai_forensic}:
+Fidelitaet, Konsistenz und Jaccard-Aehnlichkeit.}
+
+\subsection*{Offene Forschungsfragen}
+
+Die vorliegende Arbeit belaesst drei Forschungsfragen als offen, die in zukunftigen Arbeiten
+adressiert werden koennen.
+Erstens die Latenzmessung und Echtzeit-Implementierung des Klassifikators fuer den praktischen
+Einsatz in ressourcenbeschraenkten \iot{}-Umgebungen, die von Raturi et al.\
+\cite{raturi2026exploratory} als Forschungsluecke benannt wird.
+Zweitens die Robustheit gegenueber gezielten Adversarial Attacks auf das ML-System.
+Drittens die Generalisierbarkeit der \shap{}-Erklaerungen auf weitere \iot{}-Datensaetze jenseits
+des CICIoT2023-Benchmarks.

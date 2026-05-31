@@ -1,0 +1,123 @@
+\section{Methodik}\label{methodik}
+
+\subsection{Datenbasis und Vorverarbeitung}
+
+Als Datenbasis dient der CICIoT2023-Datensatz~\cite{neto2023ciciot2023}, der Netzwerkverkehr
+von 105 realen \iot{}-Geraeten unter 33 verschiedenen Angriffsbedingungen enthaelt.
+Die Daten liegen als vorverarbeitete CSV-Dateien mit 39 extrahierten Netzwerkmerkmalen vor
+sowie einer Klassenspalte (Label).
+
+\textbf{Hinweis zur Feature-Anzahl.}
+Raturi et al.\ \cite{raturi2026exploratory} und Alharby~\cite{alharby2025ciciot} benennen 46
+Features fuer den CICIoT2023-Datensatz.
+Die vorliegenden CSV-Dateien enthalten jedoch 39 Merkmale.
+Diese Abweichung wird in der vorliegenden Arbeit dokumentiert und unveraendert uebernommen.
+\pca{} in Pipeline~A reduziert demnach von 39 auf 16 Hauptkomponenten.
+
+Die 33 Angriffsklassen werden zu 8 uebergeordneten Kategorien zusammengefasst:
+DDoS, DoS, Mirai, Reconnaissance, Spoofing, Brute-Force, Web-based Attacks und Benign.
+Instanzen der Klasse BACKDOOR\_MALWARE, die in keiner dieser 8 Kategorien enthalten ist
+und unter 0{,}01~Prozent des Datenvolumens ausmacht, werden vor dem Training entfernt.
+Das bereinigte Dataset umfasst 838.602 Instanzen, davon 58{,}4~Prozent DoS/DDoS-Verkehr.
+
+\textbf{Stratifiziertes Sampling.}
+Da das vollstaendige Dataset von ca.\ 8{,}5~GB die verfuegbare Arbeitsspeicherkapazitaet
+ueberschreitet, wird ein stratifiziertes Sampling-Verfahren eingesetzt.
+Aus jeder der 63 CSV-Dateien werden je 500 Instanzen pro Klasse entnommen, sodass alle
+Dateien gleichmaessig zum Trainingsdatensatz beitragen.
+Die Normalverteilung aller Klassen bleibt dabei erhalten.
+
+Unendliche Werte (Infinity), die im Rohdatensatz auftreten, werden vor dem Preprocessing
+durch fehlende Werte (NaN) ersetzt.
+Der anschliessende SimpleImputer~\cite{neto2023ciciot2023} fuellt fehlende Werte mit dem
+Spaltenmedian auf.
+Diese Berechnung erfolgt ausschliesslich auf den Trainingsdaten, um eine Datenleckage zu
+vermeiden.
+
+\textbf{Aufteilung.}
+Der Datensatz wird in 80~Prozent Trainings- und 20~Prozent Testdaten aufgeteilt, stratifiziert
+nach Kategorie mit festem Random-Seed 42 fuer vollstaendige Reproduzierbarkeit.
+
+\subsection{Zwei parallele Preprocessing-Pipelines}
+
+Zwei Preprocessing-Pipelines werden verglichen:
+
+\textbf{Pipeline~A} setzt eine \pca{}-Dimensionsreduktion ein.
+Sie besteht aus drei Schritten: SimpleImputer (Medianstrategie), StandardScaler und
+\pca{} (39 auf 16 Hauptkomponenten).
+Dieser Ansatz repliziert das Vorgehen von Raturi et al.\ \cite{raturi2026exploratory}, die
+\pca{} als Dimensionsreduktionstechnik einsetzen, und von Alharby~\cite{alharby2025ciciot},
+der \pca{} auf demselben Datensatz anwendet.
+
+\textbf{Pipeline~B} verzichtet vollstaendig auf \pca{}.
+Sie besteht aus SimpleImputer und StandardScaler.
+Alle 39 Originalmerkmale bleiben erhalten.
+Da \shap{}-Werte auf den originalen Merkmalsnamen basieren, sind die Erklaerungen fuer
+Sicherheitsanalysten unmittelbar semantisch interpretierbar~\cite{mohale2025xai}.
+
+\subsection{Klassifikationsarchitektur}
+
+Als Klassifikationsarchitektur wird der zweistufige hierarchische Ansatz aus Raturi et al.\
+\cite{raturi2026exploratory} uebernommen.
+In Stufe~1 erfolgt eine binaere Klassifikation zwischen DoS/DDoS-Verkehr und
+Nicht-DoS-Verkehr.
+In Stufe~2 werden die Nicht-DoS-Instanzen in die verbleibenden Kategorien eingeordnet:
+Mirai, Reconnaissance, Spoofing, Brute-Force, Web-based Attacks und Benign.
+Dieser Ansatz adressiert das Klassenungleichgewicht strukturell, da die dominanten DoS- und
+DDoS-Klassen in einer separaten binaeren Klassifikationsstufe behandelt werden, bevor die
+Mehrklassenklassifikation der zahlenmaeßig unterrepraesentierten Kategorien erfolgt.
+
+Stufe~2 wird ausschliesslich auf den wahren Nicht-DoS-Trainingsinstanzen trainiert.
+Dadurch wird verhindert, dass Klassifikationsfehler aus Stufe~1 in das Training von Stufe~2
+einfliessen.
+
+\subsection{Modellwahl}
+
+Als Hauptmodell wird \gb{} implementiert.
+Erstens erzielt \gb{} in Raturi et al.\ \cite{raturi2026exploratory} die hoechste \ba{} in
+der Mehrklassenklassifikation auf dem CICIoT2023-Datensatz.
+Zweitens sind \gb{}-Modelle vollstaendig kompatibel mit dem SHAP-TreeExplainer, der native
+und exakte \shap{}-Werte ohne Approximation berechnet~\cite{mohale2025xai,hermosilla2025xai_forensic}.
+
+\subsection{Evaluationsmetriken}
+
+Die primaere Bewertungsmetrik ist die \ba{}, die in Raturi et al.\ \cite{raturi2026exploratory}
+als geeignete Metrik fuer den unausgewogenen CICIoT2023-Datensatz vorgeschlagen wird.
+Sie ist definiert als arithmetisches Mittel der klassenspezifischen Recall-Werte und ist robust
+gegenueber Klassenungleichgewicht.
+Hosseini et al.\ \cite{hosseini2025imbalance} begruenden empirisch, warum einfache Accuracy
+bei unausgewogenen \ids{}-Datensaetzen als alleinige Metrik ungenuegend ist.
+Als sekundaere Metriken werden der F1-Score makro-gemittelt, Precision und Recall pro Klasse
+sowie Konfusionsmatrizen erhoben.
+
+\subsection{Ablation Study}
+
+Die Ablation Study vergleicht Pipeline~A (mit \pca{}) und Pipeline~B (ohne \pca{}) unter
+identischen Modellparametern.
+Untersucht werden der Einfluss der \pca{} auf die \ba{} beider Klassifikationsstufen sowie
+auf die \shap{}-Feature-Importance-Ranglisten.
+Alharby~\cite{alharby2025ciciot} liefert Vergleichswerte fuer \pca{}-basierte Klassifikation
+auf dem CICIoT2023-Datensatz.
+
+Da \pca{}-Hauptkomponenten lineare Kombinationen der Originalmerkmale sind, verliert jede
+Komponente die direkte semantische Bedeutung eines konkreten Netzwerkmerkmals.
+Die Ablation Study prueft, ob dieser Verlust an Interpretierbarkeit durch eine verbesserte
+Modellleistung aufgewogen wird.
+
+\subsection{SHAP-Integration}
+
+\shap{} wird ausschliesslich als post-hoc-Erklaerungskomponente eingesetzt.
+Die Analyse erfolgt auf zwei Ebenen in Anlehnung an Mohale und Obagbuwa~\cite{mohale2025xai}.
+
+Auf \textbf{globaler Ebene} werden Feature-Importance-Ranglisten pro Angriffsklasse erzeugt,
+basierend auf dem Betragsmittelwert der \shap{}-Werte ueber alle Testinstanzen.
+
+Auf \textbf{lokaler Ebene} werden Einzelfallanalysen ausgewaehlter Fehlklassifikationen
+durchgefuehrt.
+
+Die Qualitaet der \shap{}-Erklaerungen wird anhand der Bewertungsmetriken aus Hermosilla et
+al.\ \cite{hermosilla2025xai_forensic} ueberprueft: Fidelitaet, Konsistenz und
+Jaccard-Aehnlichkeit.
+Die abschliessende semantische Validierung vergleicht die identifizierten
+Feature-Importance-Ranglisten mit dem Fachwissen ueber die Netzwerksignaturen der jeweiligen
+Angriffstypen gemaess Neto et al.\ \cite{neto2023ciciot2023}.

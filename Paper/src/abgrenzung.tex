@@ -1,0 +1,17 @@
+\section{Abgrenzung des Themas}\label{abgrenzung}
+
+Die vorliegende Arbeit konzentriert sich bewusst auf einen klar definierten Forschungsbereich und grenzt sich von benachbarten Themenfeldern wie folgt ab.
+
+Es wird kein verpflichtender Modellvergleich durchgeführt. Ein einziges Hauptmodell wird vollständig implementiert, evaluiert und durch SHAP analysiert. Ein zweites Modell ist ausschließlich als optionale Erweiterung vorgesehen, falls die verfügbare Zeit und der Projektumfang es erlauben. Die wissenschaftliche Qualität der Arbeit ist nicht von der Anzahl implementierter Modelle abhängig.
+
+Die Arbeit stellt keine Reproduktion des Ausgangspapers von Raturi et al. (2026) dar. Das Ausgangspaper dient als konzeptioneller Ausgangspunkt und Referenz für die Identifikation der Forschungslücke, nicht als Vorlage zum Nachbauen.
+
+Es werden keine Deep-Learning-Architekturen implementiert. LSTM-Netzwerke, Convolutional Neural Networks, Autoencoder und Transformer-Modelle werden nicht berücksichtigt. Der Fokus liegt auf interpretierbaren baumbasierten Modellen, weil ausschließlich diese native SHAP-Werte über den TreeExplainer ohne Approximationen liefern.
+
+Es wird keine Echtzeit-Implementierung entwickelt. Das System wird als wissenschaftliches Analysewerkzeug konzipiert, nicht als produktionsbereites IDS für den operativen Einsatz.
+
+Es werden keine Latenzmessungen durchgeführt. Inferenzzeit, CPU-Last und Speicherbedarf für den Einsatz auf ressourcenbeschränkten IoT-Geräten werden nicht gemessen. Diese Limitation wird im Ausblick der Arbeit explizit benannt.
+
+Es werden keine Adversarial Robustness Tests durchgeführt. Die Robustheit der Modelle gegenüber gezielten Angriffen auf das ML-System selbst ist nicht Gegenstand dieser Arbeit.
+
+Es werden ausschließlich die Daten des CICIoT2023-Datensatzes verwendet. Keine eigene Datenerhebung und kein Einsatz weiterer Datensätze sind vorgesehen.

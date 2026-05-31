@@ -1,0 +1,234 @@
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix-2020-09}
+
+\begin{document}
+
+\date{}
+\title{\Large \bf Related Work}
+\author{{\rm Jordan Guimfack Jeuna}\\Hochschule Bremerhaven}
+\maketitle
+
+\section{Related Work}
+\label{sec:related}
+
+Die Erkennung von Cyberangriffen in IoT-Netzwerken mittels Machine
+Learning ist ein aktives Forschungsfeld, in dem realistische Benchmarks,
+robuste Bewertungsmetriken und Erklärbarkeit zunehmend an Bedeutung
+gewinnen. Die folgende Darstellung gliedert die relevante Literatur in
+vier thematische Schwerpunkte.
+
+\subsection{Datensatz und Benchmark}
+
+Die empirische Grundlage dieser Arbeit bildet der CICIoT2023-Datensatz
+von Neto et al.~\cite{neto2023ciciot2023}, der Netzwerkverkehr von 105
+realen IoT-Geräten unter 33 Angriffsbedingungen in sieben Kategorien
+erfasst: DDoS, DoS, Mirai, Reconnaissance, Spoofing, Brute-Force und
+Web-based Attacks. Da alle Angriffe ausschließlich von IoT-Geräten gegen
+IoT-Geräte ausgeführt wurden, bildet der Datensatz reale
+Bedrohungsszenarien besonders realitätsnah ab, was ihn gegenüber
+synthetischen Alternativen auszeichnet. Gleichzeitig weist er ein
+ausgeprägtes Klassenungleichgewicht auf, das methodische Sorgfalt bei
+der Modellbewertung erfordert.
+
+\subsection{ML-basierte Angriffserkennung und Klassenungleichgewicht}
+
+Surveys von Hamedani et al.~\cite{hamedani2025iotsurvey} sowie
+Kikissagbe und Adda~\cite{kikissagbe2024review} belegen die breite
+Nutzung ML-basierter IDS im IoT und heben baumbasierte
+Ensemble-Methoden als konsistent leistungsstärkste Klasse hervor,
+während Interpretierbarkeit und Ressourceneffizienz als weiterhin offene
+Herausforderungen identifiziert werden.
+
+Auf CICIoT2023 evaluieren Raturi et al.~\cite{raturi2026exploratory}
+mehrere ML-Algorithmen und zeigen, dass Gradient Boosting in der
+Mehrklassenklassifikation die höchste Balanced Accuracy erzielt. Als
+konzeptioneller Ausgangspunkt dieser Arbeit benennen sie drei
+methodische Lücken: fehlende Erklärbarkeit, fehlende
+Fehlerfortpflanzungsanalyse und fehlende Latenzmessungen. Die
+vorliegende Arbeit adressiert die erste dieser Lücken eigenständig
+durch eine vollständige SHAP-Integration. Almahaqeri et
+al.~\cite{almahaqeri2026gradient} evaluieren Gradient Boosting auf
+demselben Datensatz mit stratifiziertem Undersampling als alternative
+Imbalance-Strategie; Alharby~\cite{alharby2025ciciot} setzt zusätzlich
+PCA als Dimensionsreduktionstechnik ein und liefert durch dokumentierte
+Trainings- und Vorhersagezeiten realistische Vergleichswerte für die
+eigene Ablation Study.
+
+Hosseini et al.~\cite{hosseini2025imbalance} zeigen systematisch, dass
+einfache Accuracy bei unausgewogenen Datensätzen zu verzerrten Urteilen
+führt, da Modelle, die seltene Angriffsklassen ignorieren, rechnerisch
+hohe Werte erzielen können. Raturi et al.~\cite{raturi2026exploratory}
+belegen dies empirisch: ein Hidden Markov Model erreicht zwar
+Recall~0{,}999 für DoS-Angriffe, lässt dabei jedoch 87\,\% aller
+Nicht-DoS-Angriffe unerkannt. Sie schlagen daher Balanced Accuracy als
+fairere Bewertungsgrundlage vor, einen Ansatz, den die vorliegende
+Arbeit als primäre Metrik übernimmt.
+
+\subsection{Erklärbarkeit und Forschungslücke}
+
+Ein PRISMA-basierter Review von 129 Studien durch Ogunseyi et
+al.~\cite{ogunseyi2026xai_review} belegt, dass SHAP und LIME in
+98\,\% aller XAI-IDS-Arbeiten eingesetzt werden, ohne die
+Erkennungsgenauigkeit zu beeinträchtigen, was die SHAP-Integration der
+vorliegenden Arbeit wissenschaftlich begründet. Mohale und
+Obagbuwa~\cite{mohale2025xai} belegen auf einem IDS-Datensatz, dass
+SHAP konsistentere Erklärungen als LIME und ELI5 liefert und verborgene
+Schwächen aufdeckt, die reine Accuracy-Metriken verbergen. Ihre Arbeit
+dient als direkte methodische Vorlage für die eigene SHAP-Analyse.
+Hermosilla et al.~\cite{hermosilla2025xai_forensic} quantifizieren die
+Erklärungsqualität mit den Metriken Fidelität, Konsistenz und
+Jaccard-Ähnlichkeit auf XGBoost- und TabNet-Modellen und zeigen, dass
+SHAP LIME in Fidelität und Konsistenz übertrifft. Diese Kriterien
+fundieren die semantische Validierung der SHAP-Ergebnisse in der
+vorliegenden Arbeit.
+
+Die Analyse der Literatur offenbart eine direkt belegbare
+Forschungslücke: Keine der identifizierten Studien vereint auf
+CICIoT2023 gleichzeitig Balanced Accuracy als primäre Metrik, eine
+SHAP-Integration und eine Ablation Study zum Einfluss der
+PCA-Reduktion. Raturi et al.~\cite{raturi2026exploratory} verwenden
+Balanced Accuracy auf CICIoT2023, verzichten aber auf jede Form der
+Erklärbarkeitsanalyse. Almahaqeri et al.~\cite{almahaqeri2026gradient}
+und Alharby~\cite{alharby2025ciciot} integrieren weder Balanced
+Accuracy als primäre Metrik noch eine SHAP-Komponente. Mohale und
+Obagbuwa~\cite{mohale2025xai} sowie Hermosilla et
+al.~\cite{hermosilla2025xai_forensic} liefern fundierte SHAP-Analysen,
+arbeiten jedoch nicht auf CICIoT2023. Die vorliegende Arbeit schließt
+diese Lücke, indem sie einen Gradient-Boosting-Klassifikator auf
+CICIoT2023 mit Balanced Accuracy und einer vollständigen SHAP-Analyse
+auf beiden Klassifikationsstufen verbindet.
+
+\begin{thebibliography}{10}
+
+\bibitem{neto2023ciciot2023}
+E.~C.~P. Neto, S.~Dadkhah, R.~Ferreira, A.~Zohourian, R.~Lu, and
+  A.~A. Ghorbani.
+\newblock CICIoT2023: A Real-Time Dataset and Benchmark for Large-Scale
+  Attacks in IoT Environment.
+\newblock \emph{Sensors}, 23(13):5941, 2023. doi:10.3390/s23135941.
+  \url{https://www.mdpi.com/1424-8220/23/13/5941}.
+\newblock \textit{Wissenschaftliche Grundlage der Datenbeschreibung.
+  Beantwortet die Frage: Wie wurde der CICIoT2023-Datensatz aufgebaut,
+  welche IoT-Geräte und Angriffstypen sind enthalten, und warum ist er
+  ein valider Benchmark?}
+
+\bibitem{hamedani2025iotsurvey}
+P.~Hamedani et~al.
+\newblock Machine Learning-Based Security Solutions for IoT Networks:
+  A Comprehensive Survey.
+\newblock \emph{Sensors}, 25(11):3341, 2025. doi:10.3390/s25113341.
+  \url{https://www.mdpi.com/1424-8220/25/11/3341}.
+\newblock \textit{Survey über ML-basierte Sicherheitslösungen für IoT
+  (2020--2024). Beantwortet die Frage: Warum ist ML-basierte
+  Angriffserkennung für IoT ein relevantes und aktives Forschungsfeld,
+  und welche methodischen Lücken bestehen noch? Wird im Theorieteil zur
+  Motivation des Forschungsthemas verwendet.}
+
+\bibitem{kikissagbe2024review}
+B.~R. Kikissagbe and M.~Adda.
+\newblock Machine Learning-Based Intrusion Detection Methods in IoT
+  Systems: A Comprehensive Review.
+\newblock \emph{Electronics}, 13(18):3601, 2024.
+  doi:10.3390/electronics13183601.
+  \url{https://www.mdpi.com/2079-9292/13/18/3601}.
+\newblock \textit{Systematischer Review über supervised, unsupervised
+  und hybride ML-Ansätze für IoT-IDS. Beantwortet die Frage: Welchen
+  Platz nehmen baumbasierte Ensemble-Methoden im aktuellen
+  Forschungsstand zu ML-basierten IDS für IoT ein, und wie wird die
+  eigene Modellwahl theoretisch verankert?}
+
+\bibitem{raturi2026exploratory}
+A.~Raturi, R.~Aryan, and P.~Prashant.
+\newblock An Exploratory Study on Application of Machine Learning in
+  Detecting Cyberattacks.
+\newblock \emph{Security and Privacy}, 9:e70220, 2026.
+  doi:10.1002/spy2.70220.
+  \url{https://onlinelibrary.wiley.com/doi/10.1002/spy2.70220}.
+\newblock \textit{Ausgangspaper der Arbeit. Konzeptioneller Startpunkt,
+  kein Reproduktionsziel. Benennt drei methodische Lücken: fehlende
+  Erklärbarkeit, fehlende Fehlerfortpflanzungsanalyse, fehlende
+  Latenzmessungen. Die eigene Arbeit adressiert Lücke 1 eigenständig
+  durch SHAP-Integration.}
+
+\bibitem{almahaqeri2026gradient}
+S.~A. Almahaqeri, M.~H. Almourish, A.~A. Nasser, A.~A.~K. Elsayed,
+  and A.~N. Alhejoj.
+\newblock An Optimized Gradient Boosting Framework for IoT Intrusion
+  Detection: A Comprehensive Evaluation on the CICIoT2023 Dataset.
+\newblock \emph{Scientific Reports}, 2026. doi:10.1038/s41598-026-47399-5.
+  \url{https://www.nature.com/articles/s41598-026-47399-5}.
+\newblock \textit{Gleicher Datensatz (CICIoT2023), gleiche
+  Modellkategorie (Gradient Boosting), andere Strategie für
+  Klassenungleichgewicht (stratifiziertes Undersampling). Beantwortet
+  die Frage: Wie unterscheidet sich die eigene hierarchische
+  Klassifikation von alternativen Imbalance-Strategien auf demselben
+  Datensatz?}
+
+\bibitem{alharby2025ciciot}
+M.~Alharby.
+\newblock Evaluating Machine Learning Approaches for Multiple Attack
+  Classification with Improved Computational Efficiency in IoT Networks.
+\newblock \emph{Scientific Reports}, 15:39914, 2025.
+  doi:10.1038/s41598-025-23711-7.
+  \url{https://www.nature.com/articles/s41598-025-23711-7}.
+\newblock \textit{Evaluiert Gradient Boosting und Decision Tree auf
+  CICIoT2023 mit PCA als Dimensionsreduktion und misst Trainings- sowie
+  Vorhersagezeiten. Beantwortet die Frage: Wie wirkt sich PCA auf die
+  Leistung baumbasierter Modelle auf dem CICIoT2023-Datensatz aus, und
+  was sind realistische Vergleichswerte für die eigene Ablation Study?}
+
+\bibitem{hosseini2025imbalance}
+S.~S. Hosseini et~al.
+\newblock Addressing Class Imbalance in Intrusion Detection: A
+  Comprehensive Evaluation of Machine Learning Approaches.
+\newblock \emph{Electronics}, 14(1):69, 2025.
+  doi:10.3390/electronics14010069.
+  \url{https://www.mdpi.com/2079-9292/14/1/69}.
+\newblock \textit{Evaluiert ML-Algorithmen unter verschiedenen Graden
+  von Klassenungleichgewicht in IDS-Datensätzen. Beantwortet die Frage:
+  Welche messbaren Konsequenzen hat Klassenungleichgewicht auf die
+  Modellleistung, und warum ist Accuracy allein als Metrik ungenügend?
+  Direkte Grundlage für Teilfrage 1 der eigenen Arbeit.}
+
+\bibitem{ogunseyi2026xai_review}
+T.~B. Ogunseyi, G.~Thiyagarajan, H.~He, V.~Bist, and Z.~Du.
+\newblock Performance Analysis of Explainable Deep Learning-Based
+  Intrusion Detection Systems for IoT Networks: A Systematic Review.
+\newblock \emph{Sensors}, 26(2):363, 2026. doi:10.3390/s26020363.
+  \url{https://www.mdpi.com/1424-8220/26/2/363}.
+\newblock \textit{PRISMA-Review von 129 Studien (2018--2025). Belegt,
+  dass SHAP in 98 Prozent der XAI-IDS-Studien eingesetzt wird ohne
+  Genauigkeitseinbußen. Beantwortet die Frage: Ist die
+  SHAP-Integration wissenschaftlich begründet und verbreitet in der
+  IDS-Literatur?}
+
+\bibitem{mohale2025xai}
+V.~Z. Mohale and I.~C. Obagbuwa.
+\newblock Evaluating Machine Learning-Based Intrusion Detection Systems
+  with Explainable AI: Enhancing Transparency and Interpretability.
+\newblock \emph{Frontiers in Computer Science}, 7:1520741, 2025.
+  doi:10.3389/fcomp.2025.1520741.
+  \url{https://www.frontiersin.org/journals/computer-science/articles/10.3389/fcomp.2025.1520741/full}.
+\newblock \textit{Direkte methodische Vorlage für die SHAP-Integration.
+  Zeigt konkret, wie globale und lokale SHAP-Analysen in einem
+  IDS-Klassifikationsexperiment umgesetzt werden. Beantwortet die Frage:
+  Wie sieht eine wissenschaftlich fundierte XAI-Analyse in einem
+  IDS-Experiment aus?}
+
+\bibitem{hermosilla2025xai_forensic}
+P.~Hermosilla, S.~Berr{\'i}os, and H.~Allende-Cid.
+\newblock Explainable AI for Forensic Analysis: A Comparative Study of
+  SHAP and LIME in Intrusion Detection Models.
+\newblock \emph{Applied Sciences}, 15(13):7329, 2025.
+  doi:10.3390/app15137329.
+  \url{https://www.mdpi.com/2076-3417/15/13/7329}.
+\newblock \textit{Vergleicht SHAP und LIME auf XGBoost und TabNet im
+  Kontext der Intrusion Detection. Führt konkrete Metriken zur Bewertung
+  der Erklärungsqualität ein: Fidelität, Konsistenz und
+  Jaccard-Ähnlichkeit. Beantwortet die Frage: Wie lässt sich die
+  Qualität von SHAP-Erklärungen quantitativ und systematisch bewerten?
+  Direkte Grundlage für die semantische Validierung in Teilfrage 3.}
+
+\end{thebibliography}
+
+\end{document}

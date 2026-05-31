@@ -1,0 +1,11 @@
+\section{Erwartete Ergebnisse}\label{erwartete_ergebnisse}
+
+Auf Grundlage der analysierten Literatur und der gewählten Methodik werden folgende Ergebnisse erwartet:
+
+Das Gradient-Boosting-Modell wird auf dem CICIoT2023-Datensatz eine hohe Balanced Accuracy erzielen, die im Bereich der von Raturi et al. (2026) berichteten Werte von 0,95 liegt, unter der Maßgabe, dass ähnliche Vorverarbeitungsschritte angewendet werden \cite{raturi2026exploratory}.
+
+Der Vergleich von Accuracy und Balanced Accuracy wird zeigen, dass einfache Accuracy bei diesem stark unausgewogenen Datensatz ein systematisch verzerrtes Bild der Modellleistung liefert. Es wird erwartet, dass bestimmte Angriffsklassen trotz hoher Gesamt-Accuracy eine deutlich geringere klassenspezifische Erkennungsrate aufweisen.
+
+Die Ablation Study wird belegen, dass die PCA-Reduktion von 46 auf 16 Merkmale einen messbaren Einfluss auf die Feature-Importance-Ranglisten der SHAP-Analyse hat, da die Hauptkomponenten lineare Kombinationen der Originalmerkmale darstellen und die semantische Interpretierbarkeit der Erklärungen einschränken.
+
+Die SHAP-Analyse wird zeigen, dass das Gradient-Boosting-Modell tatsächlich sicherheitsrelevante Netzwerkmerkmale lernt, deren Bedeutung mit dem Fachwissen über die jeweiligen Angriffstypen übereinstimmt. Für DoS-Angriffe werden beispielsweise Merkmale wie Paketrate und Verbindungsfrequenz erwartet, für Spoofing-Angriffe hingegen Merkmale im Zusammenhang mit Protokollfeldern und Quell-Adressen.

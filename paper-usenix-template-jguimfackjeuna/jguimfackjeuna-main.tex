@@ -1,0 +1,72 @@
+%-----------------------------------------------------------------------------
+% Hauptdatei -- USENIX 2019 Zweispaltenformat
+% Seminararbeit IT-Sicherheit, M.Sc. IVS, Hochschule Bremerhaven
+% Autor: Jordan Guimfack Jeuna (38184)
+% Kompilierung: pdflatex (lokal) oder LuaLaTeX via buildlualatex.sh (remote)
+%-----------------------------------------------------------------------------
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix-2020-09}
+
+%--- Sprache und Zeichenkodierung ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+%--- Typografie ---
+\usepackage{microtype}
+
+%--- Tabellen ---
+\usepackage{booktabs}
+
+%--- Mathematik ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%--- Hyperlinks (Bookmarks deaktiviert: vermeidet "end occurred inside a group") ---
+\usepackage[bookmarks=false,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+
+%--- Abkuerzungen ---
+\newcommand{\shap}{SHAP}
+\newcommand{\pca}{PCA}
+\newcommand{\ba}{Balanced Accuracy}
+\newcommand{\gb}{Gradient Boosting}
+\newcommand{\iot}{IoT}
+\newcommand{\ids}{IDS}
+
+%=============================================================================
+\begin{document}
+\date{}
+
+\title{\Large \bf
+  Erklaerbare Erkennung von Cyberangriffen in IoT-Netzwerken:\\
+  Entwicklung und Evaluation eines Gradient-Boosting-Klassifikators\\
+  mit SHAP-Analyse auf dem CICIoT2023-Datensatz
+}
+
+\author{
+  {\rm Jordan Guimfack Jeuna}\\
+  Hochschule Bremerhaven\\
+  Studiengang M.Sc. Informatik -- Vertrauenswuerdige Systeme\\
+  Modul IT-Sicherheit, Prof.\ Dr.\ Lars Fischer
+}
+
+\maketitle
+
+%--- Abstract ---
+\begin{abstract}
+\input{jguimfackjeuna-abstract}
+\end{abstract}
+
+%--- Kapitel ---
+\input{jguimfackjeuna-introduction}
+\input{jguimfackjeuna-related-work}
+\input{jguimfackjeuna-methodik}
+\input{jguimfackjeuna-evaluation}
+\input{jguimfackjeuna-discussion}
+\input{jguimfackjeuna-conclusion}
+
+%--- Literaturverzeichnis ---
+{\footnotesize \bibliographystyle{plain}
+\bibliography{references}}
+
+\end{document}

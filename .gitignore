@@ -1,0 +1,103 @@
+# =============================================================
+# CRITIQUE : dataset 8,5 GB -- ne jamais commiter
+# =============================================================
+Dataset/
+
+# =============================================================
+# Python
+# =============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+wheels/
+*.spec
+
+# Environnements virtuels
+Backend/.venv/
+.venv/
+venv/
+env/
+ENV/
+
+# =============================================================
+# Modeles ML (binaires volumineux)
+# =============================================================
+Backend/models_artifacts/*.pkl
+Backend/models_artifacts/*.joblib
+
+# Donnees traitees (regenerables)
+Backend/data/processed/
+Backend/data/raw/
+
+# Logs d'entrainement (bruyants, regenerables)
+Backend/results/logs/
+
+# Couverture de tests
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# =============================================================
+# Variables d'environnement
+# =============================================================
+.env
+.env.*
+!.env.example
+
+# =============================================================
+# LaTeX -- fichiers de compilation
+# =============================================================
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.lol
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+_minted*/
+Paper/log/
+paper-usenix-template-jguimfackjeuna/log/
+
+# PDFs generes (regenerables via buildlualatex.sh)
+Paper/hauptdatei.pdf
+Paper/jguimfackjeuna-related-work.pdf
+paper-usenix-template-jguimfackjeuna/*.pdf
+
+# =============================================================
+# OS / IDE
+# =============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# =============================================================
+# Jupyter
+# =============================================================
+.ipynb_checkpoints/
+Backend/notebooks/.ipynb_checkpoints/

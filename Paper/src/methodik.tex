@@ -1,0 +1,21 @@
+\section{Methodik}\label{methodik}
+
+\subsection{Klassifikationsarchitektur}
+
+Als Klassifikationsarchitektur wird der zweistufige hierarchische Ansatz aus Raturi et al. \cite{raturi2026exploratory} übernommen. In Stufe 1 erfolgt eine binäre Klassifikation zwischen DoS/DDoS-Verkehr und Nicht-DoS-Verkehr. In Stufe 2 werden die Nicht-DoS-Instanzen in die verbleibenden Kategorien eingeordnet \cite{raturi2026exploratory}. Dieser Ansatz adressiert das Klassenungleichgewicht strukturell, da die dominanten DoS- und DDoS-Klassen in einer separaten binären Klassifikationsstufe behandelt werden, bevor die Mehrklassenklassifikation der zahlenmäßig unterrepräsentierten Kategorien erfolgt. Die vorliegende Arbeit übernimmt diesen Rahmen und erweitert ihn um eine vollständige SHAP-Analyse auf beiden Klassifikationsstufen.
+
+\subsection{Modellwahl}
+
+Als Hauptmodell wird Gradient Boosting implementiert. Diese Wahl beruht auf zwei dokumentierten Befunden. Erstens erzielt Gradient Boosting in Raturi et al. \cite{raturi2026exploratory} die höchste Balanced Accuracy in der Mehrklassenklassifikation auf dem CICIoT2023-Datensatz unter den dort evaluierten Modellen. Zweitens unterstützen Mohale und Obagbuwa \cite{mohale2025xai} sowie Hermosilla et al. \cite{hermosilla2025xai_forensic} die Verwendung von Gradient-Boosting-Varianten wie XGBoost, da diese über den TreeExplainer mit nativen SHAP-Berechnungen kompatibel sind. Ein Decision Tree kann als optionales Vergleichsmodell hinzugezogen werden, sofern die verfügbare Zeit es erlaubt.
+
+\subsection{Evaluationsmetriken}
+
+Die primäre Bewertungsmetrik ist die Balanced Accuracy, die in Raturi et al. \cite{raturi2026exploratory} als geeignete Metrik für den unausgewogenen CICIoT2023-Datensatz vorgeschlagen wird und deren Notwendigkeit Hosseini et al. \cite{hosseini2025imbalance} empirisch begründen. Sie ist definiert als arithmetisches Mittel der klassenspezifischen Recall-Werte und ist robust gegenüber Klassenungleichgewicht. Als sekundäre Metriken werden der F1-Score makro-gemittelt, Precision und Recall pro Klasse sowie Konfusionsmatrizen erhoben. Diese Metriken entsprechen dem in der Literatur etablierten Standard für IDS-Evaluationen \cite{raturi2026exploratory,almahaqeri2026gradient,alharby2025ciciot}.
+
+\subsection{Ablation Study}
+
+Eine Ablation Study vergleicht die Modellleistung unter zwei Bedingungen: mit PCA-Reduktion von 46 auf 16 Hauptkomponenten (Pipeline A) und ohne PCA mit allen 46 Originalmerkmalen (Pipeline B). Vergleichswerte für PCA-basierte Klassifikation auf dem CICIoT2023-Datensatz finden sich in Alharby \cite{alharby2025ciciot}. Die Ablation Study untersucht zusätzlich den Einfluss der PCA auf die SHAP-Feature-Importance-Ranglisten, da Hauptkomponenten als lineare Kombinationen der Originalmerkmale die semantische Interpretierbarkeit der Erklärungen einschränken.
+
+\subsection{SHAP-Integration}
+
+SHAP wird auf zwei Ebenen eingesetzt, in Anlehnung an Mohale und Obagbuwa \cite{mohale2025xai}. Auf globaler Ebene werden Feature-Importance-Ranglisten pro Angriffsklasse erzeugt, die zeigen, welche der 46 Netzwerkmerkmale die Klassifikation von DDoS, Mirai oder Brute-Force am stärksten treiben. Auf lokaler Ebene werden Einzelfallanalysen ausgewählter Klassifikationen durchgeführt. Die Qualität der SHAP-Erklärungen wird anhand der quantitativen Bewertungsmetriken aus Hermosilla et al. \cite{hermosilla2025xai_forensic} überprüft, namentlich Fidelität, Konsistenz und Jaccard-Ähnlichkeit. Die abschließende semantische Validierung vergleicht die identifizierten Feature-Importance-Ranglisten mit dem Fachwissen über die Netzwerksignaturen der jeweiligen Angriffstypen.

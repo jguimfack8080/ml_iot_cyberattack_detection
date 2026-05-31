@@ -1,0 +1,295 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                 %
+%                 Packages / Grundeinstellungen                   %
+%                                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Erstellen eines PDF/A 4 
+\DocumentMetadata{
+    pdfversion=2.0,
+    pdfstandard=A-4,
+    lang=de,
+}
+
+% Festlegung des Allgemeinen Dokumentenformat
+\documentclass[a4paper,12pt,parskip=half,headsepline,DIV=12,numbers=noenddot]{scrartcl}
+
+%%%%%% Muss in die documentclass %%%%%%%%
+%BCOR=12mm, Korrektur fuer die Bindung
+%DIV12 DIV-Wert fuer die Erstellung des Satzspiegels
+
+% Keine floats in andere Sections
+\usepackage[section]{placeins}
+% Weitere Pakete
+\usepackage{microtype}
+\usepackage{caption}
+\captionsetup[listing]{
+  aboveskip=0.25cm, % Abstand direkt vor dem Float
+  belowskip=0.2cm  % Abstand direkt nach dem Float
+}
+\usepackage{pdflscape}
+\usepackage{float}
+\usepackage{tabularray}
+\UseTblrLibrary{booktabs}
+
+% Grafiken aus PNG Dateien einbinden
+\usepackage{graphicx}
+
+% Deutsche Sonderzeichen und Silbentrennung nutzen
+\usepackage[ngerman]{babel}
+\usepackage{blindtext}
+
+% Eurozeichen einbinden
+\usepackage[right]{eurosym}
+
+% Kopf- und Fußzeilen
+\usepackage[headsepline,autooneside=false]{scrlayer-scrpage}
+\clearpairofpagestyles
+
+% Schriftart 
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Adventor}
+
+% Floatende Bilder ermöglichen
+\usepackage{floatflt}
+
+% tikz
+\usepackage{tikz}
+\usetikzlibrary{calc,arrows,math}
+\usetikzlibrary{shapes.geometric,positioning}
+
+%% Schaltpläne nach europäischen Richtlinien
+\usepackage[european]{circuitikz}
+\tikzset{x=1mm,y=1mm}
+
+% Bricht lange URLs "schön" um
+\usepackage[hyphens,obeyspaces,spaces]{url}
+
+% Paket für Textfarben
+\usepackage{xcolor} 
+\definecolor{LightGray}{gray}{0.9}
+\usepackage[pagecolor=white]{pagecolor}
+
+% Mathematische Symbole importieren
+\usepackage{amssymb}
+
+% Paket für Zeilenabstand
+\usepackage{setspace}
+
+% Für Stichwortverzeichnis
+\usepackage{makeidx}
+
+% Für if und while 
+\usepackage{etoolbox}
+
+% Für schönere Listings
+\usepackage[newfloat]{minted}
+\setminted{
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines=true,
+  breakanywhere=true,
+  autogobble,
+  tabsize=2,
+  listparameters=
+    \setlength{\topsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\parsep}{0pt}
+}
+
+%% Mehrzeilige inline Codeblöcke können nur mit bgcolor=none umgesetzt werden.
+\setmintedinline{breakanywhere=false, breaklines=true, bgcolor=LightGray}
+
+% Abkürzungsverzeichnis
+\usepackage[printonlyused, smaller, withpage]{acronym}
+
+% Erzeugt Inhaltsverzeichnis mit Querverweisen zu den Abschnitten (PDF Version)
+\usepackage[bookmarksnumbered,hyperfootnotes=false,hypertexnames=false]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=blue,
+    citecolor = black,      
+    urlcolor=blue,
+    bookmarks=false,
+}
+
+% Darf erst hier eingebunden werden! 
+\usepackage{subfiles}
+\usepackage{csquotes}
+
+% Indexerstellung
+\makeindex
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                 %                    
+%                   Definition Zitierstil                         %
+%                                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Zitierung nach IEEE
+
+\usepackage[
+backend=biber,
+style=ieee,
+autocite=inline,
+]{biblatex}
+\addbibresource{bibtex/hauptdatei.bib}
+
+% Zitierung nach APA
+
+%\usepackage[
+%backend=biber,
+%style=apa,
+%autocite=inline,
+%]{biblatex}
+%\addbibresource{bibtex/hauptdatei.bib}
+
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                 %                    
+%                    Definition Deckblatt                         %
+%                                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% true für Bachelorarbeit / false für Hausarbeit
+\newbool{bachelorarbeit}
+\setbool{bachelorarbeit}{false}
+
+% Setze Fachbereich
+\newcommand{\department}{Fachbereich II \\ Management und Informationssysteme}
+
+% Setze Studiengang
+\newcommand{\studyprogram}{Master Informatik – Vertrauenswürdige Systeme (IVS)}
+
+% Setze Modulname (bachelorarbeit muss false sein)
+\newcommand{\modulname}{IT-Sicherheit}
+
+% Setze Dozent:in (bachelorarbeit muss false sein)
+% Gender muss im Deckblatt angepasst werden
+\newcommand{\auditor}{Prof. Dr. Lars Fischer}
+
+% Setze Gutachter:innen (bachelorarbeit muss true sein)
+% Gender muss im Deckblatt angepasst werden
+\newcommand{\firstauditor}{Prof. Dr.-Ing. Maxi Mustermann}
+\newcommand{\secondauditor}{Prof. Dr.-Ing Maxi Musterfrau}
+
+% Setze Titel und Untertitel der Abreit
+\newcommand{\thetitle}{Machine Learning zur Erkennung von Cyberangriffen in IoT-Netzwerken: Entwicklung und Evaluation eines erklärbaren Gradient-Boosting-Klassifikators mit SHAP-Analyse auf dem CICIoT2023-Datensatz}
+\newcommand{\thesubtitle}{}
+
+% Setze Autor:in und MatNr.
+\newcommand{\theauthor}{Jordan Guimfack Jeuna}
+\newcommand{\matriculationnumber}{38184}
+\newcommand{\authoremail}{jguimfackjeuna@hochschule.de}
+
+% Setze Schlüsselbegriffe
+\newcommand{\keywords}{Internet of Things (IoT), Intrusion Detection System (IDS), Machine Learning, Gradient Boosting, CICIoT2023, Balanced Accuracy, Klassenungleichgewicht, Explainable Artificial Intelligence (XAI), SHAP (SHapley Additive Explanations), Principal Component Analysis (PCA), Cyberangriffserkennung, Feature Importance, Netzwerksicherheit, Vertrauenswürdige Systeme, Anomalieerkennung}
+
+% Muss in src/basic_structure/deckblatt.tex einkommentiert werden!
+
+\newcommand{\secondauthor}{Maxi Mustermensch}
+\newcommand{\secondmatriculationnumber}{00000}
+\newcommand{\thirdauthor}{Maxi Mustermensch}
+\newcommand{\thirdmatriculationnumber}{00000}
+\newcommand{\fourthauthor}{Maxi Mustermensch}
+\newcommand{\fourthmatriculationnumber}{00000}
+
+% PDF Metadaten
+%\hypersetup{pdfinfo={
+%Title={\thetitle},
+%Author={\theauthor}
+%}}
+
+\hypersetup{pdfinfo={
+Title={\thetitle},
+Author={\theauthor}
+}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                 %                    
+%                     Beginn des Inhalts                          %
+%                                                                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Special Characters:                                            %
+%                                                                 %
+%             \& \% \$ \# \_ \{ \}                                %
+%             \textasciitilde (~)                                 %
+%             \textasciicircum (^)                                %     
+%             \textbackslash (\)                                  %                    
+%      \glqq Text\grqq{} für Anführungszeichen                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+
+% Definition Header Sections sollen in der Kopfzeile stehen; Kopfzeile mit Unterstrich
+\automark[subsection]{section}
+\KOMAoptions{headsepline=true}
+%\ihead{Kopfzeile innen}
+%\chead{Kopfzeile außen}
+\ohead{\headmark}
+
+% Definition footer \pagemark steht für Seitennummer
+%\ifoot{Fußzeile innen}
+%\cfoot{Fußzeile Mitte}
+\ofoot{\pagemark}
+
+% Hier werden die Trennvorschläge inkludiert
+\input{src/basic_structure/trennung.tex}
+
+% Leere Seite am Anfang
+%\thispagestyle{empty} % erzeugt Seite ohne Kopf- / Fusszeile
+%\mbox{}
+%\newpage
+
+% Titelseite 
+\input{src/basic_structure/deckblatt.tex}
+\newpage
+
+% Singlespacing (Zeilenabstand) (Default)
+\singlespacing
+\normalsize
+
+% Abstract falls gewünscht
+%\thispagestyle{empty}
+%\input{abstract}
+%\newpage
+
+% Kein Inhaltsverzeichnis für wissenschaftliches Paper
+\pagestyle{headings}
+
+% Header für den Inhalt 
+\KOMAoptions{headsepline=true}
+\ohead{\headmark}
+
+% Input Inhalt - 8-Kapitel-Struktur
+\input{src/abstract.tex}
+\input{src/einleitung.tex}
+\input{src/related_work.tex}
+\input{src/datenbasis.tex}
+\input{src/methodik.tex}
+\input{src/implementierung.tex}
+\input{src/evaluation.tex}
+\input{src/diskussion.tex}
+\input{src/fazit.tex}
+\newpage
+
+% Literaturverzeichnis anzeigen
+\ohead{Literaturverzeichnis} % Korrektur für Header 
+\phantomsection
+\addcontentsline{toc}{section}{Literaturverzeichnis}
+\renewcommand\refname{Literaturverzeichnis}
+\printbibliography
+
+\end{document}

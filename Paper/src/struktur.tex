@@ -1,0 +1,70 @@
+\section{Die Verzeichnisstruktur}\label{struktur}
+
+Wenn ihr das Template herunterladet und entpackt (dazu später mehr), dann liegt
+ein fertiges und kompilierbares \LaTeX~Projekt vor. Genau genommen liegt dieses
+Dokument inkl. aller Inhalte vor, lediglich das Deckblatt unterscheidet sich
+etwas von der Version, die ich euch zum Download anbiete. Ihr könnt also im
+Detail nochmal nachschauen, wie bestimmte Beispiele in \LaTeX~aussehen. Wenn
+das \texttt{tar} entpackt wird, liegt folgende Verzeichnisstruktur vor:
+
+\FloatBarrier
+\begin{figure}[!ht]
+	\dirtree{%
+		.1 /.
+		.2 beispiele.tex.
+		.2 bibtex/.
+		.3 hauptdatei.bib.
+		.2 buildlualatex.sh.
+		.2 hauptdatei.pdf.
+		.2 hauptdatei.tex.
+		.2 log/.
+		.2 src.
+		.3 abbildungen.
+		.4 logoneu.png.
+		.3 anhang/.
+		.4 abbildungen/.
+		.4 anhang.tex.
+		.4 anhang\_deckblatt.tex.
+		.3 basic\_structure/.
+		.4 abkuerzungen.tex.
+		.4 deckblatt.tex.
+		.4 erklaerung.tex.
+		.4 trennung.tex.
+		.3 einleitung.tex.
+		.3 fazit.tex.
+		.3 hauptabschnitt\_3.tex.
+		.3 struktur.tex.
+	}
+	\caption[Verzeichnisstruktur]{Verzeichnisstruktur}
+	\label{dirtree}
+\end{figure}
+\FloatBarrier
+
+In der \texttt{beispiele.tex} finden sich kleine snippets zu Tabellen, Listings,
+Abbildungen usw. Seht es als kleinen Spickzettel für den Alltag, für unser
+Projekt hat diese Datei erstmal keine Bedeutung.\\ Das \texttt{bibtex}
+Verzeichnis und die darin enthaltende Datei \texttt{hauptdatei.bib} sind Teil der
+Literaturverwaltung von \LaTeX, die wir uns später noch anschauen werden.\\ Das
+\texttt{buildlualatex.sh} Skript enthält den Programmaufruf zum Kompilieren
+unseres Projektes. Dieses Skript könnt ihr unverändert lassen, es enthält
+bereits alle notwendigen Befehle und kann zum Bauen einfach mittels
+\texttt{./buildlualatex.sh} ausgeführt werden.\\ Die \texttt{hauptdatei.pdf} ist
+das Resultat unseres Bauprozesses, dieses PDF lest ihr gerade. In der
+\texttt{haupt\-da\-tei\-.tex} werden alle Pakete eingebunden, das Grundlayout
+definiert, die Verzeichnisse gebaut und vor allem der eigentliche Inhalt
+eingebunden. Diese Datei werden wir uns im nächsten Abschnitt ausführlich
+anschauen.\\ Das \texttt{log} Verzeichnis enthält alle Log- und Metadateien, die
+beim Bauprozess erstellt werden, auch hiermit müssen wir uns nicht allzu viel
+beschäftigen.\\ Das \texttt{src} Verzeichnis enthält den eigentlichen Inhalt
+unseres PDFs. Es ist strukturiert durch die Verzeichnisse \texttt{abbildungen},
+für alle Grafiken, welche wir nutzen wollen, \texttt{anhang} für alle Inhalte
+und Abbildungen des Anhangs, \texttt{basic\_structure} für das Einbinden von
+Standarddateien wie Deckblatt, Selbstständigkeitserklärung, Trennvorschläge usw.
+und die \texttt{.tex} Dateien in welche unser eigentlicher Inhalt kommt. Dieser
+Text steht bspw. in der Datei \texttt{struktur.tex}.
+
+Wenn ihr in diesem Projekt arbeitet, werdet ihr zum größten Teil eure eigenen
+\texttt{.tex} Dateien und Abbildungen in \texttt{src} hinterlegen. Damit diese
+auch eingebunden und die korrekten Daten auf dem Deckblatt hinterlegt werden,
+widmen wir uns aber zunächst der \texttt{hauptdatei.tex}.
+

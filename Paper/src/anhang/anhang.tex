@@ -1,0 +1,141 @@
+\subsection{Die Poster}
+
+Passend zu diesem Template existieren noch zwei weitere Vorlagen für Poster. Diese unterscheiden
+sich lediglich durch die Ausrichtung der Seite und sind ansonsten identisch. Der Aufbau der
+Dateien und Projektstruktur ist weitestgehend identisch zu dieser Vorlage, es gilt lediglich
+auf einige kleine Besonderheiten zu verweisen.\\
+In der sog. \texttt{multicols} Umgebung ist es nicht möglich, mit Floatumgebungen zu arbeiten,
+dies ist für fast alle Beispiele aus dieser Anleitung irrelevant, lediglich Grafiken müssen
+anders eingebunden werden. Dazu finden sich jedoch Beispiele in den Vorlagen. Ebenso ist ein
+Teil der Präambel in eine separate Datei ausgelagert, in dieser sollten auch nicht ohne weiteres
+Änderungen vorgenommen werden. Wie in diesem Template, müssen innerhalb der Präambel Zitierstil,
+sowie Autor:innen und Titel gesetzt werden.\\
+Die Vorlagen können auf meiner Webseite sowohl angeschaut, als auch heruntergeladen werden, alle
+Hinweise zum Kompilieren gelten für die Poster ebenso. Ergebnis dieser Vorlage ist z. B. folgendes
+Poster:
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.54\textwidth]{src/anhang/abbildungen/poster.png}
+	\caption{Poster}
+	\label{picturedposter}
+\end{figure}
+
+\newpage
+
+
+\newpage
+
+\subsection{Beamer}
+
+\LaTeX~bietet nicht nur die Möglichkeit schriftliche Ausarbeitungen in Form von Hausarbeiten zu erstellen, sondern mit Beamer eine Alternative
+zu PowerPoint oder Keynote. Das Layout ist in vielen Fällen schlicht, was nicht negativ gemeint ist und erinnert im Design eher an die 
+frühen 2000er. Durch einige Anpassungen ist es dennoch möglich ein schlichtes, aber funktionales Layout zu entwerfen, welches sich gut für 
+Präsentationen eignet.\\
+Eine solche Vorlage findet sich analog zu den Poster Vorlagen und erfordert wenig Umgewöhnung. Es können Tabellen und Abbildungen, sowie Referenzen 
+wie gewohnt genutzt werden. Lediglich die Listings erfordern eine kleine Umgewöhnung, ebenso wie das Arbeiten mit der \textit{column} Umgebung.
+
+\begin{code}{Beamer Frame}{beamer_frame}
+	\begin{minted}{latex}
+\section{Frame Example with table}
+
+\begin{frame}{Frame Example with table}
+	\begin{columns}
+
+	\begin{column}{0.4\textwidth}
+		This is some text in the second frame~\autocite{donovan2015go}.
+		This is some text in the second~\autocite{kane2018docker}. 
+	\end{column}
+
+	\begin{column}{0.59\textwidth}
+		\scriptsize{
+			\begin{talltblr}[caption={\LaTeX~Sonderzeichen}]{colspec={X[l,m] X[0.5,c,m]}, rowhead=1, width=0.8\textwidth}\toprule
+			Befehl                         & Ergebnis         \\ \midrule
+			\textbackslash\&               & \&               \\ \cmidrule{1-2}
+			\textbackslash\%               & \%               \\ \cmidrule{1-2}
+			\textbackslash\$               & \$               \\ \cmidrule{1-2}
+			\textbackslash\#               & \#               \\ \cmidrule{1-2}
+			\textbackslash\{               & \{               \\ \cmidrule{1-2}
+			\textbackslash\}               & \}               \\ \cmidrule{1-2}
+			\end{talltblr}}
+	\end{column}
+
+	\end{columns} 
+\end{frame}                       
+	\end{minted}
+\end{code}
+
+Wie zu sehen, wird in Beamer ebenfalls mit \texttt{sections} gearbeitet. Um einen neuen Slide zu erstellen wird 
+\texttt{\textbackslash begin\{frame\}} genutzt. Die \texttt{columns} Umgebung ermöglicht das Unterteilen des Frames 
+in mehrere Spalten, welche daraufhin als einzelne \texttt{column} definiert werden. Dabei kann die Textbreite angegeben werden.\\
+Listings müssen über eine besondere Umgebung definiert und eingebunden werden, da Beamer ansonsten nicht mit \texttt{minted} umgehen kann. 
+
+\begin{code}{Beamer Frame mit Listing}{beamer_frame_listing}
+		\inputminted{latex}{src/beamerlisting.txt}
+\end{code}
+
+Wie im Listing gezeigt, wird das Listing außerhalb des Frames definiert und
+in Zeile 27 eingefügt. \texttt{CodeOne} ist dabei der zugewiesene Name unter dem
+das Listing eingefügt werden kann. Die Definition erfolgt in Zeile 1, der Name ist frei wählbar. 
+Das Listing so einzubinden ist nicht optimal, jedoch bleibt aktuell keine andere Möglichkeit, wenn mit \texttt{minted} gearbeitet wird.\\
+Das Inhaltsverzeichnis und die Referenzen werden automatisch erstellt, alle Einstellungen können natürlich 
+innerhalb der Vorlage angepasst werden.\\
+Obiges Listing würde mit der Vorlage folgendermaßen aussehen. Wie immer finden sich alle 
+Beispiele auch in den jeweiligen Vorlagen.
+
+\FloatBarrier
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=0.9\textwidth]{src/abbildungen/beamer_frame.png}
+	\caption{Frame mit Listing}
+\end{figure}
+\FloatBarrier
+
+
+\newpage
+
+\subsection{Quickbuild}
+
+Wird ein Projekt mit der Zeit relativ groß, verfügt also über eine Vielzahl von
+Listings, Tabellen, Abbildungen und Text, dann wird für das Kompilieren eine nicht
+unerhebliche Zeit benötigt. Um das ganze Dokument, inkl. aller Referenzen und
+Abkürzungen etc. zu bauen, ist dies auch nötig und lässt sich nicht vermeiden.
+Oft benötigt man jedoch nur einen kurzen Blick auf Layout oder den Umfang des bisher
+geschriebenen und möchte nicht das Dokument in seiner Gesamtheit kompilieren.\\
+Für diese Anforderungen gibt es sog. \texttt{subfiles}, diese ermöglichen es, nur
+einen kleinen Teil des Dokumentes zu kompilieren und als PDF zu betrachten. Dabei
+kommt es zu gewissen Einschränkungen, so werden Seitenzahlen, Referenzen und Abkürzungen
+nicht korrekt dargestellt, dennoch erhält man einen guten Blick auf das Layout.
+Um mit \texttt{subfiles} zu arbeiten, muss einiges beachtet werden.
+So muss statt des \texttt{\textbackslash input\{\}} das Kommando \texttt{\textbackslash subfile\{\}}
+genutzt werden. Darüber hinaus müssen alle \texttt{.tex}-Dateien mit einer eigenen \texttt{documentclass}
+ausgestattet werden. In der \texttt{hauptdatei.tex} sieht dies dann folgendermaßen aus.
+
+\begin{code}{Einbinden von subfiles}{einbinden_subfiles}
+\begin{minted}{latex}
+	\subfile{src/einleitung.tex}
+	\subfile{src/struktur.tex}
+	\subfile{src/zurhauptdatei.tex}
+\end{minted}
+\end{code}
+
+Jedes Subfile muss dann mit der passenden \texttt{documentclass} beginnen. 
+
+\begin{code}{Erstellen von subfiles}{erstellen_subfiles}
+\begin{minted}{latex}
+	\documentclass[../hauptdatei.tex]{subfiles}
+	\begin{document}
+	\section{Beispiel}
+
+	Hier könnte sinnvoller Inhalt stehen. 
+
+	\end{document}
+\end{minted}
+\end{code}
+
+Durch die eigene \texttt{documentclass}, welche wiederum auf die \texttt{hauptdatei.tex} verweist und 
+die Angabe von \texttt{\textbackslash begin} bzw. \texttt{\textbackslash end\{document\}} kann die entsprechende 
+\texttt{tex}-Datei separat kompiliert werden. Dafür kann das Skript \texttt{quickbild.sh} genutzt werden, welches 
+als Argument den Namen der zu kompilierenden Datei erwartet und ein PDF erzeugt.\\
+Abbildungen, Listings, Tabellen können wie gewohnt genutzt werden. Wird \texttt{buildlualatex.sh} ausgeführt, 
+baut nach wie vor das gesamte Dokument inkl. aller Subfiles und Referenzen. 

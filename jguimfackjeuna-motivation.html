@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Motivation</title>
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="css/hbv-light.css">
+    <link rel="stylesheet" href="css/svg.css">
+    <meta name="author" content="Jordan Guimfack Jeuna">
+    <meta name="keywords" content="it-security, motivation, iot, machine-learning, shap">
+    <meta charset="utf-8"/>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <!-- Titelfolie -->
+        <section>
+          <h1>Machine Learning zur Erkennung von Cyberangriffen in IoT-Netzwerken</h1>
+          <h2>Motivation, Zielsetzung und Forschungsfragen</h2>
+          <p>Jordan Guimfack Jeuna, Matrikelnummer 38184</p>
+          <p><small>M.Sc. Informatik IVS, IT-Sicherheit, Prof. Dr. Lars Fischer</small></p>
+        </section>
+
+        <!-- Block 1: Motivation -->
+        <section>
+
+          <section>
+            <h2>Motivation und Relevanz</h2>
+            <ul>
+              <li>
+                IoT-Ger&auml;te sind in privaten, industriellen und kritischen Infrastrukturen allgegenw&auml;rtig und vergr&ouml;&szlig;ern die Angriffsfläche moderner Netzwerke kontinuierlich.
+                <small>(Hamedani et al., 2025)</small>
+              </li>
+              <li>
+                Klassische Intrusion Detection Systeme auf Basis von Signaturvergleich erreichen in diesem Kontext methodische Grenzen und k&ouml;nnen Zero-Day-Angriffe nicht erkennen.
+              </li>
+              <li>
+                Machine Learning wird als datengetriebene Alternative untersucht. Baumbasierte Ensemble-Methoden gelten dabei als etablierter Forschungsstand.
+                <small>(Kikissagbe &amp; Adda, 2024)</small>
+              </li>
+              <li>
+                Auf dem CICIoT2023-Datensatz erzielt Gradient Boosting die h&ouml;chste Balanced Accuracy unter den evaluierten Modellen.
+                <small>(Raturi et al., 2026)</small>
+              </li>
+              <li>
+                Die bestehende Literatur behandelt Modelle durchgehend als Black Boxes und verzichtet auf jede Erkl&auml;rbarkeitsanalyse.
+                <small>(Raturi et al., 2026; Almahaqeri et al., 2026)</small>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Drei methodische Probleme</h3>
+            <ol>
+              <li>
+                <b>Klassenungleichgewicht</b><br>
+                Der CICIoT2023-Datensatz wird von DoS- und DDoS-Angriffen dominiert. Einfache Accuracy ist als Metrik ungeeignet: Ein Modell, das seltene Klassen ignoriert, erzielt dennoch rechnerisch hohe Werte.
+                <small>(Hosseini et al., 2025)</small>
+              </li>
+              <li>
+                <b>Fehlende Interpretierbarkeit</b><br>
+                In sicherheitskritischen Anwendungen m&uuml;ssen Sicherheitsanalysten verstehen, warum ein Netzwerkpaket als Angriff klassifiziert wurde. Black-Box-Modelle erm&ouml;glichen das nicht.
+              </li>
+              <li>
+                <b>Unerforschter PCA-Einfluss</b><br>
+                Raturi et al. verwenden PCA zur Reduktion von 46 auf 16 Merkmale, ohne zu untersuchen, welchen Einfluss das auf Modellleistung und SHAP-Erkl&auml;rungen hat.
+                <small>(Raturi et al., 2026)</small>
+              </li>
+            </ol>
+          </section>
+
+          <section>
+            <h3>Ziel der Arbeit</h3>
+            <p>
+              Entwicklung eines erkl&auml;rbaren Gradient-Boosting-Klassifikators auf dem CICIoT2023-Datensatz, der zwei Eigenschaften vereint:
+            </p>
+            <ol>
+              <li>Hohe Erkennungsleistung, bewertet mit der Balanced Accuracy als prim&auml;rer Metrik</li>
+              <li>Interpretierbare Entscheidungsgrundlagen durch SHapley Additive Explanations (SHAP)</li>
+            </ol>
+            <p>
+              Zus&auml;tzlich: eine Ablation Study zum Einfluss der PCA-Dimensionsreduktion auf Leistung und Erkl&auml;rbarkeit.
+            </p>
+          </section>
+
+          <section>
+            <h3>Wissenschaftliche Beitr&auml;ge</h3>
+            <ol>
+              <li>
+                <b>Erstmalige SHAP-Integration auf CICIoT2023</b><br>
+                Kombination von SHAP mit Balanced Accuracy als prim&auml;rer Metrik auf dem CICIoT2023-Datensatz, in der bestehenden Literatur noch nicht realisiert.
+              </li>
+              <li>
+                <b>Ablation Study zu PCA und Erkl&auml;rbarkeit</b><br>
+                Quantifizierung des Einflusses der PCA-Reduktion auf SHAP-Feature-Importance-Ranglisten und Modellleistung.
+                <small>(Vergleichswerte: Alharby, 2025)</small>
+              </li>
+              <li>
+                <b>Qualit&auml;tsbewertung der SHAP-Erkl&auml;rungen</b><br>
+                Einsatz der Metriken Fidelit&auml;t, Konsistenz und Jaccard-&Auml;hnlichkeit zur systematischen Bewertung der Erkl&auml;rungsqualit&auml;t.
+                <small>(Hermosilla et al., 2025)</small>
+              </li>
+              <li>
+                <b>Semantische Validierung</b><br>
+                Vergleich der SHAP-Feature-Importance-Ranglisten mit fachlichem Wissen &uuml;ber Netzwerksignaturen der jeweiligen Angriffstypen.
+              </li>
+            </ol>
+          </section>
+
+        </section>
+
+        <!-- Block 2: Forschungsfragen -->
+        <section>
+
+          <section>
+            <h2>Forschungsfragen</h2>
+            <p>
+              <b>Rahmenfrage:</b> Wie kann ein ML-basiertes Intrusion Detection System f&uuml;r IoT-Netzwerke so gestaltet werden, dass es nicht nur hohe Balanced Accuracy erreicht, sondern seine Klassifikationsentscheidungen f&uuml;r Sicherheitsanalysten &uuml;ber SHAP nachvollziehbar macht?
+            </p>
+          </section>
+
+          <section>
+            <h3>Hauptforschungsfrage</h3>
+            <p>
+              Inwieweit erm&ouml;glicht eine SHAP-Analyse eines Gradient-Boosting-Klassifikators auf dem CICIoT2023-Datensatz eine pro-Angriffsklasse nachvollziehbare Zuordnung von Netzwerkmerkmalen zu Klassifikationsentscheidungen, und in welchem Verh&auml;ltnis steht diese Erkl&auml;rbarkeit zur erreichten Balanced Accuracy des Modells?
+            </p>
+          </section>
+
+          <section>
+            <h3>Teilfragen</h3>
+            <ol>
+              <li>
+                Welche Non-DoS-Angriffsklassen werden durch das Klassenungleichgewicht systematisch schlechter erkannt, wenn die Bewertung von Accuracy auf Balanced Accuracy und klassenspezifische Recall-Werte umgestellt wird?
+                <small>(Grundlage: Hosseini et al., 2025)</small>
+              </li>
+              <li>
+                Welchen messbaren Einfluss hat die PCA-Reduktion von 46 auf 16 Merkmale auf (a) die Balanced Accuracy und (b) die Stabilit&auml;t der SHAP-Erkl&auml;rungen, im Vergleich zu einer Pipeline mit allen 46 Originalmerkmalen?
+                <small>(Vergleich: Alharby, 2025)</small>
+              </li>
+              <li>
+                Welche Netzwerkmerkmale haben gem&auml;&szlig; SHAP den gr&ouml;&szlig;ten Einfluss pro Angriffsklasse, und stimmen diese mit den bekannten Netzwerksignaturen der Angriffstypen &uuml;berein?
+                <small>(Qualit&auml;tsbewertung: Hermosilla et al., 2025)</small>
+              </li>
+            </ol>
+          </section>
+
+        </section>
+
+        <!-- Block 3: Einleitung aus dem Paper -->
+        <section>
+
+          <section>
+            <h2>Einleitung: Ausgangssituation</h2>
+            <p>
+              Die Verbreitung von IoT-Ger&auml;ten in privaten, industriellen und kritischen Infrastrukturen vergr&ouml;&szlig;ert die Angriffsfläche moderner Netzwerke kontinuierlich.
+              <small>(Hamedani et al., 2025)</small>
+            </p>
+            <p>
+              Eine zentrale empirische Studie ist Raturi et al. (2026): Gradient Boosting erzielt auf dem CICIoT2023-Datensatz die h&ouml;chste Balanced Accuracy unter den getesteten Modellen. Die Autoren benennen drei methodische L&uuml;cken, darunter die fehlende Erkl&auml;rbarkeit der Modellentscheidungen.
+            </p>
+            <p>
+              <b>Diese Arbeit adressiert diese erste L&uuml;cke.</b>
+            </p>
+          </section>
+
+          <section>
+            <h3>Begr&uuml;ndung der Methodenwahl</h3>
+            <ul>
+              <li>
+                <b>Warum SHAP?</b><br>
+                SHAP und LIME sind in 98&nbsp;% der untersuchten XAI-IDS-Studien eingesetzt und beeintr&auml;chtigen die Erkennungsgenauigkeit nicht.
+                <small>(Ogunseyi et al., 2026, PRISMA-Review, 129 Studien, 2018 bis 2025)</small>
+              </li>
+              <li>
+                <b>Methodische Vorlage f&uuml;r SHAP-Integration:</b><br>
+                Mohale &amp; Obagbuwa (2025) zeigen konkret, wie globale und lokale SHAP-Analysen in IDS-Experimenten umgesetzt werden.
+              </li>
+              <li>
+                <b>Qualit&auml;tsbewertung der Erkl&auml;rungen:</b><br>
+                Hermosilla et al. (2025) f&uuml;hren Fidelit&auml;t, Konsistenz und Jaccard-&Auml;hnlichkeit als quantitative Metriken f&uuml;r SHAP-Erkl&auml;rungen ein.
+              </li>
+            </ul>
+          </section>
+
+        </section>
+
+        <!-- Block 4: Struktur der Arbeit -->
+        <section>
+          <h2>Struktur der Arbeit (8 Kapitel)</h2>
+          <ol>
+            <li><b>Einleitung:</b> Motivation, Problemstellung, Forschungsfragen, Struktur</li>
+            <li><b>Related Work:</b> 4 Cluster: Datens&auml;tze, ML-IDS, Klassenungleichgewicht, XAI</li>
+            <li><b>Datenbasis und Vorverarbeitung:</b> CICIoT2023, Klassenungleichgewicht, Preprocessing-Pipeline</li>
+            <li><b>Methodik:</b> Klassifikationsarchitektur, Modellwahl, Metriken, Ablation Study, SHAP</li>
+            <li><b>Implementierung:</b> <em>folgt nach Abschluss der Implementierungsphase</em></li>
+            <li><b>Evaluation:</b> <em>folgt nach Vorliegen validierter Ergebnisse</em></li>
+            <li><b>Diskussion:</b> <em>folgt nach Abschluss der Evaluation</em></li>
+            <li><b>Fazit:</b> <em>folgt nach Abschluss der Diskussion</em></li>
+          </ol>
+        </section>
+
+      </div>
+    </div>
+    <script src="dist/reveal.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+  </body>
+</html>

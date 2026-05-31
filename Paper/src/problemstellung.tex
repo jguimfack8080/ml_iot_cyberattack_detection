@@ -1,0 +1,11 @@
+\section{Problemstellung}\label{problemstellung}
+
+Die IoT-Sicherheitsforschung steht vor zwei sich gegenseitig verstärkenden Herausforderungen, die in ihrer Kombination bislang unzureichend adressiert wurden.
+
+Die erste Herausforderung betrifft die Leistungsbewertung von ML-Modellen unter realistischen Datenbedingungen. Der CICIoT2023-Datensatz, der als Benchmark für diese Arbeit dient, weist ein starkes Klassenungleichgewicht auf: DoS- und DDoS-Angriffe dominieren das Datenmaterial erheblich, während Klassen wie Brute-Force oder Web-based Attacks stark unterrepräsentiert sind. Dieses Ungleichgewicht führt dazu, dass die klassische Accuracy als Bewertungsmetrik ein verfälschtes Bild der Modellleistung liefert. Ein Modell, das sämtliche seltenen Angriffsklassen ignoriert und ausschließlich die Mehrheitsklasse korrekt klassifiziert, kann rechnerisch eine Accuracy von über 90 Prozent erzielen und wäre im praktischen Einsatz dennoch weitgehend wirkungslos. Raturi et al. (2026) schlagen die Balanced Accuracy als fairere Bewertungsgrundlage vor, ohne jedoch deren Einfluss auf die Ergebnisinterpretation systematisch zu untersuchen.
+
+Die zweite Herausforderung betrifft die Interpretierbarkeit der Modellentscheidungen. In sicherheitskritischen Anwendungen ist es nicht ausreichend, dass ein Modell korrekte Klassifikationen produziert. Sicherheitsanalysten müssen verstehen können, auf welcher Grundlage ein Netzwerkpaket als Angriff eingestuft wurde, um Fehlalarme zu beurteilen, Angriffsmuster zu verstehen und das Vertrauen in das System aufzubauen. Die bestehende Literatur zu ML-basierten IDS auf dem CICIoT2023-Datensatz, einschließlich der Arbeit von Raturi et al. (2026) und Almahaqeri et al. (2026), behandelt Modelle durchgängig als Black Boxes und verzichtet auf jede Form der Erklärbarkeitsanalyse.
+
+Hinzu kommt eine dritte, methodische Lücke: Der Einfluss der PCA-basierten Dimensionsreduktion, die von Raturi et al. (2026) ohne weitere Analyse eingesetzt wird, ist für den CICIoT2023-Datensatz empirisch nicht untersucht. Es ist ungeklärt, ob die Reduktion von 46 auf 16 Hauptkomponenten die Klassifikationsleistung und insbesondere die SHAP-Erklärungen verändert.
+
+Diese drei Problemdimensionen bilden den Ausgangspunkt der vorliegenden Arbeit.

@@ -1,0 +1,592 @@
+\section{Den Inhalt erstellen}
+
+Wie bereits erwähnt, wird Text in \LaTeX~als \texttt{plain-text} geschrieben.
+Was bedeutet, dass wir einfach Text schreiben können und dieser wird in der
+definierten Schriftart und -größe dargestellt. Zur Veranschaulichung soll uns
+folgendes kleines Textbeispiel dienen:
+
+Er hörte leise Schritte hinter sich.
+Das bedeutete nichts Gutes.
+Wer würde ihm schon folgen, spät in der Nacht
+und dazu noch in dieser engen Gasse mitten
+im übel beleumundeten Hafenviertel?
+Gerade jetzt, wo er das Ding seines Lebens gedreht hatte
+und mit der Beute verschwinden wollte!
+
+Der oben stehende Text sieht in der \texttt{.tex} Datei folgendermaßen aus:
+\enlargethispage{4\baselineskip}
+\begin{code}{Textbeispiel}{textbeispiel}
+	\begin{minted}{latex}
+		Er hörte leise Schritte hinter sich. 
+		Das bedeutete nichts Gutes. 
+		Wer würde ihm schon folgen, spät in der Nacht 
+		und dazu noch in dieser engen Gasse mitten 
+		im übel beleumundeten Hafenviertel? 
+		Gerade jetzt, wo er das Ding seines Lebens gedreht hatte 
+		und mit der Beute verschwinden wollte! 
+	\end{minted}
+\end{code}
+Wir sehen, der Inhalt der beiden Ansichten ist identisch, das Layout jedoch
+nicht. In der Datei ist der Text auf sieben Zeilen verteilt, im fertigen
+Dokument wird allerdings nicht automatisch ein Umbruch eingefügt. Einen solchen
+Umbruch müssen wir manuell setzen:
+
+Er hörte leise Schritte hinter sich.\\
+Das bedeutete nichts Gutes.\\
+Wer würde ihm schon folgen, spät in der Nacht\\
+und dazu noch in dieser engen Gasse mitten\\
+im übel beleumundeten Hafenviertel?\\
+Gerade jetzt, wo er das Ding seines Lebens gedreht hatte\\
+und mit der Beute verschwinden wollte!
+
+In der Datei sieht dies folgendermaßen aus:
+\begin{code}{Textbeispiel 2}{textbeispiel2}
+	\begin{minted}{latex}
+		Er hörte leise Schritte hinter sich.\\ 
+		Das bedeutete nichts Gutes.\\
+		Wer würde ihm schon folgen, spät in der Nacht\\ 
+		und dazu noch in dieser engen Gasse mitten\\ 
+		im übel beleumundeten Hafenviertel?\\ 
+		Gerade jetzt, wo er das Ding seines Lebens gedreht hatte\\
+		und mit der Beute verschwinden wollte!\\ 
+	\end{minted}
+\end{code}
+
+Einen Zeilenumbruch wird in \LaTeX~somit folgendermaßen realisiert: \texttt{\textbackslash\textbackslash}
+
+Soll statt einem Umbruch eine Leerzeile folgen, muss auch in der Datei eine
+Leerzeile eingefügt werden. Wie in diesem Dokument schon mehrfach gesehen und
+kurz in der Einleitung erwähnt, können Eigennamen oder Wörter, die man
+hervorheben will, mit dem Befehl \verb|\texttt{Beispieltext}| realisiert werden,
+dies sieht dann so aus: \texttt{Beispieltext}. Um Text fettgedruckt
+darzustellen, können wir das Kommando \texttt{\textbackslash
+	textbf\{Beispieltext\}} nutzen, dies sieht dann so aus: \textbf{Beispieltext}.\\
+Wenn Text erst einmal unformatiert ausgegeben wird, dann müssen wir uns auch
+Gedanken machen, wie wir Überschriften darstellen können. Überschriften werden
+grundsätzlich mittels des Befehls \texttt{\textbackslash section\{Überschrift\}}
+realisiert.
+\newpage
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{src/abbildungen/section.png}
+	\caption{Beispiel für eine section}
+	\label{picturesection}
+\end{figure}
+
+\FloatBarrier
+Mittels des Befehls \texttt{\textbackslash subsection\{Unterabschnitt\}} kann ein Unterabschnitt erstellt werden.
+Für weitere Abstufungen kommt entsprechend der Befehl \texttt{\textbackslash subsubsection\{\}} zum Einsatz.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{src/abbildungen/subsection.png}
+	\caption{Beispiel für eine subsection}
+	\label{picturesubsection}
+
+\end{figure}
+\FloatBarrier
+
+Die Grundlagen für das Textlayout sind damit gegeben. Es gibt noch einige
+zusätzliche Möglichkeiten z. B. das Einrücken von Text, wie es bei längeren
+Zitaten üblich ist:
+
+\begin{quote}
+	\footnotesize{
+		Er hörte leise Schritte hinter sich.
+		Das bedeutete nichts Gutes.
+		Wer würde ihm schon folgen, spät in der Nacht
+		und dazu noch in dieser engen Gasse mitten
+		im übel beleumundeten Hafenviertel?
+		Gerade jetzt, wo er das Ding seines Lebens gedreht hatte
+		und mit der Beute verschwinden wollte!}
+\end{quote}
+
+Eine solche Einrückung ist über die \texttt{quote environment} möglich.
+Gleichzeitig möchte man oft eingerückten Text in einer etwas kleineren
+Schriftgröße darstellen. Dies bringt uns zu der Definition der Schriftgröße. Als
+Standard dient die in der \texttt{documentclass} festgelegte Schriftgröße, von
+der über Befehle nach oben oder unten abgewichen werden kann.
+
+\begin{center}
+	\begin{longtblr}[caption={\LaTeX~Schriftgrößen}, label={schriftgrößen} ]{colspec = {X[l,m] X[2,c,m]}, rowhead=1, width=0.5\textwidth}\toprule
+		Befehl                      & Ergebnis                    \\ \midrule
+		\textbackslash tiny         & \tiny{winzig}               \\ \cmidrule{1-2}
+		\textbackslash scriptsize   & \scriptsize{klein}          \\ \cmidrule{1-2}
+		\textbackslash footnotesize & \footnotesize{etwas größer} \\ \cmidrule{1-2}
+		\textbackslash small        & \small{noch etwas größer}   \\ \cmidrule{1-2}
+		\textbackslash normalsize   & \normalsize{normal}         \\ \cmidrule{1-2}
+		\textbackslash large        & \large{groß}                \\ \cmidrule{1-2}
+		\textbackslash Large        & \Large{größer}              \\ \cmidrule{1-2}
+		\textbackslash LARGE        & \LARGE{noch größer}         \\ \cmidrule{1-2}
+		\textbackslash huge         & \huge{riesig}               \\ \cmidrule{1-2}
+		\textbackslash Huge         & \LARGE{noch riesiger}       \\ \bottomrule
+	\end{longtblr}
+\end{center}
+\pagebreak
+Damit sieht unser eingerückter Text als \LaTeX~Code folgendermaßen aus:
+\begin{code}{Textbeispiel 3}{textbeispiel3}
+	\begin{minted}{latex}
+		\begin{quote}
+			\footnotesize{
+			Er hörte leise Schritte hinter sich. 
+			Das bedeutete nichts Gutes. 
+			Wer würde ihm schon folgen, spät in der Nacht 
+			und dazu noch in dieser engen Gasse mitten 
+			im übel beleumundeten Hafenviertel? 
+			Gerade jetzt, wo er das Ding seines Lebens gedreht hatte 
+			und mit der Beute verschwinden wollte!}\\	
+		\end{quote}	
+	\end{minted}
+\end{code}
+
+Ebenso existieren einige Sonderzeichen, welche nur durch spezielle Befehle
+dargestellt werden können.
+
+\begin{center}
+	\begin{longtblr}[caption={\LaTeX~Sonderzeichen}, label={sonderzeichen}]{colspec={X[l,m] X[0.5,c,m]}, rowhead=1, width=0.4\textwidth}\toprule
+		Befehl                         & Ergebnis         \\ \midrule
+		\textbackslash\&               & \&               \\ \cmidrule{1-2}
+		\textbackslash\%               & \%               \\ \cmidrule{1-2}
+		\textbackslash\$               & \$               \\ \cmidrule{1-2}
+		\textbackslash\#               & \#               \\ \cmidrule{1-2}
+		\textbackslash\{               & \{               \\ \cmidrule{1-2}
+		\textbackslash\}               & \}               \\ \cmidrule{1-2}
+		\textbackslash textasciitilde  & \textasciitilde  \\ \cmidrule{1-2}
+		\textbackslash textasciicircum & \textasciicircum \\ \cmidrule{1-2}
+		\textbackslash textbackslash   & \textbackslash   \\ \cmidrule{1-2}
+		\textbackslash glqq\{\}        & \glqq{}          \\ \cmidrule{1-2}
+		\textbackslash grqq\{\}        & \grqq{}          \\ \bottomrule
+	\end{longtblr}
+\end{center}
+
+Grund ist, dass alle diese Zeichen in \LaTeX~eine eigene Bedeutung haben.
+Entsprechend muss unterschieden werden können, ob wir einen \LaTeX~Befehl
+ausführen oder das Sonderzeichen im Text ausgeben wollen. Auf eines der Zeichen,
+die sog. Tilde (\textasciitilde) soll kurz eingegangen werden. Diese sieht man
+meistens vor oder nach Befehlen im Code, so z. B. jedes Mal, wenn der
+\LaTeX~(\verb|\LaTeX~|) Schriftzug genutzt wird. Die Tilde steht dabei für ein
+Leerzeichen, welches wir in solchen Fällen explizit angeben müssen, da
+\LaTeX~nicht unterscheiden kann zwischen einem Leerzeichen zum Abgrenzen von
+Fließtext zum Kommando oder einem zu druckenden Leerzeichen. Wenn ihr also
+bemerkt, dass euch ein Leerzeichen zwischen einer Kommandoausgabe und Fließtext
+fehlt, nutzt die \textasciitilde. \\ Die letzten beiden Kommandos die wir uns
+zur Formatierung von Fließtext angucken werden, sind \texttt{\textbackslash
+	vspace*\{\}} und \texttt{\textbackslash hspace*\{\}}. Das
+\texttt{\textbackslash vspace*\{1.0cm\}} Kommando sorgt für vertikalen Weißraum
+von einem Zentimeter im Dokument:
+
+Beispieltext
+\FloatBarrier
+\vspace*{1.0cm}
+\FloatBarrier
+Beispieltext
+
+Der \texttt{\textbackslash hspace\{\}} steht für einen horizontalen Weißraum und wird von mir deutlich seltener genutzt.
+Ab und an wird dies aber gebraucht z. B. für den Abstand von Namen und MatrNr. auf dem Deckblatt.
+Zwischen diesen beiden Wörtern habe ich einen \texttt{\textbackslash hspace\{1.0cm\}} gesetzt:
+
+Beispieltext\hspace*{1cm}Beispieltext
+
+Mittels all dieser Kommandos ist es uns nun möglich, Fließtext ansprechend zu
+formatieren. Unser Dokument besteht jedoch nicht ausschließlich aus Fließtext,
+sondern aus einer Mischung aus Text, Listings, Tabellen und Abbildungen. Aus
+diesem Grund werden wir uns nun mit diesen drei Punkten beschäftigen.
+
+\subsection{Float und FloatBarrier}
+
+Oft werden Abbildungen und Tabellen in sog. Floatumgebungen genutzt. Dabei
+übernimmt \LaTeX~die Aufgabe, die Elemente optimal im Fließtext zu positionieren
+und so einen angenehmen Lesefluss zu gewährleisten. Was in der Theorie sehr
+praktisch klingt, klappt m. E. in der Praxis nicht immer gut. Oftmals werden die
+Elemente um mehrere Seiten verschoben und passen so inhaltlich nicht mehr gut
+mit dem Geschriebenen zusammen. Ebenso verhindert die Floatumgebung, dass
+Tabellen über Seitengrenzen hinweg dargestellt werden können, dies ist nur
+logisch, aber oft nicht gewollt. Dennoch bietet die Verwendung auch Vorteile,
+so ist der Umgang mit captions (also der Abbildungsbeschreibung) oft einfacher
+und auch werden die Weißräume vor und nach den Inhalten sauber erstellt, sodass
+ein manuelles \texttt{\textbackslash vspace} nicht nötig ist. In Abwägung
+dieser Punkte, habe ich mich dazu entschieden, weitestgehend auf Floats zu
+verzichten und im Zweifel etwas nachzukorrigieren. Da ihr Online aber oft auf
+diese Beispiele stoßen werdet und ich für klassische Abbildungen (Bilder) auch
+eine Floatumgebung verwende, soll kurz gezeigt werden, wie diese aussehen.\\
+Für Floats wird immer eine Umgebung bzw. \texttt{environment} geöffnet, für
+Abbildungen sieht diese folgendermaßen aus:
+
+\begin{code}{Floatumgebung für figures}{floatfigure}
+	\begin{minted}{latex}
+		\begin{figure}[!ht]
+			\includegraphics[width=0.8\textwidth]{abbildungen/Logo.png}
+			\caption[Beschreibung]{Beschreibung}
+			\label{Beschreibung}
+		\end{figure}
+	\end{minted}
+\end{code}
+
+Die Floatumgebung wird eingeleitet durch \texttt{\textbackslash
+	begin\{figure\}}, die Zeichenkombination in den eckigen Klammern steht dann für
+den sog. \texttt{float specifier}. Alle Werte haben dabei eine eigene Bedeutung
+und können entsprechend kombiniert werden.
+
+\begin{center}
+	\begin{longtblr}[caption={float specifier}, label={floatspecifier}]{colspec={X[l,m] X[4,l,m]}, rowhead=1, width=0.8\textwidth}\toprule
+		Specifier & Berechtigung                                                                                                \\ \midrule
+		h         & ungefähr an der gleichen Stelle, an der sie im Ausgangstext vorkommt (jedoch nicht genau an dieser Stelle)  \\ \cmidrule{1-2}
+		t         & Positionierung am oberen Rand der Seite                                                                     \\ \cmidrule{1-2}
+		b         & Am unteren Rand der Seite platzieren                                                                        \\ \cmidrule{1-2}
+		p         & Auf eine spezielle Seite                                                                                    \\ \cmidrule{1-2}
+		!         & Überschreibt die internen Parameter, die LaTeX zur Bestimmung \glqq guter\grqq{} Gleitpositionen verwendet. \\ \bottomrule
+	\end{longtblr}
+\end{center}
+
+Trotz der Angabe \texttt{!ht} ist nicht sichergestellt, dass die Abbildung auch
+wirklich an der gewünschten Stelle oder innerhalb eines gewünschten Bereiches
+erscheint. Um trotz Floatumgebung genauer festzulegen, in welchem Bereich die
+Abbildung erscheinen soll, kann das Kommando \texttt{\textbackslash FloatBarrier} genutzt werden.
+Durch dieses Kommando wird der Bereich, in dem
+die Abbildung von \LaTeX~gesetzt wird, begrenzt. Werden die
+\texttt{\textbackslash FloatBarrier} direkt ober- und unterhalb der Umgebung
+gesetzt, sollte die Abbildung an der exakten Stelle aus dem Code erscheinen.
+Wird zusätzlich noch Fließtext in den Bereich aufgenommen, wird die Abbildung
+innerhalb dieses Bereiches inkl. des Fließtextes optimal gesetzt.
+\pagebreak
+\begin{code}{Beispiel FloatBarrier}{beispielFloatBarrier}
+	\begin{minted}{latex}
+		\FloatBarrier
+		Er hörte leise Schritte hinter sich. Das bedeutete 
+		nichts Gutes. Wer würde ihm schon folgen, spät
+		in der Nacht und dazu noch in dieser engen Gasse mitten 
+		im übel beleumundeten Hafenviertel? Gerade jetzt, wo 
+		er das Ding seines Lebens gedreht hatte und mit der 
+		Beute verschwinden wollte!
+		
+		\begin{figure}[!ht]
+			\includegraphics[width=0.8\textwidth]{abbildungen/Logo.png}
+			\caption[Beschreibung]{Beschreibung}
+			\label{Beschreibung}
+		\end{figure}
+		\FloatBarrier
+	\end{minted}
+\end{code}
+
+In diesem Beispiel kann die Abbildung nicht außerhalb der FloatBarrier gesetzt
+werden, jedoch zwischen den Text. So könnte ein Teil des Textes ober- und
+unterhalb der Abbildung stehen, die ganze Abbildung jedoch auch über oder unter
+dem Text dargestellt werden.
+Im zweiten Beispiel sollte die Abbildung an der exakten Stelle aus dem Code auch
+im fertigen Dokument erscheinen.
+
+\begin{code}{Beispiel 2 FloatBarrier}{beispielzweiFloatBarrier}
+	\begin{minted}{latex}
+		Er hörte leise Schritte hinter sich. Das bedeutete 
+		nichts Gutes. Wer würde ihm schon folgen, spät
+		in der Nacht und dazu noch in dieser engen Gasse mitten 
+		im übel beleumundeten Hafenviertel? Gerade jetzt, wo 
+		er das Ding seines Lebens gedreht hatte und mit der 
+		Beute verschwinden wollte!
+		\FloatBarrier
+		\begin{figure}[!ht]
+			\includegraphics[width=0.8\textwidth]{abbildungen/Logo.png}
+			\caption[Beschreibung]{Beschreibung}
+			\label{Beschreibung}
+		\end{figure}
+		\FloatBarrier
+	\end{minted}
+\end{code}
+
+Auch für Tabellen existiert eine Floatumgebung, welche in diesem
+Template nicht genutzt wird. Die Floatumgebung für Tabellen wird mit
+\texttt{\textbackslash begin\{table\}} eingeleitet und üblich beendet.
+
+\subsection{Abbildungen}\label{abbildungen}
+
+Wenn wir Abbildungen, in diesem Fall speziell Bilder, einbinden, dann binden wir
+diese mit dem Kommando \texttt{\textbackslash includegraphics} ein. Zusätzlich
+können bzw. müssen weitere Werte mitgegeben werden. Zum einen, wo die
+einzubindende Datei liegt und zum anderen welche Größe das Bild erhalten soll.
+Wie beschrieben, kann die Abbildung dann noch in eine Floatumgebung eingebunden
+werden. Das einfachste Beispiel könnte folgendermaßen aussehen:
+
+\begin{code}{Beispiel für das Einbinden einer Abbildung}{includegraphics}
+	\begin{minted}{latex}
+		\includegraphics[width=0.8\textwidth]{abbildungen/Logo.png}
+	\end{minted}
+\end{code}
+
+Der Wert in den eckigen Klammern beschreibt die Größe der Abbildung, in diesem
+Fall, hat die Abbildung den Faktor 0.8 der Textbreite. Setzen wir um das
+Kommando die Floatumgebung, können wir noch weitere Möglichkeiten nutzen:
+
+\begin{code}{Beispiel 2 für das Einbinden einer Abbildung}{includegraphicstwo}
+	\begin{minted}{latex}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.8\textwidth]{abbildungen/Logo.png}
+			\caption[Verzeichniseintrag]{Beschreibung}
+			\label{labelname}
+		\end{figure}
+	\end{minted}
+\end{code}
+
+Der Befehl \texttt{\textbackslash centering} steht, wenig überraschend, für das
+horizontale Zentrieren der Abbildung. Das \texttt{\textbackslash caption}
+Kommando ermöglicht das Setzen der Abbildungsbeschreibung, die Angabe innerhalb
+der eckigen Klammern steht dabei für den Eintrag im Abbildungsverzeichnis, der
+Wert in den geschweiften Klammern für die Abbildungsbeschreibung direkt
+unterhalb der Abbildung. In den allermeisten Fällen sollten die Angaben
+identisch sein, in solchen Fällen, kann die Angabe für den Verzeichniseintrag
+(inkl. der Klammern) einfach weggelassen werden.
+
+
+\subsection{Listings}\label{listings}
+
+Listings bzw. die Darstellung von Quellcode stellen in diesem Template eine
+kleine Besonderheit dar. In Dokumentationen oder Onlineforen findet man für
+Listings oft die \texttt{lstlisting} Umgebung, in diesem
+Template wird diese nicht genutzt, sondern das \texttt{minted} Paket.
+Dieses ermöglicht m. E. deutlich schönere Listings inkl. deutlich
+umfangreicherem Highlighting. Da \texttt{minted} jedoch nicht außerhalb von
+Floatumgebungen ohne weiteres mit
+Captions umgehen kann, habe ich mich entschieden selbst eine Umgebung zu
+schreiben. Diese Umgebung trägt den Namen \texttt{code} und kann so nur in
+diesem Template genutzt werden.
+
+\begin{code}{Beispiel für ein Listing}{listingexample}
+	\inputminted{latex}{src/listingcodeexample.txt}
+\end{code}
+
+Wie üblich wird die Umgebung mit dem Befehl \texttt{\textbackslash begin\{\}}
+eingeleitet. In diesem Fall müssen wir die \texttt{code} Umgebung erstellen und
+innerhalb dieser dann die eigentliche \texttt{minted} Umgebung. Für die
+\texttt{code} Umgebung kann direkt die Listingbeschreibung gesetzt werden. In
+den geschweiften Klammern der \texttt{minted} Umgebung muss dann die Sprache
+z. B. Bash, Java oder Python gesetzt werden, daraufhin folgt der dazustellende
+Code. Statt den Quellcode innerhalb der \texttt{minted} Umgebung direkt zu
+schreiben, kann auch eine Datei eingebunden werden.
+
+\begin{code}{Beispiel 2 für ein Listing}{listingexample2}
+	\begin{minted}{latex}
+		\inputminted{latex}{src/listingcodeexample.txt}	
+	\end{minted}
+\end{code}
+
+Beachtet, dass \texttt{inputminted}, wie in Listing~\ref{listingexample} zu
+sehen, innerhalb der \texttt{code} Umgebung stehen muss. Wollen wir nur einen
+Befehl oder kleinen Codeschnipsel zeigen, kann dieser auch direkt im Fließtext
+angezeigt werden. Dies könnte z. B. so aussehen:
+
+Überschriften können in HTML mittels \mintinline{html}|<h1>Überschrift</h1>|
+dargestellt werden.
+
+Im Code sieht dies dann folgendermaßen aus:
+
+\begin{code}{Inline Listings}{inlinelistings}
+	\begin{minted}{latex}
+		Überschriften können in HTML mittels \mintinline{html}|<h1>Überschrift</h1>| dargestellt werden.
+	\end{minted}
+\end{code}
+
+\subsection{Tabellen}\label{tabellen}
+
+Tabellen sind gegenüber Abbildungen und Listings deutlich individueller und
+entsprechend existieren unzählige Möglichkeiten, Tabellen zu gestalten. Ich werde
+versuchen, die Grundlagen so zu erklären, dass ihr in den meisten Fällen ohne
+zusätzlichen Aufwand Tabellen erstellen könnt.\\ Für Tabellen stehen
+verschiedene Packages zur Verfügung. In diesem Template wird das \texttt{tabularray}
+Package genutzt. Dieses ermöglicht eine Vielzahl von Einstellungen, besitzt
+eine sehr einfache Einbindung der \texttt{booktabs} Bibliothek und ist sehr gut
+dokumentiert.\\ Die erwähnten \texttt{booktabs} beschreiben ein besonderes
+Tabellendesign, welches an Tabellen aus dem wissenschaftlichen Bereich angelehnt
+ist. Dabei wird auf vertikale und doppelte Linien verzichtet, ebenso müssen die
+Linien in Bezug auf Dicke und Länge nicht gesondert definiert werden.\\ Im
+Folgenden werden wir uns mit zwei Arten von Tabellen in \LaTeX anschauen. Zum
+einen Tabellen, welche nicht mit der Seite umbrechen können und zum anderen
+Tabellen, welche über Seitengrenzen hinweg dargestellt werden können. Die beiden
+Umgebungen, die wir hierfür verwenden, sind \texttt{talltblr} und
+\texttt{longtblr}. Die \texttt{tallblr} Umgebung wird verwendet, um Tabellen auf
+einer Seite darzustellen und bietet gleichzeitig einen guten Umgang mit Captions
+und Labels.
+
+\begin{code}{Beispielcode für Tabelle}{beispieltabellencodeeins}
+	\begin{minted}{latex}
+		\begin{center}
+			\begin{talltblr}[caption={Beispiel}, label={beispiel}]{colspec={X[c,m] X[c,m]}, width=0.4\textwidth}\toprule
+				Überschrift 1 & Überschrift 2	\\ \midrule
+				Wert 1.1   & Wert 1.2       	\\ \cmidrule{1-2}
+				Wert 2.1   & Wert 2.2       	\\ \cmidrule{1-2}
+				Wert 3.1   & Wert 3.2       	\\ \bottomrule
+			\end{talltblr}
+		\end{center}
+	\end{minted}
+\end{code}
+In diesem Beispiel wird zu Beginn eine \texttt{center} Umgebung eingeleitet,
+dies tue ich in fast allen Fällen, da Tabellen in den meisten Fällen zentriert
+dargestellt werden sollen, dennoch ist dies natürlich optional. Erst jetzt
+folgt die eigentliche Tabellenumgebung \texttt{talltblr}. Auf diese folgt in den
+eckigen Klammern die Definition der Caption und des Labels. In den geschweiften
+Klammern definieren wir nun das Layout der Spalten, an dieser Stelle beginnt es
+etwas kompliziert zu werden.
+
+Die Angabe \texttt{colspec=\{X[c,m] X[c,m]\}}
+definiert zwei Spalten, wobei Spalten vom Typ X für Spalten mit fester Breite
+und automatischem Zeilenumbruch stehen. Der Wert \texttt{c} steht für eine
+vertikal und die Angabe \texttt{m} für eine horizontal zentrierte Ausrichtung
+der Spalte. Es existieren entsprechend Angaben für eine rechtsbündige
+(\texttt{r}) und eine linksbündige (\texttt{l}) Ausrichtung.
+
+Aus dem Code aus Listing~\ref{beispieltabellencodeeins} ergibt sich folgende Tabelle:
+
+\begin{center}
+	\begin{talltblr}[caption={Tabelle mit zwei Spalten}, label={beispieleins}]{colspec={X[c,m] X[c,m]}, width=0.4\textwidth}\toprule
+		Überschrift 1 & Überschrift 2 \\ \midrule
+		Wert 1.1      & Wert 1.2      \\ \cmidrule{1-2}
+		Wert 2.1      & Wert 2.2      \\ \cmidrule{1-2}
+		Wert 3.1      & Wert 3.2      \\ \bottomrule
+	\end{talltblr}
+\end{center}
+
+Die Angaben \texttt{\textbackslash toprule}, \texttt{\textbackslash midrule},
+\texttt{\textbackslash cmidrule} und \texttt{\textbackslash bottomrule} stehen
+für die unterschiedlichen Arten von Linien innerhalb der Tabelle. Die
+zusätzliche Angabe von Ziffern bei der \texttt{\textbackslash cmidrule} steht
+für die Anzahl der Spalten, die unterstrichen werden sollen. Der Spalteninhalt
+wird jeweils durch ein \& abgegrenzt und jede Zeile mit einem Zeilenumbruch
+(\textbackslash\textbackslash) beendet.
+
+Es können natürlich auch mehr als nur zwei Spalten definiert werden. Ebenso will
+man für die Überschriften des Öfteren ein leicht abweichendes Layout festlegen.
+Dies ist selbstverständlich möglich und kann folgendermaßen umgesetzt werden:
+
+\begin{code}{Beispiecode für Tabelle mit drei Spalten}{beispieltabellencodezwei}
+	\begin{minted}{latex}
+	\begin{center}
+		\begin{talltblr}[caption={Tabelle mit drei Spalten}, label={beispielzwei}]{width=0.9\textwidth, colspec={X[l,m] X[c,m] X[l,m]}}\toprule
+			\textbf{Spalte 1} & \textbf{Spalte 2} & \SetCell[c=1]{c} \textbf{Spalte 3}                                                            \\ \midrule
+			a                 & 1                 & Ein ausreichend langer Text, damit es zu einem Zeilenumbruch kommt.                           \\ \cmidrule{1-3}
+			b                 & 2                 & Ein kürzerer Text.                                                                            \\ \cmidrule{1-3}
+			c                 & 3                 & Wieder etwas längerer Text in dieser Spalte, auch hier kann es zu einem Zeilenumbruch kommen. \\ \cmidrule{1-3}
+			d                 & 4                 & Ein Text.                                                                                     \\ \cmidrule{1-3}
+			e                 & 5                 & Noch etwas zusätzlicher Text.                                                                 \\ \bottomrule
+		\end{talltblr}
+	\end{center}	
+	\end{minted}
+\end{code}
+
+In diesem Beispiel sind die Überschriften der jeweiligen Spalte zum einen
+mittels \texttt{\textbackslash textbf\{\}} fett gedruckt worden, zum anderen
+ist die Überschrift der dritten Spalte nicht wie der übrige Inhalt linksbündig
+ausgerichtet, sondern zentriert. Hierfür wird das Kommando
+\texttt{\textbackslash SetCell[c=1]\{c\}} genutzt. Die Angabe c=1 steht für die
+Anzahl der folgenden Spalten (in diesem Fall eine) für die das in den
+geschweiften Klammern definiert Layout (in diesem Fall zentriert) gelten soll.
+
+Die so beschriebene Tabelle wird dann folgendermaßen dargestellt:
+
+\begin{center} %rowhead=1
+	\begin{talltblr}[caption={Tabelle mit drei Spalten}, label={beispielzwei}]{width=0.9\textwidth, colspec={X[l,m] X[c,m] X[l,m]}}\toprule
+		\textbf{Spalte 1} & \textbf{Spalte 2} & \SetCell[c=1]{c} \textbf{Spalte 3}                                                            \\ \midrule
+		a                 & 1                 & Ein ausreichend langer Text, damit es zu einem Zeilenumbruch kommt.                           \\ \cmidrule{1-3}
+		b                 & 2                 & Ein kürzerer Text.                                                                            \\ \cmidrule{1-3}
+		c                 & 3                 & Wieder etwas längerer Text in dieser Spalte, auch hier kann es zu einem Zeilenumbruch kommen. \\ \cmidrule{1-3}
+		d                 & 4                 & Ein Text.                                                                                     \\ \cmidrule{1-3}
+		e                 & 5                 & Noch etwas zusätzlicher Text.                                                                 \\ \bottomrule
+	\end{talltblr}
+\end{center}
+
+Es fällt auf, dass die ersten beiden Spalten eigentlich deutlich weniger Platz
+bräuchten, als sie einnehmen. Dies liegt daran, dass die zur Verfügung stehende
+Fläche unter allen Spalten gleich aufgeteilt wird. Dieses Verhalten können wir
+anpassen, indem wir den Spalten ein Größenverhältnis zueinander zuweisen:
+\pagebreak
+\begin{code}{Beispiecode für Tabelle mit drei Spalten und angepasster Spaltenbreite}{beispieltabellencodedrei}
+	\begin{minted}{latex}
+	\begin{center}
+		\begin{talltblr}[caption={Tabelle mit drei Spalten und angepasster Spaltenbreite}, label={beispieldrei}]{width=0.9\textwidth, colspec={X[1,l,m] X[1,c,m] X[5,l,m]}}\toprule
+			\textbf{Spalte 1} & \textbf{Spalte 2} & \SetCell[c=1]{c} \textbf{Spalte 3}                                                            \\ \midrule
+			a                 & 1                 & Ein ausreichend langer Text, damit es zu einem Zeilenumbruch kommt.                           \\ \cmidrule{1-3}
+			b                 & 2                 & Ein kürzerer Text.                                                                            \\ \cmidrule{1-3}
+			c                 & 3                 & Wieder etwas längerer Text in dieser Spalte, auch hier kann es zu einem Zeilenumbruch kommen. \\ \cmidrule{1-3}
+			d                 & 4                 & Ein Text.                                                                                     \\ \cmidrule{1-3}
+			e                 & 5                 & Noch etwas zusätzlicher Text.                                                                 \\ \bottomrule
+		\end{talltblr}
+	\end{center}
+	\end{minted}
+\end{code}
+
+Die Zahlen innerhalb der Spalten Definition (\texttt{colspec=\{X[1,l,m]
+	X[1,c,m] X[5,l,m]\}}) sorgen nun für ein Größenverhältnis
+von eins zu fünf. Um die passenden Werte zu finden, braucht es ein bisschen
+Übung und natürlich auch ein paar Versuche. Unsere angepasste Tabelle hat nun
+eine angenehme und angemessene Verteilung:
+
+\begin{center}
+	\begin{talltblr}[caption={Tabelle mit drei Spalten und angepasster Spaltenbreite}, label={beispieldrei}]{width=0.9\textwidth, colspec={X[1,l,m] X[1,c,m] X[5,l,m]}}\toprule
+		\textbf{Spalte 1} & \textbf{Spalte 2} & \SetCell[c=1]{c} \textbf{Spalte 3}                                                            \\ \midrule
+		a                 & 1                 & Ein ausreichend langer Text, damit es zu einem Zeilenumbruch kommt.                           \\ \cmidrule{1-3}
+		b                 & 2                 & Ein kürzerer Text.                                                                            \\ \cmidrule{1-3}
+		c                 & 3                 & Wieder etwas längerer Text in dieser Spalte, auch hier kann es zu einem Zeilenumbruch kommen. \\ \cmidrule{1-3}
+		d                 & 4                 & Ein Text.                                                                                     \\ \cmidrule{1-3}
+		e                 & 5                 & Noch etwas zusätzlicher Text.                                                                 \\ \bottomrule
+	\end{talltblr}
+\end{center}
+
+Grundsätzlich können wir aus allen unseren Tabellen einfach seitenübergreifende
+Tabellen machen, indem wir statt \texttt{talltblr} einfach \texttt{longtblr}
+verwenden.\\Wir können alle unsere Einstellungen beibehalten und müssen lediglich
+die Header unserer Tabelle festlegen. Dies ist nötig, damit die Überschriften
+auf der neuen Seite wiederholt werden können. So sieht die
+Tabelle~\ref{beispieleins} als \texttt{longtblr} fast genauso aus:
+
+\begin{code}{Beispiel für eine longtblr}{beispiellongtblr}
+	\begin{minted}{latex}
+	\begin{center}
+		\begin{longtblr}[caption={Tabelle mit zwei Spalten}, label={beispieleins}]{colspec={X[c,m] X[c,m]},rowhead=1,width=0.4\textwidth}\toprule
+			Überschrift 1 & Überschrift 2 \\ \midrule
+			Wert 1.1      & Wert 1.2      \\ \cmidrule{1-2}
+			Wert 2.1      & Wert 2.2      \\ \cmidrule{1-2}
+			Wert 3.1      & Wert 3.2      \\ \cmidrule{1-2}
+			Wert 4.1      & Wert 4.2      \\ \cmidrule{1-2}
+			Wert 5.1      & Wert 5.2      \\ \bottomrule
+		\end{longtblr}
+	\end{center}
+\end{minted}
+\end{code}
+
+Lediglich die Angabe \texttt{rowhead=1} steht als neue Angabe dafür, dass die
+erste Zeile die Header bzw. Überschriften enthält und somit bei jedem
+Seitenumbruch wiederholt werden soll.\\ Mittels dieser Angaben und etwas Übung
+sollten sich, ohne allzu viel Aufwand, ansehnliche und funktionale Tabellen
+erstellen lassen. Ich nutze oftmals direkt die \texttt{longtblr} Umgebung, dies
+ermöglicht aus meiner Sicht ein angenehmeres Layout.
+
+\subsection{Labels und Verweise}\label{labelundref}
+
+Wie in verschiedenen Listings gesehen und an einigen Textstellen erwähnt,
+existieren in \LaTeX~sog. \texttt{labels}. Durch das Labeln von Abbildungen,
+Tabellen, Listings und Überschriften können wir im Fließtext auf diese
+verweisen. Der Vorteil besteht darin, dass wir uns keine Gedanken um die
+Nummerierung von Abbildungen o. ä. machen müssen.  Wird auf ein Label verwiesen,
+dann passt sich dieser Verweis automatisch an, sollte sich die Nummerierung
+geändert haben.\\
+Wir können, in manchen Fällen müssen wir sogar, Labels für alle Überschriften,
+Tabellen, Listings und Abbildungen erstellen und somit auf diese referenzieren.
+Für Tabellen, Abbildungen und Listings habe ich die Labels in vielen Beispielen schon
+gezeigt, schaut euch hierfür nochmal die entsprechenden Listings aus den vorangegangenen Abschnitten an.\\
+Überschriften können einfach mittels des Befehls \texttt{\textbackslash label\{\}} zusätzlich mit einem Label versehen werden.
+So ist dieser Abschnitt folgendermaßen mit einem Label ausgestattet:
+
+\begin{code}{Beispiel für ein Label}{beispiellabel}
+	\begin{minted}{latex}
+		\subsection{Labels und Verweise}\label{labelundref}	
+	\end{minted}
+\end{code}
+
+Um auf ein Label zu verweisen, z. B. Listing~\ref{beispiellabel} kann der Befehl
+\texttt{\textasciitilde\textbackslash ref\{\}} genutzt werden.
+Innerhalb der geschweiften Klammern wird dann das passende Label hinterlegt, dies kann dann so aussehen:
+
+\begin{code}{Beispiel für eine Referenz}{beispielref}
+	\begin{minted}{latex}
+		Um auf ein Label zu verweisen, z. B. Listing~\ref{beispiellabel} kann der Befehl...	
+	\end{minted}
+\end{code}
+

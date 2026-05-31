@@ -1,0 +1,84 @@
+% Beispiel für Bildintegration
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.52\textwidth]{src/abbildungen/deckblatt.png}
+	\caption{Deckblatt}
+	\label{picturedeckblatt}
+\end{figure}
+
+% Beispiel für einen Schaltplan 
+
+\begin{figure}
+  \centering
+  \begin{circuitikz}
+    \draw (0,80) node[vcc]    (vcc) {+ \SI{5}{\volt}};
+    \draw (0,60) node (d) {};
+    \draw (0,30) node (r3) {};
+    \draw (0,15) node (r4) {};
+    \draw (0,0)  node[rground] (gnd) {};
+    \draw (vcc) to[leDo] (d.center);
+    \draw (d.center)  to[R=$R_3$,a={\SI{1}{\kilo\ohm}}]  (r3.center);
+    \draw (r3.center)  to[R=$R_4$,a={\SI{1}{\kilo\ohm}}]  (r4.center);
+    \draw (r4.center)  to  (gnd);
+  \end{circuitikz}
+  \caption[Schaltung]{Schaltung}
+  \label{fig:Schaltung}
+\end{figure}
+
+
+
+% Beispiel für eingerücktes Zitat (länger als drei Zeilen)
+
+\begin{quote}
+	\footnotesize{
+		Er hörte leise Schritte hinter sich.
+		Das bedeutete nichts Gutes.
+		Wer würde ihm schon folgen, spät in der Nacht
+		und dazu noch in dieser engen Gasse mitten
+		im übel beleumundeten Hafenviertel?
+		Gerade jetzt, wo er das Ding seines Lebens gedreht hatte
+		und mit der Beute verschwinden wollte~\autocite[postnote]{kürzel}!}
+\end{quote}
+
+
+% Beispiel für Formeln
+
+\begin{quote}
+  Die Funktion F: $\mathbb{R} \rightarrow$ [0,1] mit $F(t) = P (X \le t)$ heißt Verteilungsfunktion von $X$. vgl. \cite[S.55]{mf2005}
+\end{quote}
+
+% Beispiel für eine Tabelle 
+
+\begin{longtblr}[caption={\LaTeX~Schriftgrößen}, label={schriftgrößen} ]{colspec = {X[l,m] X[2,c,m]}, rowhead=1, width=0.2\textwidth}\toprule
+	Befehl                      & Ergebnis                    \\ \midrule
+	\textbackslash tiny         & \tiny{winzig}               \\ \cmidrule{1-2}
+	\textbackslash scriptsize   & \scriptsize{klein}          \\ \cmidrule{1-2}
+	\textbackslash footnotesize & \footnotesize{etwas größer} \\ \cmidrule{1-2}
+	\textbackslash small        & \small{noch etwas größer}   \\ \cmidrule{1-2}
+	\textbackslash normalsize   & \normalsize{normal}         \\ \cmidrule{1-2}
+	\textbackslash large        & \large{groß}                \\ \cmidrule{1-2}
+	\textbackslash Large        & \Large{größer}              \\ \cmidrule{1-2}
+	\textbackslash LARGE        & \LARGE{noch größer}         \\ \cmidrule{1-2}
+	\textbackslash huge         & \huge{riesig}               \\ \cmidrule{1-2}
+	\textbackslash Huge         & \LARGE{noch riesiger}       \\ \bottomrule
+\end{longtblr}
+
+% Beispiel für Listing
+
+\begin{code}{Ein Listing}{einlisting}
+	\begin{minted}{bash}
+	for i in {1..10}; do 
+		echo "$i"
+	done	
+	\end{minted}
+\end{code}
+
+% Beispiel: Verweis auf eine Abbildung
+
+Abbildung~\ref{labelname}
+
+% Beispiel Zitat
+
+~\autocite[postnote]{kürzel}
+

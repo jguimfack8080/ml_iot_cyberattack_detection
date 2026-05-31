@@ -1,0 +1,256 @@
+\section{Die Hauptdatei}\label{zurhauptdatei}
+
+Die \texttt{hauptdatei.tex} gliedert sich grob in vier Abschnitte: die
+Definition der Pakete, des Deckblattes und Zitierstils sowie die eigentliche
+Einbindung des Inhaltes. Alle Bereiche wollen wir uns im Folgenden einmal
+anschauen.
+
+\subsection{Die Präambel}\label{präambel}
+
+Fast alle Funktionen und Features sind in \LaTeX~in sogenannten
+\texttt{packages} enthalten, welche ähnlich wie in Java importiert bzw.
+eingebunden werden müssen. In der Präambel werden all diese Pakete definiert.
+Zusätzlich wird in der Präambel die allgemeine Dokumentenklasse festgelegt. Also
+ob wir gerade einen Brief, ein Buch oder einen Artikel schreiben. Die Präambel
+beginnt dabei mit der \texttt{\textbackslash documentclass} und endet mit Beginn
+des eigentlichen Dokumentes, also \texttt{\textbackslash begin\{document\}}. Die
+sog. \texttt{documentclass} sieht für dieses Dokument folgendermaßen aus:
+
+\begin{code}{Die documentclass}{documentclass}
+	\begin{minted}{latex}
+		\documentclass[a4paper,12pt,parskip=half,headsepline,DIV=12,numbers=noenddot]{scrartcl}
+	\end{minted}
+\end{code}
+
+Wie wir sehen, wird in der \texttt{documentclass} z. B. das Format (A4) und die
+Schriftgröße (12pt.) definiert. Ebenso legen wir mit \texttt{scrartcl} fest,
+dass wir einen Artikel schreiben. Es handelt sich dabei um eine sog. KOMA-Script
+Klasse. Diese Klassen sind in der \LaTeX~Welt im Prinzip Standard und ein Blick
+in die
+\href{https://ftp.agdsn.de/pub/mirrors/latex/dante/macros/latex/contrib/koma-script/doc/scrguide-de.pdf}{Dokumentation}
+lohnt sich allemal. Ebenso werden nicht, wie aus Word bekannt, Seitenränder
+festgelegt, sondern Anhand des sog. Satzspiegels eine optimale Verteilung von
+Text zu Seitengröße ermittelt. Hierfür dient die Angabe \texttt{DIV=12}, auch
+hier empfehlt sich die Dokumentation der KOMA-Script Klassen.\\ Zu Beginn sollte
+die \texttt{documentclass} unverändert bleiben, kann jedoch mit einiger Erfahrung an die
+eigenen Bedürfnisse angepasst werden. Auf die
+\texttt{documentclass} folgt das Einbinden von Packages durch den Befehl
+\texttt{\textbackslash usepackage}. Für die Darstellung der Verzeichnisstruktur
+in Abbildung~\ref{dirtree} wird bspw. das Package \texttt{dirtree} genutzt.
+Einige Packages sind in der \texttt{hauptdatei.tex} mit kurzen Kommentaren
+versehen. Auch zu den Packages finden sich
+\href{https://www.ctan.org}{Dokumentation}, welche immer wieder zurate
+gezogen werden können und sollten. Neben der Einbindung der Packages können
+diese auch direkt definiert werden. So wird z. B. das Package \texttt{minted}
+für die Darstellung von Quellcode (siehe z. B. Listing~\ref{documentclass})
+genutzt und das Layout direkt in der Präambel festgelegt:
+
+\begin{code}{Package Definition}{packagedefinition}
+	\begin{minted}{latex}
+\usepackage[newfloat]{minted}
+\setminted{
+  frame=lines,
+  framesep=2mm,
+  baselinestretch=1.2,
+  bgcolor=LightGray,
+  fontsize=\footnotesize,
+  linenos,
+  breaklines=true,
+  breakanywhere=true,
+  autogobble,
+  tabsize=2,
+  listparameters=
+    \setlength{\topsep}{0pt}
+    \setlength{\partopsep}{0pt}
+    \setlength{\parsep}{0pt}
+}
+	\end{minted}
+\end{code}
+
+Ich werde an dieser Stelle nicht auf einzelne Packages und Einstellungen
+eingehen, empfehle für einen genauen Einblick aber ausdrücklich die einzelnen
+Dokumentationen. Auch hier gilt, dass die üblicherweise gebrauchten Packages
+eingebunden und definiert sind und nur in Sonderfällen zusätzliche Packages
+gebraucht werden.
+
+\subsubsection{Der Zitierstil}\label{zitierstil}
+
+Auch der Zitierstil wird innerhalb der Präambel definiert. Wir werden uns in
+einem späteren Kapitel ausführlicher mit Literaturverwaltung und Zitaten in
+\LaTeX~beschäftigen. Aktuell soll uns das Festlegen eines Zitierstiles
+ausreichen.\\ In der \texttt{hauptdatei.tex} sind bereits zwei Zitierstile
+definiert, es muss nur einer ausgewählt werden. Die Stile \texttt{ieee} und
+\texttt{apa} sind dabei in der Informatik gängig, entscheidet entsprechend eurem
+eigenen Geschmack und natürlich nach Vorgabe eurer Lehrenden.
+
+\begin{code}{Auswahl der Zitierstile}{codezitierstil}
+	\begin{minted}{latex}
+	% Zitierung nach IEEE
+
+	\usepackage[
+	backend=biber,
+	style=ieee,
+	autocite=inline,
+	]{biblatex}
+	\addbibresource{bibtex/hauptdatei.bib}
+
+	% Zitierung nach APA
+
+	%\usepackage[
+	%backend=biber,
+	%style=apa,
+	%autocite=inline,
+	%]{biblatex}
+	%\addbibresource{bibtex/hauptdatei.bib}
+	\end{minted}
+\end{code}
+
+Um den Stil zu verändern, könnt ihr den jeweils anderen Stil mit einem
+\texttt{\%} ein- bzw. auskommentieren. Aktuell ist der Stil \texttt{ieee}
+ausgewählt. Welche Unterschiede zwischen den Stilen bestehen, kann in den
+jeweiligen Guidelines nachgeschaut werden.
+
+\subsubsection{Das Deckblatt}\label{dasdeckblatt}
+
+Das Deckblatt ist unter \texttt{./src/basic\_structure/deckblatt.tex} definiert.
+In vielen Fällen können die nötigen Parameter jedoch direkt in der Präambel
+festgelegt werden.
+
+\begin{code}{Definition des Deckblatts}{definitiondeckblatt}
+	\begin{minted}{latex}
+% true für Bachelorarbeit / false für Hausarbeit
+\newbool{bachelorarbeit}
+\setbool{bachelorarbeit}{true}
+
+% Setze Fachbereich
+\newcommand{\department}{Fachbereich II \\ Management und Informationssysteme}
+
+% Setze Studiengang
+\newcommand{\studyprogram}{Wirtschaftsinformatik B.Sc.}
+
+% Setze Modulname (bachelorarbeit muss false sein)
+\newcommand{\modulname}{Tolles Modul}
+
+% Setze Dozent:in (bachelorarbeit muss false sein)
+% Gender muss im Deckblatt angepasst werden
+\newcommand{\auditor}{Prof. Dr. Maxi Mustermensch}
+
+% Setze Gutachter:innen (bachelorarbeit muss true sein)
+% Gender muss im Deckblatt angepasst werden
+\newcommand{\firstauditor}{Prof. Dr. Maxi Mustermann}
+\newcommand{\secondauditor}{Prof. Dr. Maxi Musterfrau}
+
+% Setze Titel und Untertitel der Abreit
+\newcommand{\thetitle}{Eine unötig komplizierte uns sehr sehr sehr lange Abhandlung}
+\newcommand{\thesubtitle}{Untersuchung einer Sache von wirklichem Wert}
+
+% Setze Autor:in und MatNr.
+\newcommand{\theauthor}{Maxi Mustermensch}
+\newcommand{\matriculationnumber}{00000}
+
+% Muss in src/basic_structure/deckblatt.tex einkommentiert werden!
+
+\newcommand{\secondauthor}{Maxi Mustermensch}
+\newcommand{\secondmatriculationnumber}{00000}
+\newcommand{\thirdauthor}{Maxi Mustermensch}
+\newcommand{\thirdmatriculationnumber}{00000}
+\newcommand{\fourthauthor}{Maxi Mustermensch}
+\newcommand{\fourthmatriculationnumber}{00000}
+
+	\end{minted}
+\end{code}
+
+Viele der Angaben sollten selbsterklärend sein und können sonst durch simples
+ausprobieren weiter erforscht werden. Beachtet jedoch, dass die Sonderzeichen
+\texttt{\textbackslash \textbackslash} und \texttt{\textbackslash>} erhalten
+bleiben müssen, diese sind wichtig für das Layout. Ebenso sollte Zeile 30 bzw.
+die Angabe des \texttt{\textbackslash myspace} bei mehreren Autor:innen beachtet
+werden. Der Wert steht für den Abstand zwischen Name und MatNr. und muss sich
+damit entsprechend am längsten Namen orientieren. Sollte eure Abgabe mehr als
+eine Autor:in haben, können die Werte für weitere Autor:innen direkt in der
+Präambel gesetzt werden, müssen jedoch zusätzlich in der \texttt{deckbatt.tex}
+einkommentiert werden.
+
+\pagebreak
+Aus den in dem Listing~\ref{definitiondeckblatt}
+gewählten Einstellungen ergibt sich folgendes Deckblatt:
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=0.75\textwidth]{src/abbildungen/deckblatt.png}
+	\caption{Deckblatt}
+	\label{picturedeckblatt}
+\end{figure}
+\FloatBarrier
+
+Das Deckblatt ist manuell gesetzt und sollte nicht ohne entsprechendes Know-how
+angepasst werden. Natürlich könnt ihr immer etwas rumprobieren und euch zur Not
+das Projekt neu herunterladen.
+
+\subsection{Den Inhalt einbinden}\label{derinhalt}
+
+Wie bereits erwähnt, endet mit \texttt{\textbackslash begin\{document\}} die
+Präambel, damit beginnt unser eigentlicher Inhalt. Der Befehl
+\texttt{\textbackslash begin\{document\}} öffnet dabei eine Umgebung oder
+\texttt{environment}, welche durch \texttt{\textbackslash end\{document\}}
+geschlossen wird. Dies ähnelt etwas dem \texttt{if} und \texttt{fi} aus der
+Bash und bildet einen Block.
+
+Zu Beginn werden die Kopf- und Fußzeile des Dokuments beschrieben:
+
+\begin{code}{Kopf- und Fußzeile}{headerfooter}
+	\begin{minted}{latex}
+	% Definition Header Sections sollen in der Kopfzeile stehen; Kopfzeile mit Unterstrich
+	\automark[subsection]{section}
+	\KOMAoptions{headsepline=true}
+	%\ihead{Kopfzeile innen}
+	%\chead{Kopfzeile außen}
+	\ohead{\headmark}
+
+	% Definition footer \pagemark steht für Seitennummer
+	%\ifoot{Fußzeile innen}
+	%\cfoot{Fußzeile Mitte}
+	\ofoot{\pagemark}
+	\end{minted}
+\end{code}
+
+Daraus ergibt sich, wie in diesem Dokument zu sehen, eine Kopfzeile, welche die
+Überschrift (\texttt{section}) oder den Unterabschnitt (\texttt{subsection})
+enthält und durch eine Linie abgegrenzt wird. Dabei wird immer nur die
+\texttt{section} bzw. \texttt{subsection} aufgeführt, welche als Erstes auf der
+Seite beginnt. Es existieren hier einige mögliche Definitionen, welche
+in der Dokumentation des Packages \texttt{scrlayer-scrpage} nachgelesen werden
+können. Die Fußzeile wird schlicht mit der aktuellen Seitennummer definiert.\\
+Auf die Definition der Kopf- und Fußzeile folgt das Einbinden von
+Trennvorschlägen. \LaTeX~verfügt grundsätzlich über eine sehr gute automatische
+Silbentrennung, falls diese aber mal versagt, können eigene Trennvorschläge
+eingebunden werden. Beispiele hierzu sind in der \texttt{trennung.tex}
+hinterlegt.\\ Auf weitere kleinere Einstellungen und optionale Layoutvarianten,
+welche ausreichend kommentiert sind, folgt die Einbindung des Deckblattes, mit
+dem wir uns ja schon beschäftigt haben.\\ Die nun folgenden \texttt{inputs}
+sorgen dafür, dass euer geschriebener Text auch in das Dokument eingebunden und
+angezeigt wird. So sorgen die folgenden Inputs dafür, dass der bisherige Text,
+den ihr in diesem Dokument lesen konntet, eingebunden wird.
+\pagebreak
+\begin{code}{input statements}{inputstatements}
+	\begin{minted}{latex}
+	\input{src/einleitung.tex}
+	\input{src/struktur.tex}
+	\input{src/zurhauptdatei.tex}
+	\end{minted}
+\end{code}
+Auf die \texttt{inputs} folgen die jeweiligen Verzeichnisse, auch hier sollten
+die Einstellung nicht ohne entsprechende Kenntnisse geändert werden. Grundsätzlich
+werden die Verzeichnisse automatisch erstellt, lediglich für den Fall, dass ein
+Verzeichnis leer bleiben würde, da das Dokument z. B. keine Tabellen enthält,
+muss der entsprechende Teil der \texttt{hauptdatei.tex} auskommentiert werden.
+Dabei kann es passieren, dass sich die Kopfzeile nicht mehr korrekt verhält, da
+diese teilweise für die Verzeichnisse manuell angepasst werden muss.\\ Das
+Abkürzungsverzeichnis stellt eine Besonderheit dar, dieses muss manuell befüllt
+werden, dazu gibt es Beispiele in der \texttt{abkuerzungen.tex}.\\ Auf die
+Verzeichnisse folgt das Deckblatt für den Anhang und der Anhang selbst. Dort
+muss lediglich beachtet werden, dass für Überschriften auf höchster Ebene nur
+\texttt{subsections} verwendet werden dürfen, da der Anhang selbst die
+\texttt{section} darstellt.\\ Oftmals sieht man in \LaTeX, dass die Präambel in
+eine eigene Datei ausgelagert wird. Dies dient jedoch nur der Übersichtlichkeit
+und der etwas klareren Trennung, ich verzichte darauf in dieser Vorlage.

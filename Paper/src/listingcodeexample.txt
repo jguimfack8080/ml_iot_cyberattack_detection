@@ -1,0 +1,12 @@
+\begin{code}{Beschreibung}{label}
+	\begin{minted}{bash}
+		#!/bin/bash
+		
+		number="$1"
+		if test $number -eq 0; then
+			echo "true"
+		else
+			echo "false"
+		fi
+	\end{minted}
+\end{code}

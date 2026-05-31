@@ -1,0 +1,53 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           Deckblatt           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setmainfont{TeX Gyre Adventor}
+\thispagestyle{empty}
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{src/abbildungen/logoneu.png}
+\end{figure}
+\begin{center}
+  \large{\textbf{\department}}\\
+  \large{\textbf{\studyprogram}}\\
+  \vspace{1cm}
+  \ifbool{bachelorarbeit}{
+    \LARGE{\textbf{Bachelorarbeit}}\\
+    \large{zur Erlangung des akademischen Grades \\ Bachelor of Science}\\
+  }
+  {
+    \large{\textbf{Modul\\ \modulname}}\\
+  }
+  \vspace*{\fill}
+  \line(1,0){450}\\
+  \onehalfspacing
+  \textbf{\Large{\thetitle}}\\
+  \vspace{-0.2cm}
+  \singlespacing
+  \textbf{\large{\thesubtitle}}\\
+  \line(1,0){450}\\
+\end{center}
+\vspace*{\fill}
+\onehalfspacing
+\small{
+  \ifbool{bachelorarbeit}{
+  \begin{tblr}[]{colspec = {Q[0.6,l,m, wd=3.2cm] Q[l,m,rightsep=12pt] Q[l,m]},width=\textwidth}
+    \textbf{Vorgelegt von:} & \theauthor & MatNr. \matriculationnumber \\
+    % & \secondauthor & MatNr. \secondmatriculationnumber \\
+    % & \thirdauthor & MatNr. \thirdmatriculationnumber \\
+    % & \fourthauthor & MatNr. \fourthmatriculationnumber \\
+    \textbf{Vorgelegt am:} & \today & \\
+    \textbf{Erstgutachter:} & \firstauditor & \\
+    \textbf{Zweitgutachterin:} & \secondauditor & \\
+  \end{tblr}}
+  {
+  \begin{tblr}[]{colspec = {Q[0.6,l,m, wd=3.2cm] Q[l,m,rightsep=12pt] Q[l,m]},width=\textwidth}
+    \textbf{Vorgelegt von:} & \theauthor & MatNr. \matriculationnumber \\
+    %& \secondauthor & MatNr. \secondmatriculationnumber \\
+    %& \thirdauthor & MatNr. \thirdmatriculationnumber \\
+    %& \fourthauthor & MatNr. \fourthmatriculationnumber \\
+    \textbf{Vorgelegt am:} & \today & \\
+    \textbf{Dozent:in} & \auditor & \\
+  \end{tblr}
+  }
+\setmainfont{TeX Gyre Termes}

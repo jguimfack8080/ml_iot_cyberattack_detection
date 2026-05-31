@@ -1,0 +1,27 @@
+# Core ML & data
+pandas>=2.0
+numpy>=1.24
+scikit-learn>=1.3
+
+# Gradient Boosting (primary model + optional alternative)
+xgboost>=2.0
+
+# Explainability
+shap>=0.44
+
+# Visualization
+matplotlib>=3.7
+seaborn>=0.12
+
+# Model persistence
+joblib>=1.3
+
+# Configuration
+python-dotenv>=1.0
+
+# Progress bars (large dataset: ~8.5 GB)
+tqdm>=4.65
+
+# Testing
+pytest>=7.4
+pytest-cov>=4.1

@@ -1,0 +1,19 @@
+\section{Zielsetzung}\label{zielsetzung}
+
+Das übergeordnete Ziel dieser Arbeit ist die Entwicklung und Evaluation eines erklärbaren ML-basierten Intrusion Detection Systems für IoT-Netzwerke, das auf dem CICIoT2023-Datensatz trainiert und bewertet wird. Das System soll zwei Eigenschaften vereinen, die in der bestehenden Literatur bislang nicht gemeinsam auf diesem Datensatz untersucht wurden: eine hohe Erkennungsleistung gemessen an der Balanced Accuracy sowie interpretierbare Entscheidungsgrundlagen durch SHAP.
+
+Daraus ergeben sich drei konkrete wissenschaftliche Beiträge:
+
+Der erste Beitrag besteht in der erstmaligen Integration von SHAP in ein baumbasiertes Klassifikationsexperiment auf dem CICIoT2023-Datensatz, evaluiert anhand der Balanced Accuracy als primärer Bewertungsmetrik. Diese Kombination existiert in der Literatur bisher nicht und stellt eine direkt belegbare Forschungslücke dar.
+
+Der zweite Beitrag besteht in einer quantitativen Ablation Study, die den Einfluss der PCA-Dimensionsreduktion auf Modellleistung und SHAP-Feature-Importance systematisch untersucht. Diese Analyse fehlt im Ausgangspaper vollständig.
+
+Der dritte Beitrag besteht in einer semantischen Validierung der SHAP-Erklärungen. Die identifizierten Feature-Importance-Ranglisten werden mit dem fachlichen Wissen über die Netzwerksignaturen der jeweiligen Angriffstypen verglichen, um zu prüfen, ob das Modell tatsächlich sicherheitsrelevante Merkmale lernt oder statistische Artefakte des Datensatzes.
+
+Die drei Forschungsfragen, die diese Ziele operationalisieren, lauten wie folgt:
+
+Kann ein Gradient-Boosting-Klassifikator auf dem CICIoT2023-Datensatz eine hohe Balanced Accuracy bei der Erkennung von Cyberangriffen erzielen, und lassen sich seine Entscheidungen durch SHAP so erklären, dass die relevanten Netzwerkmerkmale pro Angriffsklasse für Sicherheitsanalysten nachvollziehbar werden?
+
+Inwiefern verändert sich die Modellbewertung, wenn statt der einfachen Accuracy die Balanced Accuracy als primäre Metrik eingesetzt wird, und welche Angriffsklassen werden durch das Klassenungleichgewicht systematisch schlechter erkannt?
+
+Welchen messbaren Einfluss hat die PCA-basierte Dimensionsreduktion auf die Balanced Accuracy und die SHAP-Erklärungen, und welche Netzwerkmerkmale sind gemäß SHAP für die Klassifikation der einzelnen Angriffstypen entscheidend?
