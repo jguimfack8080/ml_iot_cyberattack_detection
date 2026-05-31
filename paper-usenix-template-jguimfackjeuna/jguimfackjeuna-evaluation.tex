@@ -15,9 +15,9 @@ Zielfunktion: \ba{}) auf einem stratifizierten Teilmengedatensatz von 8.045 Inst
 (5 Dateien) durchgefuehrt, um die Rechenzeit zu begrenzen.
 Die durchsuchte Grille umfasst: n\_estimators $\in \{100, 200\}$,
 max\_depth $\in \{3, 5\}$, learning\_rate $\in \{0{,}05, 0{,}1\}$,
-subsample $\in \{0{,}8, 1{,}0\}$ -- insgesamt 16 Kombinationen je Stufe und Pipeline.
+subsample $\in \{0{,}8, 1{,}0\}$; insgesamt 16 Kombinationen je Stufe und Pipeline.
 
-\subsection{Ergebnisse Pipeline A -- mit PCA (39 auf 16 Merkmale)}
+\subsection{Ergebnisse Pipeline A: mit PCA (39 auf 16 Merkmale)}
 
 Die binaere Klassifikation in Stufe~1 erzielt eine \ba{} von 0{,}9971 und einen
 makro-gemittelten F1-Score von 0{,}9969.
@@ -25,7 +25,7 @@ Die Mehrklassenklassifikation in Stufe~2 erzielt eine \ba{} von 0{,}5480 und ein
 makro-gemittelten F1-Score von 0{,}5784.
 Die Trainingsdauer betraegt 2.240 Sekunden.
 
-\subsection{Ergebnisse Pipeline B -- ohne PCA (39 Originalmerkmale)}
+\subsection{Ergebnisse Pipeline B: ohne PCA (39 Originalmerkmale)}
 
 Die binaere Klassifikation in Stufe~1 erzielt eine \ba{} von 0{,}9993 und einen
 makro-gemittelten F1-Score von 0{,}9993.
@@ -39,7 +39,7 @@ Tabelle~\ref{tab:ergebnisse} fasst die Ergebnisse beider Pipelines zusammen.
 
 \begin{table}[h]
 \centering
-\caption{Balanced Accuracy und F1-Score (makro) -- Standardparameter vs.\ Grid Search}
+\caption{Balanced Accuracy und F1-Score (makro): Standardparameter und Grid Search}
 \label{tab:ergebnisse}
 \begin{tabular}{llcccc}
 \toprule
@@ -87,7 +87,7 @@ B & Stufe~2 & 0{,}05 & 3 & 200 & 0{,}8 \\
 {\footnotesize lr: learning\_rate; depth: max\_depth; n\_est: n\_estimators; sub: subsample.}
 \end{table}
 
-\subsection{Vorlaeufige Interpretation -- Ablation Study}
+\subsection{Vorlaeufige Interpretation: Ablation Study}
 
 Die starke Leistung von Stufe~1 in beiden Pipelines (BA jeweils ueber 0{,}997) bestaetigt,
 dass der zweistufige Ansatz das Klassenungleichgewicht strukturell effektiv adressiert.
@@ -140,7 +140,7 @@ Kombinationen der Originalmerkmale sind.
 
 \begin{table}[h]
 \centering
-\caption{Top-5 SHAP-Features pro Klasse -- Pipeline B (Originalmerkmale)}
+\caption{Top-5 SHAP-Features pro Klasse: Pipeline B (Originalmerkmale)}
 \label{tab:shap_top5}
 \begin{tabular}{ll}
 \toprule

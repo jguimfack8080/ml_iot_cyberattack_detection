@@ -10,7 +10,7 @@ Die vorliegende Arbeit reproduziert diesen Ansatz und erweitert ihn in zwei Dime
 Erstens wird der Einfluss der Grid-Search-Optimierung auf einem kleineren Teilmengedatensatz
 (8.045~Instanzen) quantifiziert; die optimierten Parameter verbessern die \ba{} von Stufe~2
 in Pipeline~B von 0{,}6301 auf 0{,}6479~(+1{,}78~Prozentpunkte).
-Zweitens integrieren Raturi et al.\ keine Erklaerbarkeitskomponente -- dieser methodische
+Zweitens integrieren Raturi et al.\ keine Erklaerbarkeitskomponente; dieser methodische
 Beitrag ist der eigenstaendige Kernbeitrag der vorliegenden Arbeit.
 
 Die verbleibende Luecke zur Ziel-\ba{} von 0{,}952 erklaert sich dadurch, dass die
@@ -46,11 +46,10 @@ Die Jaccard-Aehnlichkeit quantifiziert die Ueberlappung der Top-Feature-Ranglist
 Pipeline~A und Pipeline~B und operationalisiert damit die Hypothese zur semantischen
 Interpretierbarkeit~\cite{hermosilla2025xai_forensic}.
 
-Die semantische Validierung der identifizierten Features -- ob beispielsweise
-\texttt{syn\_flag\_number} und \texttt{Rate} fuer DoS/DDoS-Erklaerungen an vorderster
-Stelle stehen -- wird nach Abschluss des Reentrainements durch Vergleich mit den
-dokumentierten Netzwerksignaturen des CICIoT2023-Datensatzes
-durchgefuehrt~\cite{neto2023ciciot2023}.
+Die semantische Validierung prueft, ob beispielsweise \texttt{syn\_flag\_number} und
+\texttt{Rate} fuer DoS/DDoS-Erklaerungen an vorderster Stelle stehen.
+Sie wird nach Abschluss des Reentrainements durch Vergleich mit den dokumentierten
+Netzwerksignaturen des CICIoT2023-Datensatzes durchgefuehrt~\cite{neto2023ciciot2023}.
 
 \subsection{Einschraenkungen und Limitierungen}
 
