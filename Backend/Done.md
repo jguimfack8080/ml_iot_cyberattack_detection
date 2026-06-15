@@ -5,6 +5,30 @@ Journal chronologique immuable. Ne jamais supprimer les entrées existantes.
 
 ---
 
+### 2026-06-15 — Session : Vollstaendiger Re-Run zur Fundierung des Papers (Issue #15)
+
+**scripts/rerun_all.sh** (neu) : deterministische Reproduktion aller Konfigurationen
+(Standard, Grid Search, Best-HP, Balanced, Evaluation + SHAP). Endzustand der Artefakte :
+stage*_A = Best-HP A, stage*_B = Balanced B.
+
+**Reproduzierte Kennzahlen (random_state=42, exakt identisch zu den Vorlaeufen) :**
+- Standard : A BA1=0,9971 BA2=0,5480 (2.060s) | B BA1=0,9993 BA2=0,6301 (1.552s)
+- GS-Subset : A 0,9969 / 0,5384 | B 0,9994 / 0,6479
+- Best-HP : A BA2=0,5364 (3.879s) | B BA2=0,6285 (3.013s)
+- Balanced B : BA2=0,7261 (3.052s), Accuracy=0,7534, Gap=0,0273
+- Per-Class A (Best-HP) und B (Balanced) : full_report_pipeline_{A,B}.json neu erzeugt
+
+**scripts/regen_perclass_b_besthp.py** (neu) : reproduziert deterministisch den Per-Class-Recall
+von Pipeline B Best-HP (nobalanced) fuer tab:perclass_b. Werte identisch
+(0,517 / 0,299 / 1,000 / 0,907 / 0,857 / 0,192), BA2=0,6285.
+
+**Standard-Config-Artefakte gesichert :** metrics_pipeline_{A,B}_standard.json
+(zuvor nicht persistiert, daher in der Review als nicht reproduzierbar markiert).
+
+**Tests :** 112 passed, 97% Coverage.
+
+---
+
 ### 2026-05-30 — Session 1 : Analyse complète et mise en place de la structure Backend
 
 **Analysé :**

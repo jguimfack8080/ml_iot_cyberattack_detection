@@ -8,6 +8,61 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-06-15 (a) -- Paper 100 Prozent fundiert : Backend-Re-Run + Zahlen-Abgleich (Issue #15)
+
+- Datum: 2026-06-15
+- Aenderung: Vollstaendiger, deterministischer Re-Run des gesamten Backends und Abgleich jeder
+  Zahl im Paper gegen die frisch erzeugten Artefakte. Branche fix/paper-100-prozent-fundiert.
+- Betroffene Dateien:
+  - Backend/scripts/rerun_all.sh (neu) : Orchestrator Standard/GridSearch/BestHP/Balanced/Eval+SHAP
+  - Backend/scripts/regen_perclass_b_besthp.py (neu) : Per-Class B Best-HP nobalanced
+  - Backend/results/metrics/* : metrics_*_standard.json, best_params_*, full_report_*, shap_*,
+    perclass_B_besthp_nobalanced.json (neu/aktualisiert)
+  - paper/* : abstract, evaluation, discussion, conclusion, methodik, motivation, main,
+    related-work, figures/ (3 frische Figuren)
+  - Backend/Done.md, paper/Done.md, paper/TO-DO.md, Backend/TO-DO.md
+- Technische Auswirkungen:
+  - Standard-Config (0,5480 / 0,6301) exakt reproduziert -> Headline "8,21 Prozentpunkte" fundiert
+  - Alle BA/F1/Per-Class/SHAP deterministisch identisch ; nur Trainingszeiten neu gemessen
+  - SHAP-Qualitaetsmetriken ehrlich als qualitativ/Bezugsrahmen formuliert (kein Overclaim)
+  - KI-/Uebersetzungs-Offenlegung ergaenzt ; franzoesische Woerter entfernt
+  - Abweichung zur Raturi-BA 0,952 als Reproduzierbarkeitsfrage dokumentiert (Betreuer-Linie)
+  - Kompilierung WSL pdflatex : 10 Seiten, 0 undefined refs/citations
+- Begruendung:
+  - Nutzerforderung "100 Prozent fundiert, keine erfundenen Zahlen" ; Backend = einzige Wahrheit
+  - Review hatte Standard-Zahlen als nicht persistiert/nicht reproduzierbar markiert
+
+### 2026-06-01 (a) -- Session 13 : Review complete (redondances, fluidite, coherence)
+
+- Datum: 2026-06-01
+- Aenderung: Review complete du paper a la demande de l'etudiant. Suppression des
+  redondances, reformulation fluide des Forschungsfragen, correction d'incoherences
+  internes et d'une regression de l'abstract. 7 fichiers .tex touches.
+- Betroffene Dateien:
+  - paper/jguimfackjeuna-introduction.tex : double citation Hamedani retiree ;
+    Forschungsfragen en prose chronologique ; "Struktur der Arbeit" supprime ;
+    redondance Related Work (Mohale/Hermosilla) retiree ; Motivation renforcee
+  - paper/jguimfackjeuna-abstract.tex : resultats chiffres restaures (regression) ;
+    meta-phrases (Alharby/Diskussionsteil) retirees ; "Schluesselwoerter" corrige
+  - paper/jguimfackjeuna-evaluation.tex : \cite{hosseini} errone retire (Grid Search) ;
+    "zukuenftige" ; "Kapitel"->"Abschnitt"
+  - paper/jguimfackjeuna-discussion.tex : §5.1 triple repetition consolidee ;
+    "Rahmenfrage"->"leitende Forschungsfrage"
+  - paper/jguimfackjeuna-methodik.tex : contradiction "Normalverteilung" corrigee
+  - paper/jguimfackjeuna-conclusion.tex : "Kapitel"->"Abschnitt"
+  - paper/jguimfackjeuna-motivation.tex : "46 Originalmerkmalen"->"Originalmerkmalen"
+  - paper/Done.md, TO-DO.md : session 13
+- Technische Auswirkungen:
+  - 0 Gedankenstrich introduit ; 10/10 sources toujours citees ; 0 cle indefinie
+  - Abstract de nouveau porteur de resultats (best practice) ; intro non redondante
+  - Coherence interne methodik <-> discussion sur l'echantillonnage retablie
+  - Compilation NON verifiee (pas de LaTeX local, WSL HS) : a recompiler avant merge
+- Begruendung:
+  - Demande explicite de l'etudiant (review complete, anti-redondance, anti-hallucination)
+  - L'abstract avait perdu ses resultats numeriques et gagne du meta-commentaire impropre
+  - "Normalverteilung erhalten" contredisait "glaettet die Klassenverteilung" (§5.3)
+  - Hosseini ne soutient pas le constat de generalisation Grid-Search (anti-hallucination)
+
 ### 2026-05-31 (h) -- Final Review complet + 3 correctifs supplementaires (branch Issue #13)
 
 - Datum: 2026-05-31

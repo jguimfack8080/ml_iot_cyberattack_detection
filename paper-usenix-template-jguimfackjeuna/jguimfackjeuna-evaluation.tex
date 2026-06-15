@@ -13,25 +13,17 @@ anschliessend mit den durch Grid Search optimierten Parametern.
 Die Hyperparameteroptimierung wurde mit \texttt{GridSearchCV} (cv\,=\,3,
 Zielfunktion: \ba{}) auf einem stratifizierten Teilmengedatensatz von 8.045 Instanzen
 (5 Dateien) durchgefuehrt, um die Rechenzeit zu begrenzen.
-Die durchsuchte Grille umfasst: n\_estimators $\in \{100, 200\}$,
+Das durchsuchte Suchraster umfasst: n\_estimators $\in \{100, 200\}$,
 max\_depth $\in \{3, 5\}$, learning\_rate $\in \{0{,}05, 0{,}1\}$,
 subsample $\in \{0{,}8, 1{,}0\}$; insgesamt 16 Kombinationen je Stufe und Pipeline.
 
-\subsection{Ergebnisse Pipeline A: mit PCA (39 auf 16 Merkmale)}
+\subsection{Ergebnisse mit Standardhyperparametern}
 
-Die binaere Klassifikation in Stufe~1 erzielt eine \ba{} von 0{,}9971 und einen
-makro-gemittelten F1-Score von 0{,}9969.
-Die Mehrklassenklassifikation in Stufe~2 erzielt eine \ba{} von 0{,}5480 und einen
-makro-gemittelten F1-Score von 0{,}5784.
-Die Trainingsdauer betraegt 2.240 Sekunden.
-
-\subsection{Ergebnisse Pipeline B: ohne PCA (39 Originalmerkmale)}
-
-Die binaere Klassifikation in Stufe~1 erzielt eine \ba{} von 0{,}9993 und einen
-makro-gemittelten F1-Score von 0{,}9993.
-Die Mehrklassenklassifikation in Stufe~2 erzielt eine \ba{} von 0{,}6301 und einen
-makro-gemittelten F1-Score von 0{,}6670.
-Die Trainingsdauer betraegt 1.657 Sekunden.
+Mit Standardhyperparametern erzielt Pipeline~A (mit \pca{}) eine \ba{} von 0{,}9971 in
+Stufe~1 und 0{,}5480 in Stufe~2; Pipeline~B (ohne \pca{}) erreicht 0{,}9993 beziehungsweise
+0{,}6301 (die zugehoerigen F1-Werte fasst Tabelle~\ref{tab:ergebnisse} zusammen).
+Bereits ohne Optimierung uebertrifft Pipeline~B die \pca{}-Variante in der Mehrklassenstufe
+deutlich, bei einer Trainingsdauer von 1.552 gegenueber 2.060 Sekunden.
 
 \subsection{Vergleich Pipeline A und Pipeline B}
 
@@ -65,13 +57,20 @@ Grid-Search-Optimum auf 8.045~Instanzen. Best HP: optimierte Hyperparameter auf
 
 Tabelle~\ref{tab:ergebnisse} zeigt die Ergebnisse in vier Konfigurationen.
 Pipeline~B uebertrifft Pipeline~A in allen Konfigurationen und mit allen Hyperparametern.
-Das Reentrainement auf dem vollstaendigen Datensatz liefert fuer beide Pipelines eine
+Das Neutraining auf dem vollstaendigen Datensatz liefert fuer beide Pipelines eine
 geringfuegig niedrigere Stufe-2-\ba{} als die Standardparameter:
 Pipeline~A sinkt von 0{,}5480 auf 0{,}5364~($-$1{,}16~Punkte),
 Pipeline~B sinkt von 0{,}6301 auf 0{,}6285~($-$0{,}16~Punkte).
 Dieses Ergebnis belegt, dass die auf dem Teilmengedatensatz (8.045~Instanzen) gefundenen
 Hyperparameter auf dem vollstaendigen Datensatz nicht besser generalisieren; dies ist
-ein wichtiger methodischer Befund fuer zukunftige Studien~\cite{hosseini2025imbalance}.
+ein wichtiger methodischer Befund fuer zukuenftige Studien.
+
+\textbf{Trainingszeiten.}
+Mit optimierten Hyperparametern betraegt die Trainingsdauer auf dem vollstaendigen Datensatz
+3.879 Sekunden (Pipeline~A) und 3.013 Sekunden (Pipeline~B ohne Klassengewichtung); das
+klassengewichtete Pipeline-B-Modell benoetigt 3.052 Sekunden.
+Die hoehere Dauer gegenueber der Standardkonfiguration folgt aus der groesseren Zahl von
+Schaetzern in den optimierten Konfigurationen.
 
 \textbf{Klassengewichtung.}
 Da \gb{} keinen \texttt{class\_weight}-Parameter besitzt, werden die Trainingsinstanzen
@@ -116,14 +115,14 @@ Trennung von DoS/DDoS-Verkehr geeignet sind.
 
 Die \ba{} von Stufe~2 liegt in allen Konfigurationen unterhalb des in Raturi et al.\
 \cite{raturi2026exploratory} berichteten Wertes (0{,}952).
-Das Reentrainement von Pipeline~A mit optimierten Hyperparametern auf dem vollstaendigen
+Das Neutraining von Pipeline~A mit optimierten Hyperparametern auf dem vollstaendigen
 Datensatz liefert BA$_2$\,=\,0{,}5364, was geringfuegig unter dem Standard-Wert von 0{,}5480
 liegt.
 Dies legt nahe, dass die auf dem Teilmengedatensatz gefundenen Hyperparameter den
 Klassenungleichgewichten des vollstaendigen Datensatzes weniger gut begegnen.
-Die Diskussion in Kapitel~\ref{diskussion} geht auf diese Befunde ein.
+Die Diskussion in Abschnitt~\ref{diskussion} geht auf diese Befunde ein.
 
-Tabelle~\ref{tab:perclass_a} zeigt die Klassenmetriken fuer Pipeline~A (Reentrainement
+Tabelle~\ref{tab:perclass_a} zeigt die Klassenmetriken fuer Pipeline~A (Neutraining
 mit optimierten Hyperparametern).
 Der starke Recall-Kontrast zwischen den Klassen bestaetigt das strukturelle
 Klassenungleichgewicht und erklaert die niedrige \ba{}:
@@ -206,7 +205,7 @@ mit Klassengewichtung (Bewertung auf 69.773 wahren Nicht-DoS-Testinstanzen).
 \subsection{SHAP-Analyse}\label{shap_analyse}
 
 Die \shap{}-Analyse wird ausschliesslich auf den finalisierten Modellen nach dem
-Reentrainement mit optimierten Hyperparametern durchgefuehrt.
+Neutraining mit optimierten Hyperparametern durchgefuehrt.
 Die methodische Grundlage bildet die \shap{}-Bibliothek Version~0.52 in Kombination mit
 scikit-learn~1.6.
 
@@ -240,7 +239,7 @@ Kombinationen der Originalmerkmale sind.
 \toprule
 Klasse & Top-5 Features (absteigend nach $\overline{|\phi_i|}$) \\
 \midrule
-Benign      & \texttt{HTTPS}, \texttt{Number}, \texttt{Max}, \texttt{syn\_flag\_number}, \texttt{Header\_Length} \\
+Benign      & \texttt{HTTPS}, \texttt{Number}, \texttt{Max}, \texttt{Header\_Length}, \texttt{syn\_flag\_number} \\
 Brute-Force & \texttt{Number}, \texttt{Min}, \texttt{Max}, \texttt{rst\_flag\_number}, \texttt{Rate} \\
 Mirai       & \texttt{Number}, \texttt{Protocol\_Type}, \texttt{Min}, \texttt{rst\_flag\_number}, \texttt{syn\_flag\_number} \\
 Recon.      & \texttt{rst\_flag\_number}, \texttt{Number}, \texttt{syn\_flag\_number}, \texttt{Protocol\_Type}, \texttt{Min} \\
@@ -276,7 +275,7 @@ Fuer Stufe~1 (binaere Klassifikation, Pipeline~A) identifiziert der \texttt{Tree
 PC6 ($\overline{|\phi|}$\,=\,90.171), PC1 (62.205) und PC7 (47.902) als die drei wichtigsten
 Komponenten.
 Fuer Stufe~2 (Mehrklassenklassifikation, Pipeline~A) dominieren PC2 und PC1 uebergreifend
-ueber alle Klassen mit Abstand, gefolgt von PC7 und PC6.
+ueber alle Klassen mit Abstand, gefolgt von PC7.
 Da Hauptkomponenten lineare Kombinationen der 39 Originalmerkmale sind, fehlt ihnen jede
 direkte semantische Bedeutung~\cite{alharby2025ciciot}.
 Ein Sicherheitsanalyst kann aus \glqq{}PC6 ist das wichtigste Feature\grqq{} kein
@@ -288,8 +287,10 @@ Eine direkte Jaccard-Aehnlichkeit zwischen den Top-10-Ranglisten beider Pipeline
 methodisch nicht sinnvoll, da die Feature-Raeume (PCA-Komponenten vs.\ Originalmerkmale)
 nicht vergleichbar sind.
 Die Bewertungsmetriken nach Hermosilla et al.\ \cite{hermosilla2025xai_forensic}
-(Fidelitaet, Konsistenz) werden auf die Pipeline~B-Erklaerungen angewandt, da nur dort
-semantisch valide Erklaerungen vorliegen.
+(Fidelitaet, Konsistenz) bilden den methodischen Bezugsrahmen fuer die Erklaerungsqualitaet;
+die Bewertung erfolgt in dieser Arbeit qualitativ ueber die semantische Validierung, da nur
+fuer Pipeline~B semantisch valide Erklaerungen vorliegen.
+Eine numerische Berechnung dieser Metriken bleibt zukuenftiger Arbeit vorbehalten.
 
 \textbf{Lokale Erklaerungen.}
 Fuer die drei bis fuenf am staerksten fehlklassifizierten Instanzen pro Pipeline wird ein

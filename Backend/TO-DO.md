@@ -1,5 +1,15 @@
 # TO-DO.md — Backlog Complet du Projet Backend ML IoT IDS
-## Derniere mise a jour : 2026-05-31 (Session 10)
+## Derniere mise a jour : 2026-06-15 (Re-Run Fundierung Paper)
+
+---
+
+## 2026-06-15 — Re-Run zur Fundierung des Papers (Issue #15)
+
+[x] scripts/rerun_all.sh : vollstaendige deterministische Reproduktion aller Konfigurationen
+[x] Standard-Config-Metriken persistiert (metrics_pipeline_{A,B}_standard.json)
+[x] scripts/regen_perclass_b_besthp.py : Per-Class B Best-HP nobalanced reproduziert
+[x] Endzustand Artefakte : stage*_A=Best-HP, stage*_B=Balanced (passend zu SHAP/Figuren)
+[x] Tests gruen : 112 passed, 97% Coverage
 
 ---
 

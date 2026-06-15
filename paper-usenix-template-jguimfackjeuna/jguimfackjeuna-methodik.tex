@@ -25,7 +25,8 @@ Da das vollstaendige Dataset von ca.\ 8{,}5~GB die verfuegbare Arbeitsspeicherka
 ueberschreitet, wird ein stratifiziertes Sampling-Verfahren eingesetzt.
 Aus jeder der 63 CSV-Dateien werden je 500 Instanzen pro Klasse entnommen, sodass alle
 Dateien gleichmaessig zum Trainingsdatensatz beitragen.
-Die Normalverteilung aller Klassen bleibt dabei erhalten.
+Dadurch bleiben alle Klassen im Trainingsdatensatz vertreten, und das ausgepraegte
+Klassenungleichgewicht des Gesamtdatensatzes wird abgemildert.
 
 Unendliche Werte (Infinity), die im Rohdatensatz auftreten, werden vor dem Preprocessing
 durch fehlende Werte (NaN) ersetzt.
@@ -64,7 +65,7 @@ In Stufe~2 werden die Nicht-DoS-Instanzen in die verbleibenden Kategorien eingeo
 Mirai, Reconnaissance, Spoofing, Brute-Force, Web-based Attacks und Benign.
 Dieser Ansatz adressiert das Klassenungleichgewicht strukturell, da die dominanten DoS- und
 DDoS-Klassen in einer separaten binaeren Klassifikationsstufe behandelt werden, bevor die
-Mehrklassenklassifikation der zahlenmaeßig unterrepraesentierten Kategorien erfolgt.
+Mehrklassenklassifikation der zahlenmaessig unterrepraesentierten Kategorien erfolgt.
 
 Stufe~2 wird ausschliesslich auf den wahren Nicht-DoS-Trainingsinstanzen trainiert.
 Dadurch wird verhindert, dass Klassifikationsfehler aus Stufe~1 in das Training von Stufe~2
@@ -127,9 +128,11 @@ basierend auf dem Betragsmittelwert der \shap{}-Werte ueber alle Testinstanzen
 Auf \textbf{lokaler Ebene} werden Einzelfallanalysen ausgewaehlter Fehlklassifikationen
 durchgefuehrt (Waterfall-Plots).
 
-Die Qualitaet der \shap{}-Erklaerungen wird anhand der Bewertungsmetriken aus Hermosilla et
-al.\ \cite{hermosilla2025xai_forensic} ueberprueft: Fidelitaet, Konsistenz und
-Jaccard-Aehnlichkeit.
+Die Bewertungsmetriken aus Hermosilla et al.\ \cite{hermosilla2025xai_forensic} (Fidelitaet,
+Konsistenz und Jaccard-Aehnlichkeit) bilden den methodischen Bezugsrahmen fuer die
+Erklaerungsqualitaet.
+In der vorliegenden Arbeit erfolgt die Qualitaetsbewertung qualitativ ueber die semantische
+Validierung; eine numerische Berechnung dieser Metriken bleibt zukuenftiger Arbeit vorbehalten.
 Die abschliessende semantische Validierung vergleicht die identifizierten
 Feature-Importance-Ranglisten mit dem Fachwissen ueber die Netzwerksignaturen der jeweiligen
 Angriffstypen gemaess Neto et al.\ \cite{neto2023ciciot2023}.

@@ -8,7 +8,8 @@ CICIoT2023-Datensatz~\cite{neto2023ciciot2023} implementiert, evaluiert und mit 
 Die Ablation Study liefert ein klar messbares Ergebnis: \pca{} reduziert die \ba{} von
 Stufe~2 um 8{,}21~Prozentpunkte (Pipeline~B: 0{,}6301 gegenueber Pipeline~A: 0{,}5480
 mit Standardparametern).
-Gleichzeitig trainiert Pipeline~B ohne \pca{} um 583~Sekunden schneller.
+Gleichzeitig trainiert Pipeline~B ohne \pca{} in der Standardkonfiguration um 508~Sekunden
+schneller (1.552 gegenueber 2.060 Sekunden).
 Die wirksamste Einzelmassnahme gegen das Klassenungleichgewicht ist die Klassengewichtung
 (\texttt{sample\_weight} balanced) in Stufe~2: Sie hebt die \ba{} von Pipeline~B von
 0{,}6285 auf 0{,}7261~($+$9{,}76~Prozentpunkte) und verbessert den Recall der seltenen
@@ -32,10 +33,12 @@ und \shap{}-Analyse auf dem CICIoT2023-Datensatz stellt nach Kenntnis des Autors
 eigenstaendige Kombination in der Literatur dar.
 
 \textbf{Ausblick.}
-Die \shap{}-Analyse und ihre Qualitaetsbewertung nach Hermosilla et al.\
-\cite{hermosilla2025xai_forensic} (Fidelitaet, Konsistenz) wurden fuer Pipeline~B
-abgeschlossen; die Jaccard-Aehnlichkeit ist methodisch nicht anwendbar, da \pca{}-Komponenten
-und Originalmerkmale verschiedene Feature-Raeume bilden (vgl.\ Kapitel~\ref{evaluation}).
+Die \shap{}-Analyse wurde fuer beide Pipelines durchgefuehrt; ihre Qualitaet wurde qualitativ
+ueber den Abgleich mit dokumentierten Angriffssignaturen beurteilt.
+Eine numerische Quantifizierung der Erklaerungsmetriken nach Hermosilla et al.\
+\cite{hermosilla2025xai_forensic} (Fidelitaet, Konsistenz) sowie die Jaccard-Aehnlichkeit, die
+zwischen \pca{}-Komponenten und Originalmerkmalen methodisch nicht vergleichbar ist, bleiben
+zukuenftiger Arbeit vorbehalten (vgl.\ Abschnitt~\ref{evaluation}).
 Offene Forschungsfragen bleiben die Latenzmessung fuer den Echtzeiteinsatz in
 ressourcenbeschraenkten \iot{}-Umgebungen~\cite{raturi2026exploratory}, die Robustheit
 gegenueber gezielten Adversarial Attacks sowie die Generalisierbarkeit der

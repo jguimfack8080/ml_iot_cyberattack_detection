@@ -7,25 +7,36 @@ Raturi et al.\ \cite{raturi2026exploratory} fuehren die \ba{} als primaere Metri
 berichten eine \ba{} von 0{,}952 in der Mehrklassenklassifikation mit optimierten
 Hyperparametern.
 Die vorliegende Arbeit reproduziert diesen Ansatz und erweitert ihn in zwei Dimensionen.
-Erstens wird der Einfluss der Grid-Search-Optimierung auf einem kleineren Teilmengedatensatz
-(8.045~Instanzen) quantifiziert; die optimierten Parameter verbessern die \ba{} von Stufe~2
-in Pipeline~B von 0{,}6301 auf 0{,}6479~(+1{,}78~Prozentpunkte).
+Erstens wird der Einfluss der Grid-Search-Optimierung quantifiziert: Auf dem
+Teilmengedatensatz (8.045~Instanzen) erreicht das Optimum fuer Pipeline~B eine
+Stufe-2-\ba{} von 0{,}6479, auf den vollstaendigen Datensatz uebertragen jedoch nur 0{,}6285
+und damit knapp unter dem Standardwert von 0{,}6301.
 Zweitens integrieren Raturi et al.\ keine Erklaerbarkeitskomponente; dieser methodische
 Beitrag ist der eigenstaendige Kernbeitrag der vorliegenden Arbeit.
 
-Das Reentrainement von Pipeline~A mit den optimierten Hyperparametern auf dem vollstaendigen
-Datensatz (838.602~Instanzen) ergibt BA$_2$\,=\,0{,}5364, was knapp unterhalb der
-Standard-\ba{} von 0{,}5480 liegt.
-Dieses Ergebnis zeigt, dass Hyperparameter, die auf einem kleinen Subset (8.045~Instanzen)
-optimiert werden, nicht zwingend besser auf dem vollstaendigen Datensatz abschneiden.
-Die verbleibende Luecke zur Ziel-\ba{} von 0{,}952 (Raturi et al.) laesst sich damit nicht
-allein durch die Grid-Search-Optimierung schliessen.
-Fuer Pipeline~B bestaetigt das Reentrainement denselben Befund: die optimierten
-Hyperparameter liefern BA$_2$\,=\,0{,}6285, knapp unterhalb der Standard-\ba{} von
-0{,}6301~($-$0{,}16~Punkte).
-Dieses konsistente Muster in beiden Pipelines zeigt, dass ein Grid~Search auf einem kleinen
-Subset (8.045~Instanzen) keine reliablen Hyperparameter fuer den vollstaendigen
-CICIoT2023-Datensatz liefert.
+Das Neutraining mit den optimierten Hyperparametern auf dem vollstaendigen Datensatz
+(838.602~Instanzen) liefert in beiden Pipelines eine geringfuegig niedrigere
+Mehrklassen-\ba{} als die Standardparameter: Pipeline~A erreicht BA$_2$\,=\,0{,}5364
+(gegenueber 0{,}5480), Pipeline~B BA$_2$\,=\,0{,}6285 (gegenueber 0{,}6301).
+Dieses konsistente Muster zeigt, dass auf einem kleinen Subset (8.045~Instanzen) optimierte
+Hyperparameter nicht reliabel auf den vollstaendigen CICIoT2023-Datensatz generalisieren;
+die verbleibende Luecke zur von Raturi et al.\ berichteten \ba{} von 0{,}952 laesst sich damit
+nicht allein durch die Grid-Search-Optimierung schliessen.
+
+\textbf{Einordnung der Abweichung zum Referenzwert.}
+Die Differenz zwischen der hier erreichten \ba{} (maximal 0{,}7261) und dem von Raturi et al.\
+\cite{raturi2026exploratory} berichteten Wert von 0{,}952 wird als Reproduzierbarkeitsfrage
+eingeordnet; zwei Erklaerungen sind plausibel und schliessen einander nicht aus.
+Erstens unterscheidet sich der Versuchsaufbau: Die vorliegenden CSV-Dateien enthalten 39 statt
+der bei Raturi et al.\ genannten 46 Merkmale, und zentrale Verfahrensschritte wie Sampling,
+Klassenzusammenfassung und Hyperparameterwahl sind in der Ausgangsarbeit nicht vollstaendig
+beschrieben, sodass eine exakte Replikation nicht moeglich ist.
+Zweitens ist nicht auszuschliessen, dass der Literaturwert selbst nur eingeschraenkt
+reproduzierbar ist, etwa aufgrund der unvollstaendigen Beschreibung des Experiments oder
+abweichender Messbedingungen.
+Da der eigenstaendige Beitrag dieser Arbeit in der \shap{}-basierten Erklaerbarkeit liegt und
+nicht in der Maximierung der \ba{}, wird die Abweichung transparent dokumentiert, anstatt sie
+durch weitere Optimierungsrunden zu kaschieren.
 
 \textbf{Vergleich mit Almahaqeri et al.}
 Almahaqeri et al.\ \cite{almahaqeri2026gradient} verwenden stratifiziertes Undersampling
@@ -46,34 +57,31 @@ messbar und verringert die semantische Interpretierbarkeit der \shap{}-Erklaerun
 
 \subsection{Bewertung der SHAP-Erklaerungsqualitaet}
 
-Die Bewertung der \shap{}-Erklaerungsqualitaet orientiert sich an den Metriken aus Hermosilla
-et al.\ \cite{hermosilla2025xai_forensic}: Fidelitaet und Konsistenz.
-Die Fidelitaet misst, ob die \shap{}-Erklaerungen das tatsaechliche Modellverhalten
-wiedergeben.
-Die Konsistenz prueft, ob gleiche Eingaben konsistente Erklaerungen erzeugen.
-Die Jaccard-Aehnlichkeit zwischen Top-Feature-Ranglisten ist auf Pipeline~B anwendbar,
-nicht jedoch auf Pipeline~A, da deren Erklaerungen \pca{}-Komponenten benennen, die keine
-direkte semantische Entsprechung zu konkreten Netzwerkmerkmalen haben.
+Den methodischen Bezugsrahmen fuer die Erklaerungsqualitaet bilden die Metriken aus Hermosilla
+et al.\ \cite{hermosilla2025xai_forensic}: Fidelitaet (Treue der \shap{}-Erklaerungen zum
+tatsaechlichen Modellverhalten), Konsistenz (stabile Erklaerungen fuer gleiche Eingaben) und
+Jaccard-Aehnlichkeit (Ueberlappung von Top-Feature-Ranglisten).
+In der vorliegenden Arbeit erfolgt die Qualitaetsbewertung qualitativ ueber die semantische
+Validierung; eine numerische Berechnung dieser Metriken bleibt zukuenftiger Arbeit vorbehalten.
+Die Jaccard-Aehnlichkeit ist zudem nicht zum Vergleich beider Pipelines geeignet, da die
+Feature-Raeume (\pca{}-Komponenten gegenueber Originalmerkmalen) nicht vergleichbar sind.
 Die Ablation Study erbringt den qualitativen Nachweis: Pipeline~A-Erklaerungen nennen
 PC1, PC2, \ldots als wichtigste Features, Pipeline~B benennt konkrete Netzwerkmerkmale,
 die mit bekannten Angriffssignaturen vergleichbar sind.
-Im Kontext der Rahmenfrage entsprechen Fidelitaet und Konsistenz den XAI-Kriterien
+Im Kontext der leitenden Forschungsfrage entsprechen Fidelitaet und Konsistenz den XAI-Kriterien
 Faithfulness und Stability~\cite{hermosilla2025xai_forensic}; Comprehensibility wird durch
 den Abgleich der \shap{}-Top-Features mit dokumentierten Angriffssignaturen adressiert~\cite{neto2023ciciot2023}.
 
-Die semantische Validierung bestaetigt die Erklaerungsqualitaet teilweise: Die TCP-Flags
-\texttt{rst\_flag\_number} und \texttt{syn\_flag\_number} erscheinen in den Top-5-Features
-von Reconnaissance und Mirai, was den SYN-basierten Scan- und Flood-Signaturen
-entspricht~\cite{neto2023ciciot2023}.
-Demgegenueber wird Spoofing nicht primaer durch \texttt{ARP} oder \texttt{ICMP} erklaert,
-sondern durch aggregierte Paketstatistiken, was auf Korrelationsartefakte im Datensatz
-hindeutet und einer vertieften Untersuchung beduerfte.
+Die semantische Validierung (vgl.\ Abschnitt~\ref{shap_analyse}) stuetzt diese Einordnung
+teilweise: Die TCP-Flags der Reconnaissance- und Mirai-Klassen entsprechen bekannten Scan- und
+Flood-Signaturen, waehrend die Spoofing-Erklaerung durch aggregierte Paketstatistiken auf
+moegliche Korrelationsartefakte des Datensatzes verweist~\cite{neto2023ciciot2023}.
 
 \subsection{Einschraenkungen und Limitierungen}
 
 Die Hyperparameter-Optimierung wurde auf einem Teilmengedatensatz von 8.045~Instanzen
 durchgefuehrt, um die Rechenzeit zu begrenzen.
-Das Reentrainement beider Pipelines auf dem vollstaendigen Datensatz bestaetigt, dass
+Das Neutraining beider Pipelines auf dem vollstaendigen Datensatz bestaetigt, dass
 auf einem kleinen Subset optimierte Hyperparameter nicht besser als Standardparameter
 generalisieren (vgl.\ Tabelle~\ref{tab:ergebnisse}).
 Ein vollstaendiges Grid~Search auf dem gesamten Datensatz haette die Rechenzeit um einen
@@ -84,15 +92,13 @@ Klassenverteilung gegenueber dem vollstaendigen CICIoT2023-Datensatz.
 Klassen mit seltenen Angriffen koennten im echten Betrieb anders vertreten sein, was
 die Generalisierbarkeit beeinflusst.
 
-Die Klassenanalyse von Pipeline~A zeigt einen starken Recall-Kontrast:
-Mirai erzielt $R$\,=\,0{,}993, waehrend Web-based ($R$\,=\,0{,}065) und Brute-Force
-($R$\,=\,0{,}263) nahezu unerkannt bleiben.
-Dieser Befund illustriert die Einschraenkung der Balanced Accuracy als Durchschnittsmass:
-Die \ba{} von 0{,}536 verbirgt, dass einzelne sicherheitskritische Angriffskategorien
-(insbesondere Web-based Attacks) praktisch nicht erkannt werden.
+Der in Pipeline~A beobachtete starke Recall-Kontrast (vgl.\ Tabelle~\ref{tab:perclass_a})
+illustriert eine Einschraenkung der Balanced Accuracy als Durchschnittsmass: dass einzelne
+sicherheitskritische Kategorien wie Web-based Attacks praktisch unerkannt bleiben, verschwindet
+im aggregierten Wert.
 Im Einklang mit Hosseini et al.\ \cite{hosseini2025imbalance} zeigt die Diskrepanz von
-0{,}217 zwischen Accuracy (0{,}753) und \ba{} (0{,}536), dass die Accuracy als alleinige
-Metrik fuer unausgewogene \ids{}-Datensaetze systematisch in die Irre fuehrt.
+0{,}217 zwischen Accuracy und \ba{}, dass die Accuracy als alleinige Metrik fuer
+unausgewogene \ids{}-Datensaetze systematisch in die Irre fuehrt.
 
 \subsection*{Offene Forschungsfragen}
 

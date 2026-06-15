@@ -3,60 +3,44 @@
 Die Verbreitung von Internet of Things (\iot{})-Geraeten in privaten, industriellen und
 kritischen Infrastrukturen vergroessert die Angriffsflaeche moderner Netzwerke
 kontinuierlich~\cite{hamedani2025iotsurvey}.
-Hamedani et al.\ \cite{hamedani2025iotsurvey} zeigen in einem umfassenden Survey ueber
-ML-basierte Sicherheitsloesungen fuer \iot{}, dass die Forschung in diesem Feld zwischen 2020
-und 2024 stark gewachsen ist und gleichzeitig methodische Luecken bestehen, insbesondere in
-der Bewertung und der Interpretierbarkeit der eingesetzten Modelle.
-Kikissagbe und Adda~\cite{kikissagbe2024review} kategorisieren in ihrem systematischen Review
-supervised, unsupervised und hybride ML-Ansaetze fuer \iot{}-Intrusion Detection Systeme
-(\ids{}) und ordnen baumbasierte Ensemble-Methoden als etablierten Forschungsstand ein.
+Klassische, signaturbasierte Intrusion Detection Systeme (\ids{}) erkennen in diesem Umfeld
+nur bereits bekannte Angriffsmuster und versagen bei neuartigen Varianten, weshalb Machine
+Learning (ML) als datengetriebene Alternative untersucht wird~\cite{kikissagbe2024review}.
+Baumbasierte Ensemble-Verfahren gelten dabei als etablierter Forschungsstand, und \gb{}
+erzielt auf dem CICIoT2023-Datensatz~\cite{neto2023ciciot2023} die hoechste \ba{} unter den
+von Raturi et al.\ \cite{raturi2026exploratory} verglichenen Modellen.
 
-Eine zentrale empirische Studie auf diesem Forschungsfeld ist die Arbeit von Raturi et al.\
-\cite{raturi2026exploratory}, die mehrere ML-Algorithmen auf dem
-CICIoT2023-Datensatz~\cite{neto2023ciciot2023} evaluiert.
-\gb{} erzielt in der Mehrklassenklassifikation die hoechste \ba{} unter den getesteten
-Modellen~\cite{raturi2026exploratory}.
-Die Autoren benennen jedoch drei methodische Luecken: die fehlende Erklaerbarkeit der
-Modellentscheidungen, die fehlende Analyse der Fehlerfortpflanzung im zweistufigen
-Klassifikationsansatz und das Fehlen von Latenzmessungen~\cite{raturi2026exploratory}.
-Die vorliegende Arbeit adressiert die erste dieser Luecken.
+Eine hohe Erkennungsleistung allein genuegt fuer den praktischen Einsatz jedoch nicht.
+Raturi et al.\ \cite{raturi2026exploratory} werten ihre Modelle als Black Box aus und benennen
+die fehlende Erklaerbarkeit der Modellentscheidungen selbst als eine der offenen
+Forschungsluecken.
+Fuer ein Sicherheitssystem ist gerade diese Nachvollziehbarkeit entscheidend: Ein Analyst, der
+einen Alarm prueft, muss erkennen koennen, welche Netzwerkmerkmale eine Klassifikation tragen,
+bevor er reagiert.
+Hinzu kommt das ausgepraegte Klassenungleichgewicht des Datensatzes, das die einfache Accuracy
+als Bewertungsmetrik systematisch verzerrt~\cite{hosseini2025imbalance}, sowie der Umstand, dass
+Raturi et al.\ eine \pca{}-Dimensionsreduktion einsetzen, ohne deren Einfluss auf Leistung und
+Erklaerbarkeit zu analysieren.
 
-Die Wahl von SHapley Additive Explanations (\shap{}) als Erklaerbarkeitsmethode ist
-wissenschaftlich begruendet.
-Ogunseyi et al.\ \cite{ogunseyi2026xai_review} analysieren in einem PRISMA-basierten
-systematischen Review 129 Studien aus den Jahren 2018 bis 2025 zur erklaerbaren Kuenstlichen
-Intelligenz (XAI) in \ids{} fuer \iot{}-Netzwerke und zeigen, dass \shap{} in der
-ueberwiegenden Mehrheit der untersuchten Studien eingesetzt wird, ohne die
-Erkennungsgenauigkeit der zugrundeliegenden Modelle zu beeintraechtigen.
-Mohale und Obagbuwa~\cite{mohale2025xai} demonstrieren am Beispiel mehrerer ML-Klassifikatoren
-einschliesslich XGBoost, wie globale und lokale \shap{}-Analysen in \ids{}-Experimenten
-umgesetzt werden koennen.
-Hermosilla, Berrios und Allende-Cid~\cite{hermosilla2025xai_forensic} ergaenzen diesen
-methodischen Rahmen um quantitative Bewertungsmetriken fuer die Qualitaet der Erklaerungen,
-darunter Fidelitaet, Konsistenz und Jaccard-Aehnlichkeit.
-
-Die vorliegende Arbeit verbindet diese methodischen Bausteine.
-Sie entwickelt einen \gb{}-Klassifikator auf dem CICIoT2023-Datensatz, evaluiert ihn mit der
-\ba{} als primaerer Metrik und integriert \shap{} als post-hoc-Erklaerungskomponente.
-Eine Ablation Study untersucht zusaetzlich den Einfluss der Principal Component Analysis
-(\pca{}) auf Modellleistung und Erklaerungen.
+Die vorliegende Arbeit setzt an diesen Luecken an.
+Sie entwickelt einen \gb{}-Klassifikator auf dem CICIoT2023-Datensatz, bewertet ihn mit der
+\ba{} als primaerer Metrik und integriert SHapley Additive Explanations (\shap{}) als
+post-hoc-Erklaerungskomponente.
+Die Wahl von \shap{} stuetzt sich auf das PRISMA-Review von Ogunseyi et
+al.~\cite{ogunseyi2026xai_review}, das \shap{} als meistgenutzte XAI-Methode in \ids{}-Studien
+ausweist, ohne dass die Erkennungsleistung darunter leidet.
+Eine Ablation Study beziffert zusaetzlich den Einfluss der Principal Component Analysis
+(\pca{}) auf Modellleistung und Erklaerbarkeit.
 
 \textbf{Forschungsfragen.}
-Die \textbf{Hauptforschungsfrage} lautet: Inwieweit ermoeglicht eine \shap{}-Analyse
-eines \gb{}-Klassifikators auf dem CICIoT2023-Datensatz eine pro-Angriffsklasse
-nachvollziehbare Zuordnung von Netzwerkmerkmalen zu Klassifikationsentscheidungen,
-und in welchem Verhaeltnis steht diese Erklaerbarkeit zur erreichten \ba{}?
-Drei Teilfragen konkretisieren diese:
-(1)~Welche Klassen werden durch das Klassenungleichgewicht systematisch schlechter erkannt?
-(2)~Welchen messbaren Einfluss hat \pca{} auf \ba{} und \shap{}-Interpretierbarkeit?
-(3)~Stimmen die identifizierten \shap{}-Top-Features mit den dokumentierten
-Angriffssignaturen des CICIoT2023 ueberein~\cite{neto2023ciciot2023}?
-
-\textbf{Struktur der Arbeit.}
-Kapitel~\ref{related_work} ordnet die zehn verwendeten Quellen thematisch in vier Cluster
-ein und arbeitet die Forschungsluecke heraus.
-Kapitel~\ref{methodik} beschreibt Datenbasis, Vorverarbeitung, Klassifikationsarchitektur,
-Evaluationsmetriken und \shap{}-Integration.
-Kapitel~\ref{evaluation} dokumentiert die Ergebnisse beider Preprocessing-Pipelines.
-Kapitel~\ref{diskussion} diskutiert die Ergebnisse im Vergleich zur bestehenden Literatur.
-Kapitel~\ref{fazit} schliesst mit Fazit und Ausblick.
+Leitend ist die Frage, inwieweit eine \shap{}-Analyse eines \gb{}-Klassifikators auf dem
+CICIoT2023-Datensatz die Klassifikationsentscheidungen pro Angriffsklasse nachvollziehbar macht
+und in welchem Verhaeltnis diese Erklaerbarkeit zur erreichten \ba{} steht.
+Daraus ergeben sich drei konkretisierende Teilfragen, die der weitere Aufbau der Arbeit
+nacheinander beantwortet.
+Zunaechst ist zu klaeren, welche Klassen durch das Klassenungleichgewicht systematisch
+schlechter erkannt werden.
+Darauf aufbauend wird untersucht, welchen messbaren Einfluss \pca{} auf die \ba{} und auf die
+\shap{}-Interpretierbarkeit ausuebt.
+Abschliessend wird geprueft, ob die identifizierten \shap{}-Top-Features mit den dokumentierten
+Angriffssignaturen des CICIoT2023 uebereinstimmen~\cite{neto2023ciciot2023}.
