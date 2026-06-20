@@ -11,10 +11,10 @@ Diese Arbeit schliesst die Luecke.
 Sie implementiert einen zweistufigen hierarchischen \gb{}-Klassifikator auf dem
 CICIoT2023-Datensatz (838.602~Instanzen), bewertet ihn mit der \ba{} als primaerer Metrik und
 integriert SHapley Additive Explanations (\shap{}) als post-hoc-Erklaerungskomponente.
-Eine Ablation Study zeigt, dass die \pca{}-Dimensionsreduktion (39 auf 16 Merkmale) die \ba{}
-der Mehrklassenstufe um 8{,}21~Prozentpunkte senkt (0{,}5480 mit \pca{} gegenueber 0{,}6301
-ohne \pca{}) und zugleich die semantische Interpretierbarkeit der \shap{}-Erklaerungen
-verringert.
+Eine Ablation Study zeigt, dass die Reduktion mittels Principal Component Analysis (\pca{})
+von 39 auf 16 Merkmale die \ba{} der Mehrklassenstufe um 8{,}21~Prozentpunkte senkt (0{,}5480
+mit \pca{} gegenueber 0{,}6301 ohne \pca{}) und zugleich die semantische Interpretierbarkeit
+der \shap{}-Erklaerungen verringert.
 Eine klassengewichtete Trainingsstrategie hebt die \ba{} der Mehrklassenstufe weiter auf
 0{,}7261 an; dieser Wert bleibt unter dem von Raturi et al.\ \cite{raturi2026exploratory}
 berichteten Referenzwert von 0{,}952, was als Reproduzierbarkeitsfrage eingeordnet und auf

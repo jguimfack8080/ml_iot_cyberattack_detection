@@ -16,8 +16,8 @@ Die Ergebnisse werden in zwei Schritten berichtet: zunaechst mit Standardhyperpa
 anschliessend mit den durch Grid Search optimierten Parametern.
 
 \textbf{Grid-Search-Konfiguration.}
-Die Hyperparameteroptimierung wurde mit \texttt{GridSearchCV} (cv\,=\,3,
-Zielfunktion: \ba{}) auf einem stratifizierten Teilmengedatensatz von 8.045 Instanzen
+Die Hyperparameteroptimierung wurde mit \texttt{GridSearchCV} und dreifacher Kreuzvalidierung
+(cv\,=\,3), Zielfunktion \ba{}, auf einem stratifizierten Teilmengedatensatz von 8.045 Instanzen
 (5 Dateien) durchgefuehrt, um die Rechenzeit zu begrenzen.
 Das durchsuchte Suchraster umfasst: n\_estimators $\in \{100, 200\}$,
 max\_depth $\in \{3, 5\}$, learning\_rate $\in \{0{,}05, 0{,}1\}$,
@@ -55,7 +55,7 @@ B (39f) & Balanced & 0{,}9992 & 0{,}9993 & \textbf{0{,}7261} & 0{,}6570 \\
 \end{tabular}
 \smallskip\newline
 {\footnotesize BA$_1$, BA$_2$: Balanced Accuracy Stufe~1/2. F1: makro-gemittelt.
-Standard: Standardhyperparameter auf 838.602~Instanzen. GS-Subset:
+n.\,v.: nicht verfuegbar. Standard: Standardhyperparameter auf 838.602~Instanzen. GS-Subset:
 Grid-Search-Optimum auf 8.045~Instanzen. Best HP: optimierte Hyperparameter auf
 838.602~Instanzen. Balanced: Best HP plus klassengewichtete Stichproben
 (\texttt{sample\_weight} balanced) in Stufe~2.}
@@ -274,11 +274,12 @@ Flutangriffen und Protokollmissbrauch konsistent ist~\cite{neto2023ciciot2023}.
 Die Verbindungsanzahl \texttt{Number} ist in Stufe~2 das klassenuebergreifend wichtigste
 Merkmal, was die Bedeutung des Verbindungsvolumens fuer die Angriffsklassifikation
 unterstreicht.
-Reconnaissance und Mirai werden zusaetzlich durch die TCP-Flags \texttt{rst\_flag\_number}
-und \texttt{syn\_flag\_number} erklaert, was mit Scan-Aktivitaet und SYN-basierten
-Flood-Mustern konsistent ist~\cite{neto2023ciciot2023}.
-Spoofing wird nicht primaer durch \texttt{ARP} oder \texttt{ICMP} erklaert, sondern durch
-aggregierte Paketstatistiken (\texttt{Min}, \texttt{Number}, \texttt{Max}); dies koennte
+Reconnaissance und Mirai werden zusaetzlich durch die Flags des Transmission Control Protocol
+(TCP) \texttt{rst\_flag\_number} und \texttt{syn\_flag\_number} erklaert, was mit Scan-Aktivitaet
+und SYN-basierten Flood-Mustern konsistent ist~\cite{neto2023ciciot2023}.
+Spoofing wird nicht primaer durch \texttt{ARP} (Address Resolution Protocol) oder \texttt{ICMP}
+(Internet Control Message Protocol) erklaert, sondern durch aggregierte Paketstatistiken
+(\texttt{Min}, \texttt{Number}, \texttt{Max}); dies koennte
 auf Korrelationsartefakte im Datensatz hindeuten, die einer vertieften Untersuchung
 beduerften.
 
