@@ -52,6 +52,10 @@
   {1.5ex plus.2ex}{\reset@font\large\bf\raggedright}}
 \def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus-1ex minus-.2ex}%
   {1.5ex plus.2ex}{\reset@font\normalsize\bf\raggedright}}
+%--- Abstract-Ueberschrift eng setzen (ersetzt die lockere center-Umgebung der
+%    Vorlage, die einen grossen Leerraum vor dem Abstract-Text erzeugte) ---
+\def\abstract{\par\vspace{0.3em}\centerline{\large\bf\abstractname}\vspace{-0.5em}\par\noindent\ignorespaces}
+\def\endabstract{\par}
 \makeatother
 
 %=============================================================================

@@ -14,9 +14,8 @@ Eine hohe Erkennungsleistung allein genuegt fuer den praktischen Einsatz jedoch 
 Raturi et al.\ \cite{raturi2026exploratory} werten ihre Modelle als Black Box aus und benennen
 die fehlende Erklaerbarkeit der Modellentscheidungen selbst als eine der offenen
 Forschungsluecken.
-Fuer ein Sicherheitssystem ist gerade diese Nachvollziehbarkeit entscheidend: Ein Analyst, der
-einen Alarm prueft, muss erkennen koennen, welche Netzwerkmerkmale eine Klassifikation tragen,
-bevor er reagiert.
+Fuer ein Sicherheitssystem ist gerade diese Nachvollziehbarkeit entscheidend, bevor ein Analyst
+auf einen Alarm reagiert.
 Hinzu kommt das ausgepraegte Klassenungleichgewicht des Datensatzes, das die einfache Accuracy
 als Bewertungsmetrik systematisch verzerrt~\cite{hosseini2025imbalance}, sowie der Umstand, dass
 Raturi et al.\ eine \pca{}-Dimensionsreduktion einsetzen, ohne deren Einfluss auf Leistung und
@@ -33,15 +32,21 @@ darunter leidet.
 Eine Ablation Study beziffert zusaetzlich den Einfluss der Principal Component Analysis
 (\pca{}) auf Modellleistung und Erklaerbarkeit.
 
-\textbf{Forschungsfragen.}
-Leitend ist die Frage, inwieweit eine \shap{}-Analyse eines \gb{}-Klassifikators auf dem
-CICIoT2023-Datensatz die Klassifikationsentscheidungen pro Angriffsklasse nachvollziehbar macht
-und in welchem Verhaeltnis diese Erklaerbarkeit zur erreichten \ba{} steht.
-Daraus ergeben sich drei konkretisierende Teilfragen, die der weitere Aufbau der Arbeit
-nacheinander beantwortet.
-Zunaechst ist zu klaeren, welche Klassen durch das Klassenungleichgewicht systematisch
-schlechter erkannt werden.
-Darauf aufbauend wird untersucht, welchen messbaren Einfluss \pca{} auf die \ba{} und auf die
-\shap{}-Interpretierbarkeit ausuebt.
-Abschliessend wird geprueft, ob die identifizierten \shap{}-Top-Features mit den dokumentierten
-Angriffssignaturen des CICIoT2023 uebereinstimmen~\cite{neto2023ciciot2023}.
+\textbf{Zielsetzung und Forschungsfragen.}
+Ziel ist ein \ids{}, das hohe Erkennungsleistung mit Entscheidungen verbindet, die fuer
+Sicherheitsanalysten anhand messbarer XAI-Kriterien (Faithfulness, Stabilitaet,
+Comprehensibility) nachvollziehbar sind.
+Daraus ergibt sich die Hauptforschungsfrage: Inwieweit ermoeglicht eine \shap{}-Analyse eines
+\gb{}-Klassifikators auf dem CICIoT2023-Datensatz eine pro Angriffsklasse nachvollziehbare
+Zuordnung von Netzwerkmerkmalen zu Klassifikationsentscheidungen, und in welchem Verhaeltnis
+steht diese Erklaerbarkeit zur erreichten \ba{}?
+Drei Teilfragen konkretisieren sie:
+\begin{enumerate}
+\setlength{\itemsep}{1pt}\setlength{\parskip}{0pt}\setlength{\topsep}{2pt}
+\item Welche Angriffsklassen werden durch das Klassenungleichgewicht systematisch schlechter
+erkannt, sobald von Accuracy auf \ba{} und klassenweise Recall-Werte umgestellt wird?
+\item Welchen messbaren Einfluss hat die \pca{} auf die \ba{} sowie auf die Stabilitaet und
+Interpretierbarkeit der \shap{}-Erklaerungen?
+\item Stimmen die laut \shap{} wichtigsten Merkmale je Angriffstyp mit den dokumentierten
+Netzwerksignaturen des CICIoT2023 ueberein~\cite{neto2023ciciot2023}?
+\end{enumerate}

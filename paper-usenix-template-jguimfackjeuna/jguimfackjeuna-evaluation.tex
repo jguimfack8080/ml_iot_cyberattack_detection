@@ -35,7 +35,7 @@ deutlich, bei einer Trainingsdauer von 1.552 gegenueber 2.060 Sekunden.
 
 Tabelle~\ref{tab:ergebnisse} fasst die Ergebnisse beider Pipelines zusammen.
 
-\begin{table}[tbp]
+\begin{table}[h]
 \centering
 \caption{Balanced Accuracy und F1-Score (makro): drei Konfigurationen}
 \label{tab:ergebnisse}
@@ -67,8 +67,6 @@ Das Neutraining auf dem vollstaendigen Datensatz liefert fuer beide Pipelines ei
 geringfuegig niedrigere Stufe-2-\ba{} als die Standardparameter:
 Pipeline~A sinkt von 0{,}5480 auf 0{,}5364~($-$1{,}16~Punkte),
 Pipeline~B sinkt von 0{,}6301 auf 0{,}6285~($-$0{,}16~Punkte).
-Dieses Ergebnis belegt, dass die auf dem Teilmengedatensatz (8.045~Instanzen) gefundenen
-Hyperparameter nicht ohne Weiteres auf den vollstaendigen Datensatz uebertragbar sind.
 
 \textbf{Trainingszeiten.}
 Mit optimierten Hyperparametern betraegt die Trainingsdauer auf dem vollstaendigen Datensatz
@@ -94,7 +92,7 @@ Dass diese auf dem Teilmengedatensatz gefundenen Werte auf dem vollstaendigen Da
 keinen Vorteil gegenueber den Standardparametern erzielen, greift die folgende Interpretation
 auf.
 
-\begin{table}[tbp]
+\begin{table}[h]
 \centering
 \caption{Optimierte Hyperparameter aus Grid Search}
 \label{tab:best_hp}
@@ -130,7 +128,7 @@ $R$\,=\,0{,}263 abstuert.
 Die Diskrepanz von 0{,}217 zwischen Accuracy (0{,}753) und \ba{} (0{,}536) bestaetigt zudem
 empirisch die Einschraenkung der Accuracy als alleinige Metrik~\cite{hosseini2025imbalance}.
 
-\begin{table}[tbp]
+\begin{table}[h]
 \centering
 \caption{Precision, Recall, F1 pro Klasse: Stufe~2 Pipeline~A (Best HP)}
 \label{tab:perclass_a}
@@ -165,7 +163,7 @@ erkauft, waehrend Mirai (perfekt) und Spoofing (hoch) stabil bleiben.
 Der Kompromiss faellt insgesamt positiv aus, da die \ba{} als Mittel der
 klassenweisen Recall-Werte von 0{,}6285 auf 0{,}7261 steigt.
 
-\begin{table}[tbp]
+\begin{table}[h]
 \centering
 \caption{Recall pro Klasse: Stufe~2 Pipeline~B, Best HP gegen Klassengewichtung}
 \label{tab:perclass_b}
@@ -202,7 +200,7 @@ deren Recall zwar deutlich anhebt, den Recall von Reconnaissance aber senkt: Das
 die Entscheidungen gleichmaessiger auf die zuvor unterrepraesentierten Klassen
 (vgl.\ Tabelle~\ref{tab:perclass_b}).
 
-\begin{figure}[tbp]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\columnwidth]{confusion_matrix_stage2_pipelineB}
 \caption{Konfusionsmatrix Stufe~2, Pipeline~B (39 Originalmerkmale, klassengewichtet).}
@@ -238,7 +236,7 @@ Pipeline~B (Originalmerkmale).
 Fuer Pipeline~A entfaellt die semantische Interpretierbarkeit, da Hauptkomponenten lineare
 Kombinationen der Originalmerkmale sind.
 
-\begin{table}[tbp]
+\begin{table}[h]
 \centering
 \caption{Top-5 SHAP-Features pro Klasse: Pipeline B (Originalmerkmale)}
 \label{tab:shap_top5}
@@ -270,11 +268,16 @@ unterstreicht.
 Reconnaissance und Mirai werden zusaetzlich durch die Flags des Transmission Control Protocol
 (TCP) \texttt{rst\_flag\_number} und \texttt{syn\_flag\_number} erklaert, was mit Scan-Aktivitaet
 und SYN-basierten Flood-Mustern konsistent ist~\cite{neto2023ciciot2023}.
+Brute-Force-Angriffe schlagen sich in der hohen Verbindungsanzahl und Paketrate
+(\texttt{Number}, \texttt{Rate}) nieder, was zum Muster wiederholter Verbindungsversuche passt;
+bei Web-based Attacks erscheint zusaetzlich das Web-Protokoll \texttt{HTTPS} unter den
+wichtigsten Merkmalen~\cite{neto2023ciciot2023}.
 Spoofing wird nicht primaer durch \texttt{ARP} (Address Resolution Protocol) oder \texttt{ICMP}
 (Internet Control Message Protocol) erklaert, sondern durch aggregierte Paketstatistiken
-(\texttt{Min}, \texttt{Number}, \texttt{Max}); dies koennte
-auf Korrelationsartefakte im Datensatz hindeuten, die einer vertieften Untersuchung
-beduerften.
+(\texttt{Min}, \texttt{Number}, \texttt{Max}); dies koennte auf Korrelationsartefakte im
+Datensatz hindeuten.
+Bezugsrahmen ist die CICIoT2023-Dokumentation~\cite{neto2023ciciot2023}; ein Abgleich mit
+weiteren \ids{}-Signaturkatalogen waere ein naechster Schritt.
 
 \textbf{Ablation Study SHAP.}
 Der Vergleich beider Pipelines macht den Effekt der \pca{}-Reduktion auf die
@@ -293,7 +296,7 @@ Zielkonflikt auf: Die \pca{}-Erklaerungen sind unter kleinen Eingabestoerungen d
 (Kosinus-Aehnlichkeit 0{,}93 gegenueber 0{,}26), bleiben aber semantisch nicht deutbar, waehrend
 die Originalmerkmale interpretierbar, aber weniger stabil sind.
 
-\begin{table}[tbp]
+\begin{table}[h]
 \centering
 \caption{Quantitative \shap{}-Erklaerungsqualitaet (Stufe~2)}
 \label{tab:shap_quality}
@@ -307,28 +310,18 @@ Jaccard@5 & 0{,}58 & 0{,}45 \\
 \bottomrule
 \end{tabular}
 \smallskip\newline
-{\footnotesize Faithfulness: Korrelation zwischen \shap{}-Wert und Ablationseffekt.
-Stabilitaet/Jaccard: Aehnlichkeit der Erklaerung unter kleinen Eingabestoerungen.
-Hoehere Werte sind besser.}
+{\footnotesize Definitionen siehe Abschnitt~\ref{methodik}; hoehere Werte sind besser.}
 \end{table}
 
-Die beiden folgenden Abbildungen stellen die globale \shap{}-Feature-Importance der Stufe~2 als
-Balkendiagramm dar; die Balkenlaenge entspricht dem mittleren Beitrag eines Merkmals zur
-Klassifikation.
-In Abbildung~\ref{fig:shap_global_a} (Pipeline~A) stehen die Hauptkomponenten PC2 und PC1 an der
-Spitze, gefolgt von PC7.
+Abbildung~\ref{fig:shap_global_a} stellt die globale \shap{}-Feature-Importance der Stufe~2 fuer
+Pipeline~A (PCA) als Balkendiagramm dar; die Balkenlaenge entspricht dem mittleren Beitrag eines
+Merkmals zur Klassifikation.
+An der Spitze stehen die Hauptkomponenten PC2 und PC1, gefolgt von PC7.
 Da keiner dieser Balken einem konkreten Netzwerkmerkmal entspricht, macht die Abbildung das
-Interpretierbarkeitsproblem der \pca{} unmittelbar sichtbar.
-Abbildung~\ref{fig:shap_global_b} (Pipeline~B) zeigt dieselbe Darstellung mit Originalmerkmalen:
-Hier tragen die Balken benennbare Namen.
-\texttt{Number} ist mit deutlichem Abstand am wichtigsten, gefolgt von \texttt{Protocol\_Type};
-danach folgen aggregierte Paketstatistiken (\texttt{Min}, \texttt{Max}) und die TCP-Flags
-\texttt{rst\_flag\_number} und \texttt{syn\_flag\_number}.
-Der direkte Vergleich beider Abbildungen verdeutlicht den Gewinn an Nachvollziehbarkeit durch
-den Verzicht auf \pca{}.
+Interpretierbarkeitsproblem der \pca{} unmittelbar sichtbar: Das Modell ist zwar erklaerbar,
+die Erklaerung selbst bleibt jedoch semantisch leer.
 
-% SHAP Global Importance -- Pipeline A (verfuegbar)
-\begin{figure}[tbp]
+\begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{shap_global_stage2_pipelineA}
 \caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~A (PCA).
@@ -336,7 +329,16 @@ PC-Komponenten tragen keine semantische Bedeutung.}
 \label{fig:shap_global_a}
 \end{figure}
 
-\begin{figure}[tbp]
+Demgegenueber zeigt Abbildung~\ref{fig:shap_global_b} dieselbe Darstellung fuer Pipeline~B mit den
+39 Originalmerkmalen; hier tragen die Balken benennbare Namen.
+\texttt{Number} ist mit deutlichem Abstand am wichtigsten, gefolgt von \texttt{Protocol\_Type};
+danach folgen aggregierte Paketstatistiken (\texttt{Min}, \texttt{Max}) und die TCP-Flags
+\texttt{rst\_flag\_number} und \texttt{syn\_flag\_number}.
+Der direkte Vergleich beider Abbildungen verdeutlicht den Gewinn an Nachvollziehbarkeit durch
+den Verzicht auf \pca{}: Erst die Originalmerkmale erlauben den Abgleich mit dokumentierten
+Angriffssignaturen.
+
+\begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{shap_global_stage2_pipelineB}
 \caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~B (klassengewichtet).

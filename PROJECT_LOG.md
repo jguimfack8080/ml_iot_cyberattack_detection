@@ -8,6 +8,19 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-06-20 : Layout-Korrekturen Abstract und SHAP-Abbildungen
+
+- Datum: 2026-06-20
+- Aenderung: Abstand zwischen Abstract-Ueberschrift und Abstract-Text eng gesetzt (eigene \abstract-Definition statt lockerer center-Umgebung der Vorlage); die beiden globalen SHAP-Abbildungen (Stufe 2, Pipeline A und B) durch Sandwich-Struktur und t-Platzierung getrennt, sodass erklaerender Text zwischen ihnen steht; redundante Sektion "Offene Forschungsfragen" aus der Diskussion entfernt (bleibt im Fazit).
+- Betroffene Dateien:
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-main.tex
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-evaluation.tex
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-discussion.tex
+- Technische Auswirkungen:
+  - Verifiziert: 10 Seiten, durchgehend zweispaltig, 0 undefinierte Referenzen, keine verschwendete Flaeche, Schriftgroesse unveraendert.
+- Begruendung:
+  - Nutzeranforderung: keine Leerraeume, jede Abbildung im Text erklaert, Leser darf nie verloren gehen.
+
 ### 2026-06-15 (a) -- Paper 100 Prozent fundiert : Backend-Re-Run + Zahlen-Abgleich (Issue #15)
 
 - Datum: 2026-06-15
