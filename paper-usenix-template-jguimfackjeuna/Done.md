@@ -6,6 +6,34 @@ Format : date | section | description
 
 ---
 
+### 2026-06-20 -- Session 15 : Stil, Abbildungserklaerungen, DOI-Links, Architektur-Abbildung
+
+**Branche :** fix/paper-100-prozent-fundiert (Issue #15)
+
+**Abbildungen/Tabellen (alle mit belegter In-Text-Erklaerung) :**
+- Architektur-Abbildung (TikZ, fig:architektur) der zweistufigen Verarbeitungskette ergaenzt
+  und im Text erklaert; gegruendet auf Backend (_core.py, hierarchical_classifier.py, loader.py)
+- Konfusionsmatrix mit echten Matrixwerten erklaert (aus stage2_B.pkl extrahiert)
+- SHAP-Abbildungen A und B gegen die tatsaechlichen Plots verifiziert; Reihenfolge der
+  Pipeline-B-Features korrigiert (Min/Max stehen vor den TCP-Flags)
+- tab:best_hp interpretiert; SHAP-Figurenerklaerung als Balkendiagramm-Walkthrough
+
+**Literatur :** DOI-Link (anklickbar) fuer alle 10 Quellen; nur URL-Links blau
+(Zitate und interne Verweise schwarz).
+
+**Stil / Redundanz :**
+- "vorliegende Arbeit" (11 Vorkommen) durch variierte Formulierungen ersetzt
+- KI-typische Kapiteleinleitungen und Floskeln natuerlicher formuliert
+- verbatim-Dopplung methodik/diskussion (SHAP-Qualitaet) entfernt
+- geclusterte Wiederholungen (zeigt, Ansatz) lokal variiert
+
+**Leerraum :** Seite 10 mit belegtem Backend-Inhalt (Architektur, Sampling-Detail,
+Vorhersageregel) gefuellt; Float-Platzierung [h] -> [tbp].
+
+**Kompilierung (WSL) :** 10 Seiten, 0 undefined refs/citations, 0 Gedankenstriche im Text.
+
+---
+
 ### 2026-06-15 -- Session 14 : Paper 100 Prozent fundiert (Backend-Re-Run + Zahlen-Abgleich)
 
 **Branche :** fix/paper-100-prozent-fundiert (Issue #15)

@@ -1,33 +1,31 @@
 \section{Related Work}\label{related_work}
 
-Die Erkennung von Cyberangriffen in \iot{}-Netzwerken mittels ML ist ein aktives und
-wachsendes Forschungsfeld.
-Die folgenden Abschnitte gliedern die zehn verwendeten Quellen in vier thematische Cluster:
-Datensaetze und Benchmarks, ML-basierte Ansaetze zur Angriffserkennung, Behandlung von
-Klassenungleichgewicht sowie Erklaerbarkeit von \ids{}-Modellen.
+Die folgende Uebersicht ordnet die zehn Quellen entlang der vier Themen, die den eigenen Ansatz
+tragen: Datensaetze, ML-Verfahren, Klassenungleichgewicht und Erklaerbarkeit.
+Aus ihrem Zusammenspiel ergibt sich die Forschungsluecke, die diese Arbeit gegenueber den drei
+einschlaegigen CICIoT2023-Studien von Raturi et al., Almahaqeri et al.\ und Alharby schliesst.
 
 \subsection{Datensaetze und Benchmarks fuer IoT-Sicherheit}
 
-Die empirische Forschung im Bereich \iot{}-Sicherheit ist grundlegend auf realistische und
-repraesentative Benchmarkdatensaetze angewiesen.
-Neto et al.\ \cite{neto2023ciciot2023} haben mit dem CICIoT2023-Datensatz einen umfassenden
+Empirische Forschung zur \iot{}-Sicherheit ist auf realistische, repraesentative
+Benchmarkdatensaetze angewiesen.
+Neto et al.\ \cite{neto2023ciciot2023} haben mit dem CICIoT2023-Datensatz einen solchen
 Benchmark entwickelt, der Netzwerkverkehr von 105 realen \iot{}-Geraeten unter 33
 verschiedenen Angriffsbedingungen enthaelt.
 Die Angriffe sind in sieben Kategorien organisiert: Distributed Denial of Service (DDoS),
 Denial of Service (DoS), Mirai, Reconnaissance, Spoofing, Brute-Force und Web-based Attacks;
 gemeinsam mit dem Benign-Verkehr ergeben sich die acht in dieser Arbeit klassifizierten
 Kategorien.
-Ein zentrales Merkmal des Datensatzes ist, dass die Angriffe ausschliesslich von \iot{}-Geraeten
-gegen andere \iot{}-Geraete ausgefuehrt wurden, was eine besonders realitaetsnahe Abbildung
-realer Bedrohungsszenarien ermoeglicht~\cite{neto2023ciciot2023}.
+Besonders an diesem Datensatz ist, dass die Angriffe ausschliesslich von \iot{}-Geraeten
+gegen andere \iot{}-Geraete ausgefuehrt wurden, was reale Bedrohungsszenarien besonders
+realitaetsnah abbildet~\cite{neto2023ciciot2023}.
 Der CICIoT2023-Datensatz weist ein ausgepraegtes Klassenungleichgewicht auf, das bei der
 Modellbewertung methodische Herausforderungen mit sich bringt.
 
 \subsection{ML-basierte Ansaetze zur Angriffserkennung in IoT-Netzwerken}
 
-Hamedani et al.\ \cite{hamedani2025iotsurvey} liefern mit ihrer umfassenden
-Uebersichtsarbeit einen systematischen Ueberblick ueber ML-basierte Sicherheitsloesungen fuer
-\iot{}-Netzwerke aus den Jahren 2020 bis 2024.
+Hamedani et al.\ \cite{hamedani2025iotsurvey} geben in ihrer Uebersichtsarbeit einen Ueberblick
+ueber ML-basierte Sicherheitsloesungen fuer \iot{}-Netzwerke aus den Jahren 2020 bis 2024.
 Die Autoren klassifizieren ML-Techniken nach ihrer spezifischen Anwendung in der
 \iot{}-Sicherheit und identifizieren offene Forschungsfragen, darunter insbesondere den Mangel
 an interpretierbaren Modellen fuer ressourcenbeschraenkte Umgebungen~\cite{hamedani2025iotsurvey}.
@@ -56,8 +54,8 @@ Dimensionsreduktionstechnik und dokumentiert zusaetzlich Trainings- und Vorhersa
 
 \subsection{Behandlung von Klassenungleichgewicht in IDS-Datensaetzen}
 
-Das Klassenungleichgewicht stellt eine der zentralen methodischen Herausforderungen bei der
-Entwicklung ML-basierter \ids{} dar.
+Das Klassenungleichgewicht ist eine der groessten methodischen Huerden bei der
+Entwicklung ML-basierter \ids{}.
 Hosseini et al.\ \cite{hosseini2025imbalance} untersuchen systematisch die Auswirkungen
 verschiedener Grade von Klassenungleichgewicht auf die Leistung von ML-Algorithmen in
 \ids{}-Datensaetzen.
@@ -74,8 +72,8 @@ hierarchische Klassifikationsarchitektur zu verwenden.
 
 \subsection{Erklaerbarkeit von ML-basierten IDS}
 
-Der Einsatz von Methoden der erklaerbaren Kuenstlichen Intelligenz (XAI) in \ids{} ist ein
-juengeres, aber rasch wachsendes Forschungsfeld.
+Der Einsatz erklaerbarer Kuenstlicher Intelligenz (XAI) in \ids{} ist vergleichsweise jung,
+hat in den letzten Jahren aber stark an Bedeutung gewonnen.
 Ogunseyi et al.\ \cite{ogunseyi2026xai_review} analysieren in einem PRISMA-basierten
 systematischen Review 129 peer-reviewte Studien aus den Jahren 2018 bis 2025 und stellen fest,
 dass \shap{} und Local Interpretable Model-agnostic Explanations (LIME) in 98~Prozent aller
@@ -112,6 +110,6 @@ Mohale und Obagbuwa~\cite{mohale2025xai} sowie Hermosilla et al.\ \cite{hermosil
 liefern fundierte \shap{}-Integrationen mit quantitativer Qualitaetsbewertung, arbeiten
 jedoch nicht auf dem CICIoT2023-Datensatz.
 
-Die vorliegende Arbeit schliesst diese Luecke, indem sie einen \gb{}-Klassifikator auf dem
+Diese Studie schliesst die Luecke, indem sie einen \gb{}-Klassifikator auf dem
 CICIoT2023-Datensatz mit \ba{} als primaerer Bewertungsmetrik und einer vollstaendigen
 \shap{}-Analyse auf beiden Klassifikationsstufen verbindet.

@@ -1,18 +1,24 @@
 \section{Diskussion}\label{diskussion}
 
+Die Ergebnisse werden nun gegen den Forschungsstand gespiegelt.
+Der Vergleich mit den drei einschlaegigen CICIoT2023-Studien zeigt, worin der eigene Beitrag
+besteht; anschliessend werden die Qualitaet der \shap{}-Erklaerungen, die Abweichung zum
+Literaturwert und die Grenzen der Arbeit diskutiert.
+
 \subsection{Wissenschaftlicher Beitrag im Vergleich zur Literatur}
 
 \textbf{Vergleich mit Raturi et al.}
 Raturi et al.\ \cite{raturi2026exploratory} fuehren die \ba{} als primaere Metrik ein und
 berichten eine \ba{} von 0{,}952 in der Mehrklassenklassifikation mit optimierten
 Hyperparametern.
-Die vorliegende Arbeit reproduziert diesen Ansatz und erweitert ihn in zwei Dimensionen.
+Die hier vorgestellte Untersuchung reproduziert diesen Ansatz und erweitert ihn in zwei
+Dimensionen.
 Erstens wird der Einfluss der Grid-Search-Optimierung quantifiziert: Auf dem
 Teilmengedatensatz (8.045~Instanzen) erreicht das Optimum fuer Pipeline~B eine
 Stufe-2-\ba{} von 0{,}6479, auf den vollstaendigen Datensatz uebertragen jedoch nur 0{,}6285
 und damit knapp unter dem Standardwert von 0{,}6301.
 Zweitens integrieren Raturi et al.\ keine Erklaerbarkeitskomponente; dieser methodische
-Beitrag ist der eigenstaendige Kernbeitrag der vorliegenden Arbeit.
+Beitrag ist der eigenstaendige Kernbeitrag dieser Untersuchung.
 
 Das Neutraining mit den optimierten Hyperparametern auf dem vollstaendigen Datensatz
 (838.602~Instanzen) liefert in beiden Pipelines eine geringfuegig niedrigere
@@ -61,8 +67,8 @@ Den methodischen Bezugsrahmen fuer die Erklaerungsqualitaet bilden die Metriken 
 et al.\ \cite{hermosilla2025xai_forensic}: Fidelitaet (Treue der \shap{}-Erklaerungen zum
 tatsaechlichen Modellverhalten), Konsistenz (stabile Erklaerungen fuer gleiche Eingaben) und
 Jaccard-Aehnlichkeit (Ueberlappung von Top-Feature-Ranglisten).
-In der vorliegenden Arbeit erfolgt die Qualitaetsbewertung qualitativ ueber die semantische
-Validierung; eine numerische Berechnung dieser Metriken bleibt zukuenftiger Arbeit vorbehalten.
+Eine numerische Berechnung dieser Metriken erfolgt hier nicht; die Bewertung stuetzt sich auf
+die semantische Validierung.
 Die Jaccard-Aehnlichkeit ist zudem nicht zum Vergleich beider Pipelines geeignet, da die
 Feature-Raeume (\pca{}-Komponenten gegenueber Originalmerkmalen) nicht vergleichbar sind.
 Die Ablation Study erbringt den qualitativen Nachweis: Pipeline~A-Erklaerungen nennen
@@ -102,7 +108,7 @@ unausgewogene \ids{}-Datensaetze systematisch in die Irre fuehrt.
 
 \subsection*{Offene Forschungsfragen}
 
-Die vorliegende Arbeit belaesst drei Forschungsfragen als offen.
+Drei Forschungsfragen bleiben offen.
 Erstens die Latenzmessung und Echtzeit-Implementierung des Klassifikators fuer den
 praktischen Einsatz in ressourcenbeschraenkten \iot{}-Umgebungen, die von Raturi et al.\
 \cite{raturi2026exploratory} als Forschungsluecke benannt wird.

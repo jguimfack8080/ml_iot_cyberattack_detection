@@ -1,5 +1,10 @@
 \section{Methodik}\label{methodik}
 
+Der hier beschriebene Versuchsaufbau setzt die zuvor identifizierte Forschungsluecke um.
+Wichtig war dabei, jeden Schritt von der Datenaufbereitung bis zur \shap{}-Analyse so
+festzuhalten, dass sich die Ergebnisse exakt wiederholen lassen, denn ohne diese
+Nachvollziehbarkeit waere eine erklaerbare Angriffserkennung wenig wert.
+
 \subsection{Datenbasis und Vorverarbeitung}
 
 Als Datenbasis dient der CICIoT2023-Datensatz~\cite{neto2023ciciot2023}, der Netzwerkverkehr
@@ -11,7 +16,7 @@ sowie einer Klassenspalte (Label).
 Raturi et al.\ \cite{raturi2026exploratory} und Alharby~\cite{alharby2025ciciot} benennen 46
 Features fuer den CICIoT2023-Datensatz.
 Die vorliegenden CSV-Dateien enthalten jedoch 39 Merkmale.
-Diese Abweichung wird in der vorliegenden Arbeit dokumentiert und unveraendert uebernommen.
+Diese Abweichung wird hier dokumentiert und unveraendert uebernommen.
 \pca{} in Pipeline~A reduziert demnach von 39 auf 16 Hauptkomponenten.
 
 Die 33 Angriffsklassen werden zu 8 uebergeordneten Kategorien zusammengefasst:
@@ -25,6 +30,9 @@ Da das vollstaendige Dataset von ca.\ 8{,}5~GB die verfuegbare Arbeitsspeicherka
 ueberschreitet, wird ein stratifiziertes Sampling-Verfahren eingesetzt.
 Aus jeder der 63 CSV-Dateien werden je 500 Instanzen pro Klasse entnommen, sodass alle
 Dateien gleichmaessig zum Trainingsdatensatz beitragen.
+Jede Datei wird dabei vollstaendig eingelesen, bevor die Stichprobe gezogen und die Datei
+wieder aus dem Speicher entfernt wird; so wird keine Zeile von vornherein ausgeschlossen, und
+der Speicherbedarf bleibt beschraenkt.
 Dadurch bleiben alle Klassen im Trainingsdatensatz vertreten, und das ausgepraegte
 Klassenungleichgewicht des Gesamtdatensatzes wird abgemildert.
 
@@ -59,17 +67,47 @@ Sicherheitsanalysten unmittelbar semantisch interpretierbar~\cite{mohale2025xai}
 
 Als Klassifikationsarchitektur wird der zweistufige hierarchische Ansatz aus Raturi et al.\
 \cite{raturi2026exploratory} uebernommen.
+Abbildung~\ref{fig:architektur} fasst die gesamte Verarbeitungskette von den Rohdaten bis zur
+\shap{}-Analyse zusammen.
 In Stufe~1 erfolgt eine binaere Klassifikation zwischen DoS/DDoS-Verkehr und
 Nicht-DoS-Verkehr.
 In Stufe~2 werden die Nicht-DoS-Instanzen in die verbleibenden Kategorien eingeordnet:
 Mirai, Reconnaissance, Spoofing, Brute-Force, Web-based Attacks und Benign.
-Dieser Ansatz adressiert das Klassenungleichgewicht strukturell, da die dominanten DoS- und
-DDoS-Klassen in einer separaten binaeren Klassifikationsstufe behandelt werden, bevor die
+Diese Trennung adressiert das Klassenungleichgewicht strukturell, da die dominanten DoS- und
+DDoS-Klassen in einer separaten binaeren Stufe behandelt werden, bevor die
 Mehrklassenklassifikation der zahlenmaessig unterrepraesentierten Kategorien erfolgt.
 
 Stufe~2 wird ausschliesslich auf den wahren Nicht-DoS-Trainingsinstanzen trainiert.
 Dadurch wird verhindert, dass Klassifikationsfehler aus Stufe~1 in das Training von Stufe~2
 einfliessen.
+Zur Vorhersagezeit reicht Stufe~1 nur die als Nicht-DoS eingestuften Instanzen an Stufe~2
+weiter, waehrend alle uebrigen direkt als DoS/DDoS ausgegeben werden.
+
+\begin{figure}[tbp]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw, rounded corners, align=center, inner sep=3pt,
+              font=\footnotesize, text width=0.78\columnwidth, minimum height=6mm},
+  arr/.style={-{Latex[length=2mm]}, thick}
+]
+\node[box] (data) {CICIoT2023 (CSV)\\ 39 Merkmale, 838.602 Instanzen};
+\node[box, below=4mm of data] (prep) {Vorverarbeitung\\ Median-Imputer, StandardScaler\\
+  (Pipeline~A zusaetzlich \pca{}: 39 $\to$ 16)};
+\node[box, below=4mm of prep] (s1) {Stufe~1 (binaer, \gb{})\\ DoS/DDoS vs.\ Nicht-DoS};
+\node[box, below=4mm of s1] (s2) {Stufe~2 (Mehrklasse, \gb{})\\ Mirai, Reconnaissance, Spoofing,
+  Brute-Force, Web-based, Benign};
+\node[box, below=4mm of s2] (shap) {SHAP\\ TreeExplainer (Stufe~1),
+  PermutationExplainer (Stufe~2)};
+\draw[arr] (data) -- (prep);
+\draw[arr] (prep) -- (s1);
+\draw[arr] (s1) -- (s2) node[midway, right, font=\scriptsize] {nur Nicht-DoS};
+\draw[arr] (s2) -- (shap);
+\end{tikzpicture}
+\caption{Verarbeitungskette der Arbeit. Beide Pipelines teilen dieselbe Struktur; Pipeline~A
+schaltet zusaetzlich eine \pca{}-Reduktion vor. Stufe~2 verarbeitet ausschliesslich
+Nicht-DoS-Instanzen.}
+\label{fig:architektur}
+\end{figure}
 
 \subsection{Modellwahl}
 
@@ -131,7 +169,7 @@ durchgefuehrt (Waterfall-Plots).
 Die Bewertungsmetriken aus Hermosilla et al.\ \cite{hermosilla2025xai_forensic} (Fidelitaet,
 Konsistenz und Jaccard-Aehnlichkeit) bilden den methodischen Bezugsrahmen fuer die
 Erklaerungsqualitaet.
-In der vorliegenden Arbeit erfolgt die Qualitaetsbewertung qualitativ ueber die semantische
+Die Qualitaetsbewertung erfolgt hier qualitativ ueber die semantische
 Validierung; eine numerische Berechnung dieser Metriken bleibt zukuenftiger Arbeit vorbehalten.
 Die abschliessende semantische Validierung vergleicht die identifizierten
 Feature-Importance-Ranglisten mit dem Fachwissen ueber die Netzwerksignaturen der jeweiligen

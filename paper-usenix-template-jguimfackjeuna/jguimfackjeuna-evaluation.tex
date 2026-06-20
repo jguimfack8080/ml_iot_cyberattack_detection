@@ -1,5 +1,11 @@
 \section{Evaluation}\label{evaluation}
 
+Die Experimente beantworten die Forschungsfragen empirisch: Sie messen den Einfluss der \pca{}
+auf die \ba{}, pruefen die Massnahmen gegen das Klassenungleichgewicht und gleichen die
+\shap{}-Erklaerungen mit bekannten Angriffssignaturen ab.
+Berichtet werden zuerst die Kennzahlen beider Pipelines, dann die Ergebnisse je Klasse und
+schliesslich die \shap{}-Analyse.
+
 \subsection{Experimentelle Konfiguration}
 
 Alle Experimente wurden mit Python~3.12 und scikit-learn auf dem CICIoT2023-Datensatz
@@ -29,7 +35,7 @@ deutlich, bei einer Trainingsdauer von 1.552 gegenueber 2.060 Sekunden.
 
 Tabelle~\ref{tab:ergebnisse} fasst die Ergebnisse beider Pipelines zusammen.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Balanced Accuracy und F1-Score (makro): drei Konfigurationen}
 \label{tab:ergebnisse}
@@ -62,8 +68,7 @@ geringfuegig niedrigere Stufe-2-\ba{} als die Standardparameter:
 Pipeline~A sinkt von 0{,}5480 auf 0{,}5364~($-$1{,}16~Punkte),
 Pipeline~B sinkt von 0{,}6301 auf 0{,}6285~($-$0{,}16~Punkte).
 Dieses Ergebnis belegt, dass die auf dem Teilmengedatensatz (8.045~Instanzen) gefundenen
-Hyperparameter auf dem vollstaendigen Datensatz nicht besser generalisieren; dies ist
-ein wichtiger methodischer Befund fuer zukuenftige Studien.
+Hyperparameter nicht ohne Weiteres auf den vollstaendigen Datensatz uebertragbar sind.
 
 \textbf{Trainingszeiten.}
 Mit optimierten Hyperparametern betraegt die Trainingsdauer auf dem vollstaendigen Datensatz
@@ -84,10 +89,14 @@ Sie adressiert das Klassenungleichgewicht direkt auf der Ebene der Verlustfunkti
 verbessert die Erkennung der seltenen Angriffsklassen erheblich~\cite{hosseini2025imbalance}
 (siehe Tabelle~\ref{tab:perclass_b}).
 
-Die optimierten Hyperparameter der Grid Search sind in Tabelle~\ref{tab:best_hp}
-zusammengefasst.
+Tabelle~\ref{tab:best_hp} fasst die optimierten Hyperparameter zusammen.
+Ueber alle vier Modelle hinweg waehlt die Grid Search aehnliche Werte: flache Baeume
+(\texttt{max\_depth} 3 bis 5) und kleine Lernraten (0,05 bis 0,10).
+Dass diese auf dem Teilmengedatensatz gefundenen Werte auf dem vollstaendigen Datensatz dennoch
+keinen Vorteil gegenueber den Standardparametern erzielen, greift die folgende Interpretation
+auf.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Optimierte Hyperparameter aus Grid Search}
 \label{tab:best_hp}
@@ -113,14 +122,9 @@ Das Ergebnis stimmt mit den Befunden von Raturi et al.\ \cite{raturi2026explorat
 wonach baumbasierte Modelle auf dem CICIoT2023-Datensatz besonders gut fuer die binaere
 Trennung von DoS/DDoS-Verkehr geeignet sind.
 
-Die \ba{} von Stufe~2 liegt in allen Konfigurationen unterhalb des in Raturi et al.\
-\cite{raturi2026exploratory} berichteten Wertes (0{,}952).
-Das Neutraining von Pipeline~A mit optimierten Hyperparametern auf dem vollstaendigen
-Datensatz liefert BA$_2$\,=\,0{,}5364, was geringfuegig unter dem Standard-Wert von 0{,}5480
-liegt.
-Dies legt nahe, dass die auf dem Teilmengedatensatz gefundenen Hyperparameter den
-Klassenungleichgewichten des vollstaendigen Datensatzes weniger gut begegnen.
-Die Diskussion in Abschnitt~\ref{diskussion} geht auf diese Befunde ein.
+Die \ba{} von Stufe~2 liegt in allen Konfigurationen deutlich unter dem von Raturi et al.\
+\cite{raturi2026exploratory} berichteten Wert von 0{,}952; die Einordnung dieser Abweichung
+erfolgt in Abschnitt~\ref{diskussion}.
 
 Tabelle~\ref{tab:perclass_a} zeigt die Klassenmetriken fuer Pipeline~A (Neutraining
 mit optimierten Hyperparametern).
@@ -128,11 +132,10 @@ Der starke Recall-Kontrast zwischen den Klassen bestaetigt das strukturelle
 Klassenungleichgewicht und erklaert die niedrige \ba{}:
 Mirai erzielt $R$\,=\,0{,}993, waehrend Web-based auf $R$\,=\,0{,}065 und Brute-Force auf
 $R$\,=\,0{,}263 abstuert.
-Zugleich zeigt die einfache Accuracy von 0{,}753 (gegenueber BA\,=\,0{,}536) eine Diskrepanz
-von 0{,}217, was die Einschraenkung der Accuracy als alleinige Metrik empirisch
-bestaetigt~\cite{hosseini2025imbalance}.
+Die Diskrepanz von 0{,}217 zwischen Accuracy (0{,}753) und \ba{} (0{,}536) bestaetigt zudem
+empirisch die Einschraenkung der Accuracy als alleinige Metrik~\cite{hosseini2025imbalance}.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Precision, Recall, F1 pro Klasse: Stufe~2 Pipeline~A (Best HP)}
 \label{tab:perclass_a}
@@ -169,7 +172,7 @@ erkauft, waehrend Mirai (perfekt) und Spoofing (hoch) stabil bleiben.
 Der Kompromiss faellt insgesamt positiv aus, da die \ba{} als Mittel der
 klassenweisen Recall-Werte von 0{,}6285 auf 0{,}7261 steigt.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Recall pro Klasse: Stufe~2 Pipeline~B, Best HP gegen Klassengewichtung}
 \label{tab:perclass_b}
@@ -193,9 +196,20 @@ mit Einbusse bei Reconnaissance. Accuracy Balanced\,=\,0{,}7534.}
 \end{table}
 
 Abbildung~\ref{fig:cm_stage2_b} zeigt die Konfusionsmatrix von Stufe~2 fuer Pipeline~B
-mit Klassengewichtung (Bewertung auf 69.773 wahren Nicht-DoS-Testinstanzen).
+mit Klassengewichtung, bewertet auf 69.773 wahren Nicht-DoS-Testinstanzen.
+Die Diagonale gibt die korrekt klassifizierten Instanzen wieder, die uebrigen Zellen die
+Verwechslungen zwischen den Klassen.
+Mirai hebt sich klar ab und wird mit 18.899 von 18.900 Instanzen nahezu vollstaendig korrekt
+zugeordnet; diese Klasse ist im Merkmalsraum eindeutig separierbar.
+Die staerksten Verwechslungen konzentrieren sich dagegen auf Reconnaissance, Benign,
+Brute-Force und Web-based: Reconnaissance als mit Abstand groesste Klasse wird zu erheblichen
+Teilen als Benign, Brute-Force oder Web-based klassifiziert und umgekehrt.
+Diese gegenseitige Vermischung der selteneren Klassen erklaert, warum die Klassengewichtung
+deren Recall zwar deutlich anhebt, den Recall von Reconnaissance aber senkt: Das Modell verteilt
+die Entscheidungen gleichmaessiger auf die zuvor unterrepraesentierten Klassen
+(vgl.\ Tabelle~\ref{tab:perclass_b}).
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=\columnwidth]{confusion_matrix_stage2_pipelineB}
 \caption{Konfusionsmatrix Stufe~2, Pipeline~B (39 Originalmerkmale, klassengewichtet).}
@@ -217,7 +231,7 @@ Stufe~2 (Mehrklassenklassifikation) erfordert einen anderen Ansatz: der
 mehr als zwei Klassen in Version~0.52 nicht.
 Daher wird der \texttt{PermutationExplainer} mit \texttt{predict\_proba} als
 Modellschnittstelle eingesetzt.
-Dieser Ansatz liefert korrekte Shapley-Werte in Erwartung und ist fuer alle
+Dieses Verfahren liefert korrekte Shapley-Werte in Erwartung und ist fuer alle
 Klassifikatoren anwendbar~\cite{mohale2025xai}.
 Fuer Stufe~2 werden 500 Testinstanzen und 100 Hintergrundinstanzen verwendet.
 
@@ -231,7 +245,7 @@ Pipeline~B (Originalmerkmale).
 Fuer Pipeline~A entfaellt die semantische Interpretierbarkeit, da Hauptkomponenten lineare
 Kombinationen der Originalmerkmale sind.
 
-\begin{table}[h]
+\begin{table}[tbp]
 \centering
 \caption{Top-5 SHAP-Features pro Klasse: Pipeline B (Originalmerkmale)}
 \label{tab:shap_top5}
@@ -269,45 +283,42 @@ auf Korrelationsartefakte im Datensatz hindeuten, die einer vertieften Untersuch
 beduerften.
 
 \textbf{Ablation Study SHAP.}
-Der Vergleich der \shap{}-Erklaerungen zwischen Pipeline~A und Pipeline~B zeigt den
-qualitativen Effekt der \pca{}-Reduktion auf die Interpretierbarkeit.
-Fuer Stufe~1 (binaere Klassifikation, Pipeline~A) identifiziert der \texttt{TreeExplainer}
-PC6 ($\overline{|\phi|}$\,=\,90.171), PC1 (62.205) und PC7 (47.902) als die drei wichtigsten
-Komponenten.
-Fuer Stufe~2 (Mehrklassenklassifikation, Pipeline~A) dominieren PC2 und PC1 uebergreifend
-ueber alle Klassen mit Abstand, gefolgt von PC7.
-Da Hauptkomponenten lineare Kombinationen der 39 Originalmerkmale sind, fehlt ihnen jede
-direkte semantische Bedeutung~\cite{alharby2025ciciot}.
-Ein Sicherheitsanalyst kann aus \glqq{}PC6 ist das wichtigste Feature\grqq{} kein
-Angriffsverhalten ableiten.
-Pipeline~B-Erklaerungen benennen konkrete Netzwerkmerkmale wie \texttt{Rate},
-\texttt{syn\_flag\_number} oder \texttt{Number}, die unmittelbar mit bekannten
-Angriffssignaturen vergleichbar sind.
-Eine direkte Jaccard-Aehnlichkeit zwischen den Top-10-Ranglisten beider Pipelines ist
-methodisch nicht sinnvoll, da die Feature-Raeume (PCA-Komponenten vs.\ Originalmerkmale)
-nicht vergleichbar sind.
-Die Bewertungsmetriken nach Hermosilla et al.\ \cite{hermosilla2025xai_forensic}
-(Fidelitaet, Konsistenz) bilden den methodischen Bezugsrahmen fuer die Erklaerungsqualitaet;
-die Bewertung erfolgt in dieser Arbeit qualitativ ueber die semantische Validierung, da nur
-fuer Pipeline~B semantisch valide Erklaerungen vorliegen.
-Eine numerische Berechnung dieser Metriken bleibt zukuenftiger Arbeit vorbehalten.
+Der Vergleich beider Pipelines macht den Effekt der \pca{}-Reduktion auf die
+Interpretierbarkeit greifbar.
+Auf der binaeren Stufe~1 identifiziert der \texttt{TreeExplainer} fuer Pipeline~A die
+Hauptkomponenten PC6 ($\overline{|\phi|}$\,=\,90.171), PC1 (62.205) und PC7 (47.902) als
+wichtigste Treiber.
+Da solche Komponenten lineare Kombinationen der Originalmerkmale sind, laesst sich aus ihnen
+kein Angriffsverhalten ableiten~\cite{alharby2025ciciot}; die Pipeline-B-Erklaerungen benennen
+dagegen konkrete, mit Angriffssignaturen vergleichbare Merkmale.
+Eine direkte Jaccard-Aehnlichkeit zwischen beiden Ranglisten ist methodisch nicht sinnvoll, da
+die Feature-Raeume (\pca{}-Komponenten gegenueber Originalmerkmalen) nicht vergleichbar sind.
+Die Bewertungsmetriken nach Hermosilla et al.\ \cite{hermosilla2025xai_forensic} (Fidelitaet,
+Konsistenz) bilden den methodischen Bezugsrahmen; die numerische Berechnung bleibt zukuenftiger
+Arbeit vorbehalten.
 
 \textbf{Lokale Erklaerungen.}
 Fuer die drei bis fuenf am staerksten fehlklassifizierten Instanzen pro Pipeline wird ein
 Waterfall-Plot generiert, der zeigt, welche Features die Falschklassifikation verursachen.
 Diese lokale Analyse ergaenzt die globale Perspektive um individuelle Fehlermuster.
 
-Abbildung~\ref{fig:shap_global_a} zeigt die globale \shap{}-Feature-Importance fuer
-Stufe~2, Pipeline~A.
-Die dominanten Hauptkomponenten (PC2, PC1, PC7, PC6) illustrieren das
-Interpretierbarkeits-Problem der \pca{}: kein Feature traegt einen semantisch
-verstaendlichen Namen.
-Abbildung~\ref{fig:shap_global_b} zeigt im Kontrast die globale
-\shap{}-Feature-Importance fuer Pipeline~B (Originalmerkmale), in der \texttt{Number}
-ueber alle Klassen dominiert und konkrete Netzwerkmerkmale benannt werden.
+Die beiden folgenden Abbildungen stellen die globale \shap{}-Feature-Importance der Stufe~2 als
+Balkendiagramm dar; die Balkenlaenge entspricht dem mittleren Beitrag eines Merkmals zur
+Klassifikation.
+In Abbildung~\ref{fig:shap_global_a} (Pipeline~A) stehen die Hauptkomponenten PC2 und PC1 an der
+Spitze, gefolgt von PC7.
+Da keiner dieser Balken einem konkreten Netzwerkmerkmal entspricht, macht die Abbildung das
+Interpretierbarkeitsproblem der \pca{} unmittelbar sichtbar.
+Abbildung~\ref{fig:shap_global_b} (Pipeline~B) zeigt dieselbe Darstellung mit Originalmerkmalen:
+Hier tragen die Balken benennbare Namen.
+\texttt{Number} ist mit deutlichem Abstand am wichtigsten, gefolgt von \texttt{Protocol\_Type};
+danach folgen aggregierte Paketstatistiken (\texttt{Min}, \texttt{Max}) und die TCP-Flags
+\texttt{rst\_flag\_number} und \texttt{syn\_flag\_number}.
+Der direkte Vergleich beider Abbildungen verdeutlicht den Gewinn an Nachvollziehbarkeit durch
+den Verzicht auf \pca{}.
 
 % SHAP Global Importance -- Pipeline A (verfuegbar)
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=\columnwidth]{shap_global_stage2_pipelineA}
 \caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~A (PCA).
@@ -315,7 +326,7 @@ PC-Komponenten tragen keine semantische Bedeutung.}
 \label{fig:shap_global_a}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[tbp]
 \centering
 \includegraphics[width=\columnwidth]{shap_global_stage2_pipelineB}
 \caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~B (klassengewichtet).
