@@ -33,12 +33,11 @@ und \shap{}-Analyse auf dem CICIoT2023-Datensatz stellt nach Kenntnis des Autors
 eigenstaendige Kombination in der Literatur dar.
 
 \textbf{Ausblick.}
-Die \shap{}-Analyse wurde fuer beide Pipelines durchgefuehrt; ihre Qualitaet wurde qualitativ
-ueber den Abgleich mit dokumentierten Angriffssignaturen beurteilt.
-Eine numerische Quantifizierung der Erklaerungsmetriken nach Hermosilla et al.\
-\cite{hermosilla2025xai_forensic} (Fidelitaet, Konsistenz) sowie die Jaccard-Aehnlichkeit, die
-zwischen \pca{}-Komponenten und Originalmerkmalen methodisch nicht vergleichbar ist, bleiben
-zukuenftiger Arbeit vorbehalten (vgl.\ Abschnitt~\ref{evaluation}).
+Die \shap{}-Analyse wurde fuer beide Pipelines durchgefuehrt und ihre Qualitaet quantitativ
+(Faithfulness, Stabilitaet, Jaccard-Aehnlichkeit) sowie qualitativ (semantische Validierung)
+bewertet.
+Sie belegt eine hohe Treue der Erklaerungen und einen Zielkonflikt zwischen Stabilitaet und
+Interpretierbarkeit der \pca{}-Komponenten (vgl.\ Abschnitt~\ref{evaluation}).
 Offene Forschungsfragen bleiben die Latenzmessung fuer den Echtzeiteinsatz in
 ressourcenbeschraenkten \iot{}-Umgebungen~\cite{raturi2026exploratory}, die Robustheit
 gegenueber gezielten Adversarial Attacks sowie die Generalisierbarkeit der

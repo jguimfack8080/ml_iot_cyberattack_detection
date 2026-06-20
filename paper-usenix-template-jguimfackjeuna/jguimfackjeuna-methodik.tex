@@ -166,11 +166,16 @@ basierend auf dem Betragsmittelwert der \shap{}-Werte ueber alle Testinstanzen
 Auf \textbf{lokaler Ebene} werden Einzelfallanalysen ausgewaehlter Fehlklassifikationen
 durchgefuehrt (Waterfall-Plots).
 
-Die Bewertungsmetriken aus Hermosilla et al.\ \cite{hermosilla2025xai_forensic} (Fidelitaet,
-Konsistenz und Jaccard-Aehnlichkeit) bilden den methodischen Bezugsrahmen fuer die
-Erklaerungsqualitaet.
-Die Qualitaetsbewertung erfolgt hier qualitativ ueber die semantische
-Validierung; eine numerische Berechnung dieser Metriken bleibt zukuenftiger Arbeit vorbehalten.
-Die abschliessende semantische Validierung vergleicht die identifizierten
-Feature-Importance-Ranglisten mit dem Fachwissen ueber die Netzwerksignaturen der jeweiligen
-Angriffstypen gemaess Neto et al.\ \cite{neto2023ciciot2023}.
+Die Qualitaet der \shap{}-Erklaerungen wird entlang der drei von Hermosilla et al.\
+\cite{hermosilla2025xai_forensic} benannten Dimensionen quantitativ bewertet, hier wie folgt
+operationalisiert.
+Die Faithfulness (Fidelitaet) ist die Pearson-Korrelation zwischen den \shap{}-Werten der
+vorhergesagten Klasse und der tatsaechlichen Aenderung der Klassenwahrscheinlichkeit, wenn ein
+Merkmal auf seinen Hintergrund-Median gesetzt wird.
+Die Stabilitaet (Konsistenz) ist die mittlere Kosinus-Aehnlichkeit zwischen der Erklaerung einer
+Instanz und den Erklaerungen kleiner gaussscher Stoerungen; die Jaccard-Aehnlichkeit misst die
+Rangstabilitaet der fuenf wichtigsten Merkmale unter denselben Stoerungen.
+Alle drei Masse werden deterministisch auf den Stufe-2-Erklaerungen beider Pipelines berechnet.
+Die Comprehensibility wird ergaenzend ueber die semantische Validierung adressiert, die die
+Feature-Importance-Ranglisten mit den dokumentierten Netzwerksignaturen der Angriffstypen
+abgleicht~\cite{neto2023ciciot2023}.

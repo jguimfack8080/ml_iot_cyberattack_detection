@@ -6,6 +6,38 @@ Format : date | section | description
 
 ---
 
+### 2026-06-20 -- Session 16 : Quantitative SHAP-Erklaerungsqualitaet (Rahmenfrage beantwortet)
+
+**Branche :** fix/paper-100-prozent-fundiert (Issue #15)
+
+**Kontext :** Die Rahmenfrage verlangt MESSBARE XAI-Kriterien (Faithfulness, Stability,
+Comprehensibility). Bisher nur qualitativ. Option A umgesetzt: Metriken im Backend berechnet.
+
+**Backend (neu, deterministisch, seed=42) :**
+- src/explainability/quality_metrics.py : Faithfulness (Korrelation \shap{}-Wert vs.
+  Ablationseffekt), Stabilitaet (Kosinus-Aehnlichkeit unter kleinen Eingabestoerungen),
+  Jaccard@5 (Rangstabilitaet). Klar definiert, dokumentiert, keine Halluzination.
+- scripts/compute_shap_quality.py : berechnet auf Stufe 2 beider Pipelines.
+- tests/test_explainability_quality.py : 4 Tests gruen.
+- results/metrics/shap_quality.json :
+  A (PCA) : Faithfulness 0,75 | Stabilitaet 0,93 | Jaccard 0,58
+  B (39f) : Faithfulness 0,72 | Stabilitaet 0,26 | Jaccard 0,45
+
+**Befund (echt) :** Beide Pipelines treu (Faithfulness ~0,72-0,75); PCA-Erklaerungen deutlich
+stabiler (0,93 vs 0,26), aber semantisch nicht deutbar. Zielkonflikt Stabilitaet vs.
+Interpretierbarkeit -> verfeinert Teilfrage 2(b).
+
+**Paper :**
+- methodik : drei Metriken operational definiert (statt qualitativ/Zukunft)
+- evaluation : neue Tabelle tab:shap_quality + Interpretation
+- discussion 5.2, conclusion, abstract : quantitativ statt qualitativ formuliert
+- Redundanz getrimmt (Lokale-Erklaerungen-Absatz, Elaborationssaetze) -> 10 Seiten gehalten
+
+**Status :** Rahmenfrage + Teilfrage 2(b) nun mit echten Werten beantwortet. 10 Seiten,
+0 undefined, Tests gruen.
+
+---
+
 ### 2026-06-20 -- Session 15 : Stil, Abbildungserklaerungen, DOI-Links, Architektur-Abbildung
 
 **Branche :** fix/paper-100-prozent-fundiert (Issue #15)

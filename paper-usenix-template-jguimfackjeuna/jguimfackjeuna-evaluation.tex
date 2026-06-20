@@ -74,8 +74,6 @@ Hyperparameter nicht ohne Weiteres auf den vollstaendigen Datensatz uebertragbar
 Mit optimierten Hyperparametern betraegt die Trainingsdauer auf dem vollstaendigen Datensatz
 3.879 Sekunden (Pipeline~A) und 3.013 Sekunden (Pipeline~B ohne Klassengewichtung); das
 klassengewichtete Pipeline-B-Modell benoetigt 3.052 Sekunden.
-Die hoehere Dauer gegenueber der Standardkonfiguration folgt aus der groesseren Zahl von
-Schaetzern in den optimierten Konfigurationen.
 
 \textbf{Klassengewichtung.}
 Da \gb{} keinen \texttt{class\_weight}-Parameter besitzt, werden die Trainingsinstanzen
@@ -118,9 +116,6 @@ B & Stufe~2 & 0{,}05 & 3 & 200 & 0{,}8 \\
 
 Die starke Leistung von Stufe~1 in beiden Pipelines (BA jeweils ueber 0{,}997) bestaetigt,
 dass der zweistufige Ansatz das Klassenungleichgewicht strukturell effektiv adressiert.
-Das Ergebnis stimmt mit den Befunden von Raturi et al.\ \cite{raturi2026exploratory} ueberein,
-wonach baumbasierte Modelle auf dem CICIoT2023-Datensatz besonders gut fuer die binaere
-Trennung von DoS/DDoS-Verkehr geeignet sind.
 
 Die \ba{} von Stufe~2 liegt in allen Konfigurationen deutlich unter dem von Raturi et al.\
 \cite{raturi2026exploratory} berichteten Wert von 0{,}952; die Einordnung dieser Abweichung
@@ -157,10 +152,8 @@ Accuracy\,=\,0{,}753, BA\,=\,0{,}536 (Gap\,=\,0{,}217).}
 \end{table}
 
 Der Leistungsvorsprung von Pipeline~B gegenueber Pipeline~A bestaetigt die Ausgangshypothese:
-Die \pca{}-Dimensionsreduktion beeintraechtigt die Mehrklassenklassifikation messbar.
-Dieser Befund stimmt mit der Erwartung ueberein, dass die Projektion auf 16 Hauptkomponenten
-klassentrennende Information verliert, die bei seltenen Angriffsklassen besonders relevant
-ist.
+Die \pca{}-Dimensionsreduktion beeintraechtigt die Mehrklassenklassifikation messbar, da die
+Projektion auf 16 Hauptkomponenten klassentrennende Information verliert.
 
 Tabelle~\ref{tab:perclass_b} stellt den klassenweisen Recall von Pipeline~B mit Best HP
 und mit Klassengewichtung gegenueber.
@@ -294,14 +287,30 @@ kein Angriffsverhalten ableiten~\cite{alharby2025ciciot}; die Pipeline-B-Erklaer
 dagegen konkrete, mit Angriffssignaturen vergleichbare Merkmale.
 Eine direkte Jaccard-Aehnlichkeit zwischen beiden Ranglisten ist methodisch nicht sinnvoll, da
 die Feature-Raeume (\pca{}-Komponenten gegenueber Originalmerkmalen) nicht vergleichbar sind.
-Die Bewertungsmetriken nach Hermosilla et al.\ \cite{hermosilla2025xai_forensic} (Fidelitaet,
-Konsistenz) bilden den methodischen Bezugsrahmen; die numerische Berechnung bleibt zukuenftiger
-Arbeit vorbehalten.
+Die drei Qualitaetsmetriken in Tabelle~\ref{tab:shap_quality} bestaetigen eine hohe Treue der
+Erklaerungen in beiden Pipelines (Faithfulness 0{,}75 bzw.\ 0{,}72) und decken zugleich einen
+Zielkonflikt auf: Die \pca{}-Erklaerungen sind unter kleinen Eingabestoerungen deutlich stabiler
+(Kosinus-Aehnlichkeit 0{,}93 gegenueber 0{,}26), bleiben aber semantisch nicht deutbar, waehrend
+die Originalmerkmale interpretierbar, aber weniger stabil sind.
 
-\textbf{Lokale Erklaerungen.}
-Fuer die drei bis fuenf am staerksten fehlklassifizierten Instanzen pro Pipeline wird ein
-Waterfall-Plot generiert, der zeigt, welche Features die Falschklassifikation verursachen.
-Diese lokale Analyse ergaenzt die globale Perspektive um individuelle Fehlermuster.
+\begin{table}[tbp]
+\centering
+\caption{Quantitative \shap{}-Erklaerungsqualitaet (Stufe~2)}
+\label{tab:shap_quality}
+\begin{tabular}{lcc}
+\toprule
+Metrik & A (PCA) & B (39f) \\
+\midrule
+Faithfulness (Korrelation) & 0{,}75 & 0{,}72 \\
+Stabilitaet (Kosinus) & \textbf{0{,}93} & 0{,}26 \\
+Jaccard@5 & 0{,}58 & 0{,}45 \\
+\bottomrule
+\end{tabular}
+\smallskip\newline
+{\footnotesize Faithfulness: Korrelation zwischen \shap{}-Wert und Ablationseffekt.
+Stabilitaet/Jaccard: Aehnlichkeit der Erklaerung unter kleinen Eingabestoerungen.
+Hoehere Werte sind besser.}
+\end{table}
 
 Die beiden folgenden Abbildungen stellen die globale \shap{}-Feature-Importance der Stufe~2 als
 Balkendiagramm dar; die Balkenlaenge entspricht dem mittleren Beitrag eines Merkmals zur
