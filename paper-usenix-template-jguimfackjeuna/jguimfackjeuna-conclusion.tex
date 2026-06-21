@@ -22,22 +22,12 @@ der \shap{}-Erklaerungen, da Hauptkomponenten keine direkte Entsprechung zu
 Netzwerkmerkmalen haben~\cite{alharby2025ciciot}.
 
 \textbf{Wissenschaftlicher Beitrag.}
-Gegenueber Raturi et al.\ \cite{raturi2026exploratory} schliesst der hier vorgestellte Ansatz
-die identifizierte Forschungsluecke der fehlenden Erklaerbarkeit durch die Integration von
-\shap{} als post-hoc-Erklaerungskomponente.
-Gegenueber Alharby~\cite{alharby2025ciciot} ergaenzt die Arbeit die \pca{}-basierte
-Klassifikation um eine systematische Ablation Study einschliesslich des Einflusses auf die
-\shap{}-Feature-Importance-Ranglisten.
-Die Kombination aus zweistufiger hierarchischer Architektur, \ba{} als primaerer Metrik
-und \shap{}-Analyse auf dem CICIoT2023-Datensatz stellt nach Kenntnis des Autors eine
-eigenstaendige Kombination in der Literatur dar.
+Die Kombination aus zweistufiger hierarchischer Architektur, \ba{} als primaerer Metrik und
+quantitativ bewerteter \shap{}-Analyse auf dem CICIoT2023-Datensatz stellt nach meiner
+Kenntnis eine in der Literatur bislang nicht vorhandene Kombination dar; die detaillierte
+Abgrenzung gegenueber Raturi et al.\ und Alharby erfolgt in Abschnitt~\ref{diskussion}.
 
 \textbf{Ausblick.}
-Die \shap{}-Analyse wurde fuer beide Pipelines durchgefuehrt und ihre Qualitaet quantitativ
-(Faithfulness, Stabilitaet, Jaccard-Aehnlichkeit) sowie qualitativ (semantische Validierung)
-bewertet.
-Sie belegt eine hohe Treue der Erklaerungen und einen Zielkonflikt zwischen Stabilitaet und
-Interpretierbarkeit der \pca{}-Komponenten (vgl.\ Abschnitt~\ref{evaluation}).
 Offene Forschungsfragen bleiben die Latenzmessung fuer den Echtzeiteinsatz in
 ressourcenbeschraenkten \iot{}-Umgebungen~\cite{raturi2026exploratory}, die Robustheit
 gegenueber gezielten Adversarial Attacks sowie die Generalisierbarkeit der

@@ -1,24 +1,17 @@
-Die fortschreitende Verbreitung von Internet of Things (\iot{})-Geraeten erweitert die
-Angriffsflaeche moderner Netzwerke erheblich~\cite{hamedani2025iotsurvey}.
-Klassische Intrusion Detection Systeme (\ids{}) auf Basis von Signaturvergleich erreichen in
-diesem Kontext methodische Grenzen, weshalb Machine Learning (ML) als datengetriebene
-Alternative untersucht wird~\cite{kikissagbe2024review}.
-Auf dem CICIoT2023-Datensatz~\cite{neto2023ciciot2023} zeigen Raturi et al.\
-\cite{raturi2026exploratory}, dass baumbasierte Modelle und \gb{} im Speziellen die hoechste
-\ba{} in der Mehrklassenklassifikation erzielen, jedoch ohne Erklaerbarkeitskomponente.
+Diese Arbeit entwickelt und evaluiert einen erklaerbaren zweistufigen hierarchischen
+\gb{}-Klassifikator zur Erkennung von Cyberangriffen in Internet of Things (\iot{})-Netzwerken
+auf dem CICIoT2023-Datensatz~\cite{neto2023ciciot2023} (838.605~Instanzen).
+Das Modell wird mit der \ba{} als primaerer Metrik bewertet; SHapley Additive Explanations
+(\shap{}) dienen als post-hoc-Erklaerungskomponente und schliessen die bei baumbasierten
+Modellen auf diesem Datensatz bestehende Erklaerbarkeitsluecke~\cite{raturi2026exploratory}.
 
-Diese Arbeit schliesst die Luecke.
-Sie implementiert einen zweistufigen hierarchischen \gb{}-Klassifikator auf dem
-CICIoT2023-Datensatz (838.602~Instanzen), bewertet ihn mit der \ba{} als primaerer Metrik und
-integriert SHapley Additive Explanations (\shap{}) als post-hoc-Erklaerungskomponente.
 Eine Ablation Study zeigt, dass die Reduktion mittels Principal Component Analysis (\pca{})
 von 39 auf 16 Merkmale die \ba{} der Mehrklassenstufe um 8{,}21~Prozentpunkte senkt (0{,}5480
-mit \pca{} gegenueber 0{,}6301 ohne \pca{}) und zugleich die semantische Interpretierbarkeit
-der \shap{}-Erklaerungen verringert.
-Eine klassengewichtete Trainingsstrategie hebt die \ba{} der Mehrklassenstufe weiter auf
-0{,}7261 an; dieser Wert bleibt unter dem von Raturi et al.\ \cite{raturi2026exploratory}
-berichteten Referenzwert von 0{,}952, was als Reproduzierbarkeitsfrage eingeordnet und auf
-Unterschiede im Versuchsaufbau zurueckgefuehrt wird.
+gegenueber 0{,}6301) und zugleich die semantische Interpretierbarkeit der
+\shap{}-Erklaerungen verringert.
+Eine klassengewichtete Trainingsstrategie hebt die \ba{} auf 0{,}7261; der Abstand zum von
+Raturi et al.\ \cite{raturi2026exploratory} berichteten Referenzwert von 0{,}952 wird als
+Reproduzierbarkeitsfrage eingeordnet und auf Unterschiede im Versuchsaufbau zurueckgefuehrt.
 Die Qualitaet der \shap{}-Erklaerungen wird quantitativ (Faithfulness, Stabilitaet und
 Jaccard-Aehnlichkeit nach Hermosilla et al.~\cite{hermosilla2025xai_forensic}) sowie qualitativ
 ueber den Abgleich mit dokumentierten Angriffssignaturen bewertet.

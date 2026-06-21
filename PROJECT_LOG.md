@@ -8,6 +8,25 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-06-21 : Adversariales Review, Redundanzbereinigung, Abbildungsplatzierung, KI-Offenlegung
+
+- Datum: 2026-06-21
+- Aenderung:
+  - Adversariales Experten-Review umgesetzt, jeder Befund vorab gegen Backend-Artefakte verifiziert: Instanzzahlen korrigiert (838.605 / 670.884 statt 838.602 / 670.881), SHAP-Stufe-1-Werte als Tausender gesetzt (90\,171 statt 90.171), nicht belegte Angabe "5 Dateien" entfernt, Tabellenfussnote "F1: makro-gemittelt" zu "F1-Score je Klasse" plus Makro-F1 0,5644 korrigiert, lokale-Ebene-Versprechen der Methodik an die gelieferte Analyse angepasst.
+  - Sprach- und Stilkorrekturen (kein Englisch im Fliesstext, "abstuerzt"/"greifbar" ersetzt, Konfusionsmatrix mit Zeilen/Spalten erklaert, Comprehensibility als qualitativ ausgewiesen).
+  - Gedankenstriche aus Preamble-Kommentaren entfernt (Regelkonformitaet).
+  - Redundanz bereinigt: Abstract neu als ergebnisgetriebene Miniatur (Motivationsrampe nur noch in Einleitung), "Klassenungleichgewicht strukturell adressiert" variiert, doppelte Almahaqeri-Nennung in Related Work entfernt, Fazit gekuerzt (keine erneute Raturi/Alharby-Abgrenzung, keine erneute Metrik-Auflistung).
+  - SHAP-Abbildungen 3 und 4 auf exakte Platzierung [H] umgestellt: jede Abbildung steht direkt nach ihrem Einleitungsabsatz, kein Satz wird mehr durch eine Abbildung getrennt; erklaerender Text steht zwischen beiden.
+  - Abstand Abstract-Ueberschrift zu Text korrigiert.
+  - KI-Offenlegung ehrlich und in erster Person formuliert (sprachliche Korrektur, Brainstorming, Codedebugging; Abfassung des Textes und alle Inhalte stammen vom Verfasser); "vom Autor" durch erste Person ersetzt (auch im Fazit "nach meiner Kenntnis").
+- Betroffene Dateien:
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-abstract.tex, jguimfackjeuna-introduction.tex, jguimfackjeuna-related-work.tex, jguimfackjeuna-methodik.tex, jguimfackjeuna-evaluation.tex, jguimfackjeuna-discussion.tex, jguimfackjeuna-conclusion.tex, jguimfackjeuna-main.tex
+- Technische Auswirkungen:
+  - Verifiziert: 10 Seiten, durchgehend zweispaltig, 0 undefinierte Referenzen, Schriftgroesse unveraendert, keine verschwendete Flaeche.
+  - Alle Zahlenwerte stimmen mit den Backend-Artefakten ueberein.
+- Begruendung:
+  - Wissenschaftliche Korrektheit, Vermeidung von Redundanz, Leserfuehrung und ehrliche Offenlegung des Hilfsmitteleinsatzes.
+
 ### 2026-06-20 : Layout-Korrekturen Abstract und SHAP-Abbildungen
 
 - Datum: 2026-06-20

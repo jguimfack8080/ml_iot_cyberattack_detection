@@ -10,15 +10,15 @@ schliesslich die \shap{}-Analyse.
 
 Alle Experimente wurden mit Python~3.12 und scikit-learn auf dem CICIoT2023-Datensatz
 durchgefuehrt~\cite{neto2023ciciot2023}.
-Der bereinigte Datensatz umfasst 838.602 Instanzen nach Entfernung von 3.078
-BACKDOOR\_MALWARE-Eintraegen (670.881 Training, 167.721 Test, Random-Seed~42).
+Der bereinigte Datensatz umfasst 838.605 Instanzen nach Entfernung von 3.078
+BACKDOOR\_MALWARE-Eintraegen (670.884 Training, 167.721 Test, Random-Seed~42).
 Die Ergebnisse werden in zwei Schritten berichtet: zunaechst mit Standardhyperparametern,
 anschliessend mit den durch Grid Search optimierten Parametern.
 
 \textbf{Grid-Search-Konfiguration.}
 Die Hyperparameteroptimierung wurde mit \texttt{GridSearchCV} und dreifacher Kreuzvalidierung
 (cv\,=\,3), Zielfunktion \ba{}, auf einem stratifizierten Teilmengedatensatz von 8.045 Instanzen
-(5 Dateien) durchgefuehrt, um die Rechenzeit zu begrenzen.
+durchgefuehrt, um die Rechenzeit zu begrenzen.
 Das durchsuchte Suchraster umfasst: n\_estimators $\in \{100, 200\}$,
 max\_depth $\in \{3, 5\}$, learning\_rate $\in \{0{,}05, 0{,}1\}$,
 subsample $\in \{0{,}8, 1{,}0\}$; insgesamt 16 Kombinationen je Stufe und Pipeline.
@@ -33,7 +33,7 @@ deutlich, bei einer Trainingsdauer von 1.552 gegenueber 2.060 Sekunden.
 
 \subsection{Vergleich Pipeline A und Pipeline B}
 
-Tabelle~\ref{tab:ergebnisse} fasst die Ergebnisse beider Pipelines zusammen.
+Die Ergebnisse beider Pipelines fasst Tabelle~\ref{tab:ergebnisse} zusammen.
 
 \begin{table}[h]
 \centering
@@ -113,18 +113,18 @@ B & Stufe~2 & 0{,}05 & 3 & 200 & 0{,}8 \\
 \subsection{Interpretation: Ablation Study}
 
 Die starke Leistung von Stufe~1 in beiden Pipelines (BA jeweils ueber 0{,}997) bestaetigt,
-dass der zweistufige Ansatz das Klassenungleichgewicht strukturell effektiv adressiert.
+dass der zweistufige Ansatz das Klassenungleichgewicht wirksam entschaerft.
 
 Die \ba{} von Stufe~2 liegt in allen Konfigurationen deutlich unter dem von Raturi et al.\
 \cite{raturi2026exploratory} berichteten Wert von 0{,}952; die Einordnung dieser Abweichung
 erfolgt in Abschnitt~\ref{diskussion}.
 
-Tabelle~\ref{tab:perclass_a} zeigt die Klassenmetriken fuer Pipeline~A (Neutraining
-mit optimierten Hyperparametern).
+Die Klassenmetriken fuer Pipeline~A (Neutraining mit optimierten Hyperparametern) listet
+Tabelle~\ref{tab:perclass_a}.
 Der starke Recall-Kontrast zwischen den Klassen bestaetigt das strukturelle
 Klassenungleichgewicht und erklaert die niedrige \ba{}:
-Mirai erzielt $R$\,=\,0{,}993, waehrend Web-based auf $R$\,=\,0{,}065 und Brute-Force auf
-$R$\,=\,0{,}263 abstuert.
+Mirai erzielt $R$\,=\,0{,}993, waehrend Web-based lediglich $R$\,=\,0{,}065 und Brute-Force
+$R$\,=\,0{,}263 erreichen.
 Die Diskrepanz von 0{,}217 zwischen Accuracy (0{,}753) und \ba{} (0{,}536) bestaetigt zudem
 empirisch die Einschraenkung der Accuracy als alleinige Metrik~\cite{hosseini2025imbalance}.
 
@@ -145,8 +145,8 @@ Web-based    & 0{,}789 & 0{,}065 & 0{,}120 \\
 \bottomrule
 \end{tabular}
 \smallskip\newline
-{\footnotesize P: Precision, R: Recall, F1: makro-gemittelt.
-Accuracy\,=\,0{,}753, BA\,=\,0{,}536 (Gap\,=\,0{,}217).}
+{\footnotesize P: Precision, R: Recall, F1: F1-Score je Klasse.
+Accuracy\,=\,0{,}753, BA\,=\,0{,}536 (Gap\,=\,0{,}217); Makro-F1\,=\,0{,}5644.}
 \end{table}
 
 Der Leistungsvorsprung von Pipeline~B gegenueber Pipeline~A bestaetigt die Ausgangshypothese:
@@ -188,13 +188,13 @@ mit Einbusse bei Reconnaissance. Accuracy Balanced\,=\,0{,}7534.}
 
 Abbildung~\ref{fig:cm_stage2_b} zeigt die Konfusionsmatrix von Stufe~2 fuer Pipeline~B
 mit Klassengewichtung, bewertet auf 69.773 wahren Nicht-DoS-Testinstanzen.
-Die Diagonale gibt die korrekt klassifizierten Instanzen wieder, die uebrigen Zellen die
-Verwechslungen zwischen den Klassen.
+Zeilen entsprechen der wahren, Spalten der vorhergesagten Klasse; die Diagonale gibt die
+korrekt klassifizierten Instanzen wieder, die uebrigen Zellen die Verwechslungen.
 Mirai hebt sich klar ab und wird mit 18.899 von 18.900 Instanzen nahezu vollstaendig korrekt
 zugeordnet; diese Klasse ist im Merkmalsraum eindeutig separierbar.
 Die staerksten Verwechslungen konzentrieren sich dagegen auf Reconnaissance, Benign,
-Brute-Force und Web-based: Reconnaissance als mit Abstand groesste Klasse wird zu erheblichen
-Teilen als Benign, Brute-Force oder Web-based klassifiziert und umgekehrt.
+Brute-Force und Web-based: Reconnaissance als groesste Klasse (25.382 Instanzen) wird zu
+erheblichen Teilen als Benign, Brute-Force oder Web-based klassifiziert und umgekehrt.
 Diese gegenseitige Vermischung der selteneren Klassen erklaert, warum die Klassengewichtung
 deren Recall zwar deutlich anhebt, den Recall von Reconnaissance aber senkt: Das Modell verteilt
 die Entscheidungen gleichmaessiger auf die zuvor unterrepraesentierten Klassen
@@ -210,7 +210,8 @@ die Entscheidungen gleichmaessiger auf die zuvor unterrepraesentierten Klassen
 \subsection{SHAP-Analyse}\label{shap_analyse}
 
 Die \shap{}-Analyse wird ausschliesslich auf den finalisierten Modellen nach dem
-Neutraining mit optimierten Hyperparametern durchgefuehrt.
+Neutraining mit optimierten Hyperparametern durchgefuehrt; fuer Pipeline~B ist dies die
+klassengewichtete Variante (BA$_2$\,=\,0{,}7261).
 Die methodische Grundlage bildet die \shap{}-Bibliothek Version~0.52 in Kombination mit
 scikit-learn~1.6.
 
@@ -280,10 +281,10 @@ Bezugsrahmen ist die CICIoT2023-Dokumentation~\cite{neto2023ciciot2023}; ein Abg
 weiteren \ids{}-Signaturkatalogen waere ein naechster Schritt.
 
 \textbf{Ablation Study SHAP.}
-Der Vergleich beider Pipelines macht den Effekt der \pca{}-Reduktion auf die
-Interpretierbarkeit greifbar.
+Der Vergleich beider Pipelines quantifiziert den Effekt der \pca{}-Reduktion auf die
+Interpretierbarkeit der Erklaerungen.
 Auf der binaeren Stufe~1 identifiziert der \texttt{TreeExplainer} fuer Pipeline~A die
-Hauptkomponenten PC6 ($\overline{|\phi|}$\,=\,90.171), PC1 (62.205) und PC7 (47.902) als
+Hauptkomponenten PC6 ($\overline{|\phi|}$\,=\,90\,171), PC1 (62\,205) und PC7 (47\,902) als
 wichtigste Treiber.
 Da solche Komponenten lineare Kombinationen der Originalmerkmale sind, laesst sich aus ihnen
 kein Angriffsverhalten ableiten~\cite{alharby2025ciciot}; die Pipeline-B-Erklaerungen benennen
@@ -321,7 +322,7 @@ Da keiner dieser Balken einem konkreten Netzwerkmerkmal entspricht, macht die Ab
 Interpretierbarkeitsproblem der \pca{} unmittelbar sichtbar: Das Modell ist zwar erklaerbar,
 die Erklaerung selbst bleibt jedoch semantisch leer.
 
-\begin{figure}[t]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\columnwidth]{shap_global_stage2_pipelineA}
 \caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~A (PCA).
@@ -338,7 +339,7 @@ Der direkte Vergleich beider Abbildungen verdeutlicht den Gewinn an Nachvollzieh
 den Verzicht auf \pca{}: Erst die Originalmerkmale erlauben den Abgleich mit dokumentierten
 Angriffssignaturen.
 
-\begin{figure}[t]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\columnwidth]{shap_global_stage2_pipelineB}
 \caption{Globale \shap{}-Feature-Importance: Stufe~2, Pipeline~B (klassengewichtet).

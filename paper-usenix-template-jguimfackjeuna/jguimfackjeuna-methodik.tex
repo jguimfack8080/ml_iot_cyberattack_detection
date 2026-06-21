@@ -9,7 +9,7 @@ Nachvollziehbarkeit waere eine erklaerbare Angriffserkennung wenig wert.
 
 Als Datenbasis dient der CICIoT2023-Datensatz~\cite{neto2023ciciot2023}, der Netzwerkverkehr
 von 105 realen \iot{}-Geraeten unter 33 verschiedenen Angriffsbedingungen enthaelt.
-Die Daten liegen als vorverarbeitete CSV-Dateien (Comma-Separated Values) mit 39 extrahierten
+Die Daten liegen als vorverarbeitete CSV-Dateien mit 39 extrahierten
 Netzwerkmerkmalen vor sowie einer Klassenspalte (Label).
 
 \textbf{Hinweis zur Feature-Anzahl.}
@@ -163,8 +163,9 @@ Auf \textbf{globaler Ebene} werden Feature-Importance-Ranglisten pro Angriffskla
 basierend auf dem Betragsmittelwert der \shap{}-Werte ueber alle Testinstanzen
 ($\overline{|\phi_i|}$).
 
-Auf \textbf{lokaler Ebene} werden Einzelfallanalysen ausgewaehlter Fehlklassifikationen
-durchgefuehrt (Waterfall-Plots).
+Auf \textbf{lokaler Ebene} werden die dominierenden Fehlklassifikationen anhand der
+Konfusionsmatrix der Stufe~2 untersucht und mit den global wichtigsten Merkmalen in Beziehung
+gesetzt.
 
 Die Qualitaet der \shap{}-Erklaerungen wird entlang der drei von Hermosilla et al.\
 \cite{hermosilla2025xai_forensic} benannten Dimensionen quantitativ bewertet, hier wie folgt

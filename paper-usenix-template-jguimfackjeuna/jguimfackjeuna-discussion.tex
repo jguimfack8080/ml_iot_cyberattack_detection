@@ -48,8 +48,8 @@ durch weitere Optimierungsrunden zu kaschieren.
 Almahaqeri et al.\ \cite{almahaqeri2026gradient} verwenden stratifiziertes Undersampling
 als Strategie gegen Klassenungleichgewicht statt einer hierarchischen
 Klassifikationsarchitektur.
-Das eigene hierarchische Vorgehen adressiert das Klassenungleichgewicht strukturell:
-DoS/DDoS-Verkehr wird in Stufe~1 separat behandelt, sodass Stufe~2 auf einem deutlich
+Das eigene hierarchische Vorgehen bewaeltigt das Klassenungleichgewicht auf Architekturebene:
+DoS/DDoS-Verkehr wird in Stufe~1 isoliert, sodass Stufe~2 auf einem deutlich
 ausgeglicheneren Teilmengedatensatz trainiert wird.
 Im Gegensatz zu Undersampling entsteht kein Informationsverlust.
 
@@ -87,8 +87,9 @@ durchgefuehrt, um die Rechenzeit zu begrenzen.
 Das Neutraining beider Pipelines auf dem vollstaendigen Datensatz bestaetigt, dass
 auf einem kleinen Subset optimierte Hyperparameter nicht besser als Standardparameter
 generalisieren (vgl.\ Tabelle~\ref{tab:ergebnisse}).
-Ein vollstaendiges Grid~Search auf dem gesamten Datensatz haette die Rechenzeit um einen
-Faktor von etwa 100 erhoeht, was den zeitlichen Rahmen dieser Seminararbeit ueberschreitet.
+Ein vollstaendiges Grid~Search auf dem gesamten Datensatz haette die Rechenzeit erheblich
+erhoeht (geschaetzte Groessenordnung: Faktor~100), was den zeitlichen Rahmen dieser
+Seminararbeit ueberschreitet.
 
 Das stratifizierte Sampling (500~Instanzen/Klasse/Datei) glaettet die
 Klassenverteilung gegenueber dem vollstaendigen CICIoT2023-Datensatz.
