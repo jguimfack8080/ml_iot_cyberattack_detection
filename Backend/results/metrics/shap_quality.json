@@ -1,0 +1,56 @@
+{
+  "A": {
+    "pipeline": "A",
+    "faithfulness": {
+      "mean": 0.7508103982641056,
+      "std": 0.22444873407266414,
+      "n": 50
+    },
+    "stability_cosine": {
+      "mean": 0.9307543142987184,
+      "std": 0.07583969634304004,
+      "n": 80
+    },
+    "jaccard_topk": {
+      "mean": 0.5831845238095238,
+      "std": 0.1961261538360894,
+      "n": 80
+    },
+    "params": {
+      "n_faithfulness": 50,
+      "n_stability": 20,
+      "n_perturbations": 4,
+      "sigma_rel": 0.1,
+      "top_k": 5,
+      "n_background": 50,
+      "seed": 42
+    }
+  },
+  "B": {
+    "pipeline": "B",
+    "faithfulness": {
+      "mean": 0.7211464933933349,
+      "std": 0.21059900639881987,
+      "n": 50
+    },
+    "stability_cosine": {
+      "mean": 0.25563000923819457,
+      "std": 0.5235104548618649,
+      "n": 80
+    },
+    "jaccard_topk": {
+      "mean": 0.4515873015873016,
+      "std": 0.17179881754908058,
+      "n": 80
+    },
+    "params": {
+      "n_faithfulness": 50,
+      "n_stability": 20,
+      "n_perturbations": 4,
+      "sigma_rel": 0.1,
+      "top_k": 5,
+      "n_background": 50,
+      "seed": 42
+    }
+  }
+}

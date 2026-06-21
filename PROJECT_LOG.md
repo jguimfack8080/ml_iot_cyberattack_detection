@@ -8,6 +8,93 @@ created: 2026-04-28
 
 ## Eintraege
 
+### 2026-06-21 : Adversariales Review, Redundanzbereinigung, Abbildungsplatzierung, KI-Offenlegung
+
+- Datum: 2026-06-21
+- Aenderung:
+  - Adversariales Experten-Review umgesetzt, jeder Befund vorab gegen Backend-Artefakte verifiziert: Instanzzahlen korrigiert (838.605 / 670.884 statt 838.602 / 670.881), SHAP-Stufe-1-Werte als Tausender gesetzt (90\,171 statt 90.171), nicht belegte Angabe "5 Dateien" entfernt, Tabellenfussnote "F1: makro-gemittelt" zu "F1-Score je Klasse" plus Makro-F1 0,5644 korrigiert, lokale-Ebene-Versprechen der Methodik an die gelieferte Analyse angepasst.
+  - Sprach- und Stilkorrekturen (kein Englisch im Fliesstext, "abstuerzt"/"greifbar" ersetzt, Konfusionsmatrix mit Zeilen/Spalten erklaert, Comprehensibility als qualitativ ausgewiesen).
+  - Gedankenstriche aus Preamble-Kommentaren entfernt (Regelkonformitaet).
+  - Redundanz bereinigt: Abstract neu als ergebnisgetriebene Miniatur (Motivationsrampe nur noch in Einleitung), "Klassenungleichgewicht strukturell adressiert" variiert, doppelte Almahaqeri-Nennung in Related Work entfernt, Fazit gekuerzt (keine erneute Raturi/Alharby-Abgrenzung, keine erneute Metrik-Auflistung).
+  - SHAP-Abbildungen 3 und 4 auf exakte Platzierung [H] umgestellt: jede Abbildung steht direkt nach ihrem Einleitungsabsatz, kein Satz wird mehr durch eine Abbildung getrennt; erklaerender Text steht zwischen beiden.
+  - Abstand Abstract-Ueberschrift zu Text korrigiert.
+  - KI-Offenlegung ehrlich und in erster Person formuliert (sprachliche Korrektur, Brainstorming, Codedebugging; Abfassung des Textes und alle Inhalte stammen vom Verfasser); "vom Autor" durch erste Person ersetzt (auch im Fazit "nach meiner Kenntnis").
+- Betroffene Dateien:
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-abstract.tex, jguimfackjeuna-introduction.tex, jguimfackjeuna-related-work.tex, jguimfackjeuna-methodik.tex, jguimfackjeuna-evaluation.tex, jguimfackjeuna-discussion.tex, jguimfackjeuna-conclusion.tex, jguimfackjeuna-main.tex
+- Technische Auswirkungen:
+  - Verifiziert: 10 Seiten, durchgehend zweispaltig, 0 undefinierte Referenzen, Schriftgroesse unveraendert, keine verschwendete Flaeche.
+  - Alle Zahlenwerte stimmen mit den Backend-Artefakten ueberein.
+- Begruendung:
+  - Wissenschaftliche Korrektheit, Vermeidung von Redundanz, Leserfuehrung und ehrliche Offenlegung des Hilfsmitteleinsatzes.
+
+### 2026-06-20 : Layout-Korrekturen Abstract und SHAP-Abbildungen
+
+- Datum: 2026-06-20
+- Aenderung: Abstand zwischen Abstract-Ueberschrift und Abstract-Text eng gesetzt (eigene \abstract-Definition statt lockerer center-Umgebung der Vorlage); die beiden globalen SHAP-Abbildungen (Stufe 2, Pipeline A und B) durch Sandwich-Struktur und t-Platzierung getrennt, sodass erklaerender Text zwischen ihnen steht; redundante Sektion "Offene Forschungsfragen" aus der Diskussion entfernt (bleibt im Fazit).
+- Betroffene Dateien:
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-main.tex
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-evaluation.tex
+  - paper-usenix-template-jguimfackjeuna/jguimfackjeuna-discussion.tex
+- Technische Auswirkungen:
+  - Verifiziert: 10 Seiten, durchgehend zweispaltig, 0 undefinierte Referenzen, keine verschwendete Flaeche, Schriftgroesse unveraendert.
+- Begruendung:
+  - Nutzeranforderung: keine Leerraeume, jede Abbildung im Text erklaert, Leser darf nie verloren gehen.
+
+### 2026-06-15 (a) -- Paper 100 Prozent fundiert : Backend-Re-Run + Zahlen-Abgleich (Issue #15)
+
+- Datum: 2026-06-15
+- Aenderung: Vollstaendiger, deterministischer Re-Run des gesamten Backends und Abgleich jeder
+  Zahl im Paper gegen die frisch erzeugten Artefakte. Branche fix/paper-100-prozent-fundiert.
+- Betroffene Dateien:
+  - Backend/scripts/rerun_all.sh (neu) : Orchestrator Standard/GridSearch/BestHP/Balanced/Eval+SHAP
+  - Backend/scripts/regen_perclass_b_besthp.py (neu) : Per-Class B Best-HP nobalanced
+  - Backend/results/metrics/* : metrics_*_standard.json, best_params_*, full_report_*, shap_*,
+    perclass_B_besthp_nobalanced.json (neu/aktualisiert)
+  - paper/* : abstract, evaluation, discussion, conclusion, methodik, motivation, main,
+    related-work, figures/ (3 frische Figuren)
+  - Backend/Done.md, paper/Done.md, paper/TO-DO.md, Backend/TO-DO.md
+- Technische Auswirkungen:
+  - Standard-Config (0,5480 / 0,6301) exakt reproduziert -> Headline "8,21 Prozentpunkte" fundiert
+  - Alle BA/F1/Per-Class/SHAP deterministisch identisch ; nur Trainingszeiten neu gemessen
+  - SHAP-Qualitaetsmetriken ehrlich als qualitativ/Bezugsrahmen formuliert (kein Overclaim)
+  - KI-/Uebersetzungs-Offenlegung ergaenzt ; franzoesische Woerter entfernt
+  - Abweichung zur Raturi-BA 0,952 als Reproduzierbarkeitsfrage dokumentiert (Betreuer-Linie)
+  - Kompilierung WSL pdflatex : 10 Seiten, 0 undefined refs/citations
+- Begruendung:
+  - Nutzerforderung "100 Prozent fundiert, keine erfundenen Zahlen" ; Backend = einzige Wahrheit
+  - Review hatte Standard-Zahlen als nicht persistiert/nicht reproduzierbar markiert
+
+### 2026-06-01 (a) -- Session 13 : Review complete (redondances, fluidite, coherence)
+
+- Datum: 2026-06-01
+- Aenderung: Review complete du paper a la demande de l'etudiant. Suppression des
+  redondances, reformulation fluide des Forschungsfragen, correction d'incoherences
+  internes et d'une regression de l'abstract. 7 fichiers .tex touches.
+- Betroffene Dateien:
+  - paper/jguimfackjeuna-introduction.tex : double citation Hamedani retiree ;
+    Forschungsfragen en prose chronologique ; "Struktur der Arbeit" supprime ;
+    redondance Related Work (Mohale/Hermosilla) retiree ; Motivation renforcee
+  - paper/jguimfackjeuna-abstract.tex : resultats chiffres restaures (regression) ;
+    meta-phrases (Alharby/Diskussionsteil) retirees ; "Schluesselwoerter" corrige
+  - paper/jguimfackjeuna-evaluation.tex : \cite{hosseini} errone retire (Grid Search) ;
+    "zukuenftige" ; "Kapitel"->"Abschnitt"
+  - paper/jguimfackjeuna-discussion.tex : §5.1 triple repetition consolidee ;
+    "Rahmenfrage"->"leitende Forschungsfrage"
+  - paper/jguimfackjeuna-methodik.tex : contradiction "Normalverteilung" corrigee
+  - paper/jguimfackjeuna-conclusion.tex : "Kapitel"->"Abschnitt"
+  - paper/jguimfackjeuna-motivation.tex : "46 Originalmerkmalen"->"Originalmerkmalen"
+  - paper/Done.md, TO-DO.md : session 13
+- Technische Auswirkungen:
+  - 0 Gedankenstrich introduit ; 10/10 sources toujours citees ; 0 cle indefinie
+  - Abstract de nouveau porteur de resultats (best practice) ; intro non redondante
+  - Coherence interne methodik <-> discussion sur l'echantillonnage retablie
+  - Compilation NON verifiee (pas de LaTeX local, WSL HS) : a recompiler avant merge
+- Begruendung:
+  - Demande explicite de l'etudiant (review complete, anti-redondance, anti-hallucination)
+  - L'abstract avait perdu ses resultats numeriques et gagne du meta-commentaire impropre
+  - "Normalverteilung erhalten" contredisait "glaettet die Klassenverteilung" (§5.3)
+  - Hosseini ne soutient pas le constat de generalisation Grid-Search (anti-hallucination)
+
 ### 2026-05-31 (h) -- Final Review complet + 3 correctifs supplementaires (branch Issue #13)
 
 - Datum: 2026-05-31

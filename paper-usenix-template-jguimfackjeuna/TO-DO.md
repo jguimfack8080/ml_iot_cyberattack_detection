@@ -1,5 +1,42 @@
 # TO-DO.md -- Taches restantes sur le Paper
-## Derniere mise a jour : 2026-05-31 (Session 12)
+## Derniere mise a jour : 2026-06-15 (Session 14)
+
+---
+
+## Session 14 -- Paper 100 Prozent fundiert (Backend-Re-Run, Issue #15)
+
+[x] Backend komplett neu ausgefuehrt (rerun_all.sh) : Standard/GridSearch/BestHP/Balanced/Eval+SHAP
+[x] Standard-Config reproduziert (0,5480 / 0,6301) -> Headline "8,21 Prozentpunkte" fundiert
+[x] Alle Tabellen gegen frische Artefakte verifiziert (ergebnisse, perclass_a, perclass_b, best_hp, shap_top5)
+[x] Trainingszeiten aller Konfigs aktualisiert und ergaenzt (Standard/Best-HP/Balanced)
+[x] tab:shap_top5 Benign an Artefakt angeglichen ; PC-Wording praezisiert
+[x] SHAP-Qualitaetsmetriken ehrlich (qualitativ + Bezugsrahmen, kein Overclaim)
+[x] KI-/Uebersetzungs-Offenlegung ergaenzt (main.tex)
+[x] Franzoesische Woerter entfernt (Neutraining, Suchraster) ; Transliteration korrigiert
+[x] Abweichung zu 0,952 als Reproduzierbarkeitsfrage dokumentiert (Betreuer-Linie)
+[x] 3 Paper-Figuren frisch aus Re-Run
+[x] Kompilierung WSL : 10 Seiten, 0 undefined refs/citations
+[ ] PR fix/paper-100-prozent-fundiert -> main (nach visueller PDF-Pruefung durch Student)
+[ ] Visuelle Endkontrolle des PDF durch den Studenten
+
+---
+
+## Session 13 -- Review complete (redondances, fluidite, coherence)
+
+[x] introduction.tex : double citation Hamedani supprimee (1 phrase, 2x [3])
+[x] introduction.tex : Forschungsfragen reformulees en prose chronologique (plus de bloc)
+[x] introduction.tex : paragraphe "Struktur der Arbeit" supprime
+[x] introduction.tex : redondance avec Related Work (Mohale/Hermosilla) retiree
+[x] introduction.tex : Motivation renforcee (scenario analyste)
+[x] abstract.tex : resultats numeriques restaures (8.21 pts, 0.7261), meta-phrases retirees
+[x] abstract.tex : "Schlusselworter" -> "Schluesselwoerter"
+[x] evaluation.tex : \cite{hosseini} errone retire (Grid Search), "zukunftige"->"zukuenftige"
+[x] discussion.tex : §5.1 triple repetition consolidee ; "Rahmenfrage"->"Forschungsfrage"
+[x] methodik.tex : contradiction "Normalverteilung erhalten" corrigee (coherent §5.3)
+[x] motivation.tex : "46 Originalmerkmalen" -> "Originalmerkmalen" (pipeline B = 39)
+[x] evaluation.tex + conclusion.tex : "Kapitel" -> "Abschnitt" (classe article)
+[ ] Recompiler (build.sh WSL / remote hopper) : confirmer 9 pages + 0 ref non resolue
+[ ] Validation visuelle PDF par l'etudiant
 
 ---
 

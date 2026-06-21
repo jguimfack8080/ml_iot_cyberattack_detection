@@ -36,23 +36,23 @@
       "top_shap_features": [
         {
           "feature": "HTTP",
-          "shap_value": 0.121429
-        },
-        {
-          "feature": "Protocol_Type",
-          "shap_value": 0.058688
-        },
-        {
-          "feature": "HTTPS",
-          "shap_value": 0.05622
+          "shap_value": 0.123621
         },
         {
           "feature": "Number",
-          "shap_value": 0.033823
+          "shap_value": 0.060133
+        },
+        {
+          "feature": "HTTPS",
+          "shap_value": 0.051401
         },
         {
           "feature": "rst_flag_number",
-          "shap_value": 0.028923
+          "shap_value": 0.028489
+        },
+        {
+          "feature": "Protocol_Type",
+          "shap_value": 0.024641
         }
       ]
     },
@@ -63,23 +63,23 @@
       "top_shap_features": [
         {
           "feature": "HTTP",
-          "shap_value": 0.07378
+          "shap_value": 0.071808
         },
         {
           "feature": "ICMP",
-          "shap_value": -0.069931
-        },
-        {
-          "feature": "Number",
-          "shap_value": 0.069725
+          "shap_value": -0.069589
         },
         {
           "feature": "rst_flag_number",
-          "shap_value": -0.065418
+          "shap_value": -0.068136
         },
         {
-          "feature": "fin_flag_number",
-          "shap_value": 0.052551
+          "feature": "Number",
+          "shap_value": 0.056017
+        },
+        {
+          "feature": "Max",
+          "shap_value": 0.046544
         }
       ]
     },
@@ -90,23 +90,23 @@
       "top_shap_features": [
         {
           "feature": "IAT",
-          "shap_value": 0.066005
+          "shap_value": 0.071011
         },
         {
           "feature": "Number",
-          "shap_value": 0.059383
+          "shap_value": 0.065404
         },
         {
           "feature": "Rate",
-          "shap_value": 0.052468
+          "shap_value": 0.050635
         },
         {
           "feature": "Max",
-          "shap_value": 0.043983
+          "shap_value": 0.042183
         },
         {
           "feature": "Protocol_Type",
-          "shap_value": 0.043093
+          "shap_value": 0.036259
         }
       ]
     }

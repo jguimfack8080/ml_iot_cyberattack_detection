@@ -1,43 +1,68 @@
-%-----------------------------------------------------------------------------
-% Hauptdatei -- USENIX 2019 Zweispaltenformat
+%===
+% Hauptdatei === USENIX 2019 Zweispaltenformat
 % Seminararbeit IT-Sicherheit, M.Sc. IVS, Hochschule Bremerhaven
 % Autor: Jordan Guimfack Jeuna (38184)
 % Kompilierung: pdflatex (lokal) oder LuaLaTeX via buildlualatex.sh (remote)
-%-----------------------------------------------------------------------------
+%===
 \documentclass[letterpaper,twocolumn,10pt]{article}
 \usepackage{usenix-2020-09}
 
-%--- Sprache und Zeichenkodierung ---
+%=== Sprache und Zeichenkodierung ===
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
-% babel[ngerman] renomme abstractname en "Zusammenfassung" -- on le retablit en "Abstract"
+% babel[ngerman] renomme abstractname en "Zusammenfassung" === on le retablit en "Abstract"
 \addto\captionsngerman{\renewcommand{\abstractname}{Abstract}}
 
-%--- Typografie ---
+%=== Typografie ===
 \usepackage{microtype}
 
-%--- Tabellen ---
+%=== Tabellen ===
 \usepackage{booktabs}
 
-%--- Mathematik ---
+%=== Mathematik ===
 \usepackage{amsmath}
 \usepackage{amssymb}
 
-%--- Abbildungen ---
+%=== Abbildungen ===
 \usepackage{graphicx}
+\usepackage{float}
 \graphicspath{{figures/}}
 
-%--- Hyperlinks (Bookmarks deaktiviert: vermeidet "end occurred inside a group") ---
-\hypersetup{bookmarks=false,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+%=== Diagramme ===
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta}
 
-%--- Abkuerzungen ---
+%=== Hyperlinks (Bookmarks deaktiviert: vermeidet "end occurred inside a group") ===
+\hypersetup{bookmarks=false,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue,
+  unicode=true,
+  pdftitle={Erklaerbare Erkennung von Cyberangriffen in IoT-Netzwerken: Entwicklung und Evaluation eines Gradient-Boosting-Klassifikators mit SHAP-Analyse auf dem CICIoT2023-Datensatz},
+  pdfauthor={Jordan Guimfack Jeuna},
+  pdfsubject={Seminararbeit IT-Sicherheit, M.Sc. Informatik (Vertrauenswuerdige Systeme), Hochschule Bremerhaven},
+  pdfkeywords={Internet of Things, Machine Learning, Gradient Boosting, CICIoT2023, Balanced Accuracy, Intrusion Detection, Explainable Artificial Intelligence, SHAP, Principal Component Analysis, Cyberangriffserkennung}}
+
+%=== Abkuerzungen ===
 \newcommand{\shap}{SHAP}
 \newcommand{\pca}{PCA}
 \newcommand{\ba}{Balanced Accuracy}
 \newcommand{\gb}{Gradient Boosting}
 \newcommand{\iot}{IoT}
 \newcommand{\ids}{IDS}
+
+%=== Ueberschriften linksbuendig setzen (verhindert gestreckte Titel mit
+%    langen Komposita wie "SHAP-Erklaerungsqualitaet") ===
+\makeatletter
+\def\section{\@startsection{section}{1}{\z@}{-3.5ex plus-1ex minus-.2ex}%
+  {2.3ex plus.2ex}{\reset@font\large\bf\raggedright}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{-3.25ex plus-1ex minus-.2ex}%
+  {1.5ex plus.2ex}{\reset@font\large\bf\raggedright}}
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{-3.25ex plus-1ex minus-.2ex}%
+  {1.5ex plus.2ex}{\reset@font\normalsize\bf\raggedright}}
+%=== Abstract-Ueberschrift eng setzen (ersetzt die lockere center-Umgebung der
+%    Vorlage, die einen grossen Leerraum vor dem Abstract-Text erzeugte) ===
+\def\abstract{\par\vspace{0.3em}\centerline{\large\bf\abstractname}\vspace{0.6em}\par\noindent\ignorespaces}
+\def\endabstract{\par}
+\makeatother
 
 %=============================================================================
 \begin{document}
@@ -58,12 +83,12 @@
 
 \maketitle
 
-%--- Abstract ---
+%=== Abstract ===
 \begin{abstract}
 \input{jguimfackjeuna-abstract}
 \end{abstract}
 
-%--- Kapitel ---
+%=== Kapitel ===
 \input{jguimfackjeuna-introduction}
 \input{jguimfackjeuna-related-work}
 \input{jguimfackjeuna-methodik}
@@ -71,7 +96,16 @@
 \input{jguimfackjeuna-discussion}
 \input{jguimfackjeuna-conclusion}
 
-%--- Literaturverzeichnis ---
+%=== Offenlegung zum Einsatz von Hilfsmitteln ===
+\section*{Offenlegung zum Einsatz von Hilfsmitteln}
+Bei der Erstellung dieser Arbeit wurden KI-gestuetzte Werkzeuge unterstuetzend eingesetzt:
+zur sprachlichen Korrektur (Rechtschreibung, Grammatik und Ausdruck), zum Brainstorming und
+zur Unterstuetzung des Verstaendnisses bei schwierigen oder zunaechst unklaren Fachthemen sowie
+als Hilfsmittel bei der Fehlersuche im Programmcode.
+Die Abfassung des Textes, alle inhaltlichen Aussagen, der Versuchsaufbau, die Experimente, die
+Ergebnisse und deren Interpretation stammen von mir; ich habe sie geprueft und verantworte sie.
+
+%=== Literaturverzeichnis ===
 {\footnotesize \bibliographystyle{plain}
 \bibliography{references}}
 

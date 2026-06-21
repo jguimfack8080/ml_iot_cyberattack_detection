@@ -1,6 +1,6 @@
 \section{Fazit}\label{fazit}
 
-Die vorliegende Arbeit hat einen zweistufigen hierarchischen \gb{}-Klassifikator auf dem
+Diese Arbeit hat einen zweistufigen hierarchischen \gb{}-Klassifikator auf dem
 CICIoT2023-Datensatz~\cite{neto2023ciciot2023} implementiert, evaluiert und mit einer
 \shap{}-basierten Erklaerbarkeitskomponente versehen.
 
@@ -8,7 +8,8 @@ CICIoT2023-Datensatz~\cite{neto2023ciciot2023} implementiert, evaluiert und mit 
 Die Ablation Study liefert ein klar messbares Ergebnis: \pca{} reduziert die \ba{} von
 Stufe~2 um 8{,}21~Prozentpunkte (Pipeline~B: 0{,}6301 gegenueber Pipeline~A: 0{,}5480
 mit Standardparametern).
-Gleichzeitig trainiert Pipeline~B ohne \pca{} um 583~Sekunden schneller.
+Gleichzeitig trainiert Pipeline~B ohne \pca{} in der Standardkonfiguration um 508~Sekunden
+schneller (1.552 gegenueber 2.060 Sekunden).
 Die wirksamste Einzelmassnahme gegen das Klassenungleichgewicht ist die Klassengewichtung
 (\texttt{sample\_weight} balanced) in Stufe~2: Sie hebt die \ba{} von Pipeline~B von
 0{,}6285 auf 0{,}7261~($+$9{,}76~Prozentpunkte) und verbessert den Recall der seltenen
@@ -21,21 +22,12 @@ der \shap{}-Erklaerungen, da Hauptkomponenten keine direkte Entsprechung zu
 Netzwerkmerkmalen haben~\cite{alharby2025ciciot}.
 
 \textbf{Wissenschaftlicher Beitrag.}
-Gegenueber Raturi et al.\ \cite{raturi2026exploratory} schliesst die vorliegende Arbeit
-die identifizierte Forschungsluecke der fehlenden Erklaerbarkeit durch die Integration von
-\shap{} als post-hoc-Erklaerungskomponente.
-Gegenueber Alharby~\cite{alharby2025ciciot} ergaenzt die Arbeit die \pca{}-basierte
-Klassifikation um eine systematische Ablation Study einschliesslich des Einflusses auf die
-\shap{}-Feature-Importance-Ranglisten.
-Die Kombination aus zweistufiger hierarchischer Architektur, \ba{} als primaerer Metrik
-und \shap{}-Analyse auf dem CICIoT2023-Datensatz stellt nach Kenntnis des Autors eine
-eigenstaendige Kombination in der Literatur dar.
+Die Kombination aus zweistufiger hierarchischer Architektur, \ba{} als primaerer Metrik und
+quantitativ bewerteter \shap{}-Analyse auf dem CICIoT2023-Datensatz stellt nach meiner
+Kenntnis eine in der Literatur bislang nicht vorhandene Kombination dar; die detaillierte
+Abgrenzung gegenueber Raturi et al.\ und Alharby erfolgt in Abschnitt~\ref{diskussion}.
 
 \textbf{Ausblick.}
-Die \shap{}-Analyse und ihre Qualitaetsbewertung nach Hermosilla et al.\
-\cite{hermosilla2025xai_forensic} (Fidelitaet, Konsistenz) wurden fuer Pipeline~B
-abgeschlossen; die Jaccard-Aehnlichkeit ist methodisch nicht anwendbar, da \pca{}-Komponenten
-und Originalmerkmale verschiedene Feature-Raeume bilden (vgl.\ Kapitel~\ref{evaluation}).
 Offene Forschungsfragen bleiben die Latenzmessung fuer den Echtzeiteinsatz in
 ressourcenbeschraenkten \iot{}-Umgebungen~\cite{raturi2026exploratory}, die Robustheit
 gegenueber gezielten Adversarial Attacks sowie die Generalisierbarkeit der

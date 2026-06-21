@@ -1,0 +1,127 @@
+%=============================================================================
+% Motivation und Zielsetzung (eigenstaendiges Dokument)
+% Seminararbeit IT-Sicherheit, M.Sc. IVS, Hochschule Bremerhaven
+% Autor: Jordan Guimfack Jeuna (38184)
+% Kompilierung: pdflatex + bibtex
+%=============================================================================
+\documentclass[letterpaper,twocolumn,10pt]{article}
+\usepackage{usenix-2020-09}
+
+% Sprache und Zeichenkodierung
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+% Typografie und Mathematik
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+% Hyperlinks (Bookmarks deaktiviert)
+\hypersetup{bookmarks=false,colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black}
+
+% Abkuerzungen
+\newcommand{\shap}{SHAP}
+\newcommand{\pca}{PCA}
+\newcommand{\ba}{Balanced Accuracy}
+\newcommand{\gb}{Gradient Boosting}
+\newcommand{\iot}{IoT}
+\newcommand{\ids}{IDS}
+
+%=============================================================================
+\begin{document}
+\date{}
+
+\title{\Large \bf
+  Erklaerbare Erkennung von Cyberangriffen in IoT-Netzwerken:\\
+  Entwicklung und Evaluation eines Gradient-Boosting-Klassifikators\\
+  mit SHAP-Analyse auf dem CICIoT2023-Datensatz\\[6pt]
+  \large Motivation und Zielsetzung
+}
+
+\author{
+  {\rm Jordan Guimfack Jeuna}\ (Matrikelnummer 38184)\\
+  Hochschule Bremerhaven\\
+  Studiengang M.Sc. Informatik (Vertrauenswuerdige Systeme)\\
+  Modul IT-Sicherheit, Prof.\ Dr.\ Lars Fischer
+}
+
+\maketitle
+
+%=============================================================================
+\section{Motivation}\label{motivation}
+
+Der CICIoT2023-Datensatz~\cite{neto2023ciciot2023} erfasst 33 reale Angriffe gegen
+ein Testnetz aus 105 \iot{}-Geraeten und macht damit messbar, wie breit die
+Angriffsflaeche vernetzter Geraete inzwischen ist.
+Signaturbasierte \ids{} stossen in diesem Umfeld an eine klare Grenze: Sie erkennen
+nur Angriffe, deren Muster bereits hinterlegt ist, und versagen bei zuvor unbekannten
+Varianten.
+Machine Learning loest dieses Problem datengetrieben, indem es Angriffsverhalten aus
+Netzwerkmerkmalen lernt statt aus festen Signaturen.
+Baumbasierte Ensemble-Verfahren bilden dabei den belastbaren Stand der
+Forschung~\cite{kikissagbe2024review}, und \gb{} erreicht auf dem CICIoT2023-Datensatz
+die hoechste \ba{} unter den in Raturi et al.\ verglichenen
+Modellen~\cite{raturi2026exploratory}.
+
+Diese Leistung allein genuegt fuer den praktischen Einsatz jedoch nicht.
+Die einschlaegigen Arbeiten auf CICIoT2023 werten ihre Modelle als Black Box aus und
+legen nicht offen, welche Netzwerkmerkmale eine Klassifikation
+tragen~\cite{raturi2026exploratory,almahaqeri2026gradient}.
+Fuer ein Sicherheitssystem ist genau das entscheidend: Ein Analyst, der einen Alarm
+prueft, muss erkennen koennen, warum ein Paket als Angriff eingestuft wurde, bevor er
+darauf reagiert.
+
+%=============================================================================
+\section{Forschungsluecke}\label{luecke}
+
+Aus dem aktuellen Stand ergeben sich drei konkrete Schwachstellen, an denen diese
+Arbeit ansetzt.
+
+\textbf{Verzerrte Bewertung durch Klassenungleichgewicht.}
+DoS- und DDoS-Verkehr dominiert den CICIoT2023-Datensatz zahlenmaessig.
+Ein Modell kann seltene Angriffsklassen vollstaendig verfehlen und trotzdem eine hohe
+Accuracy ausweisen, weil die haeufigen Klassen das Ergebnis bestimmen.
+Hosseini et al.~\cite{hosseini2025imbalance} belegen diese Verzerrung fuer
+\ids{}-Datensaetze und machen die \ba{} als Bewertungsmassstab erforderlich.
+
+\textbf{Fehlende Interpretierbarkeit.}
+Ohne Einblick in die Entscheidungsgrundlage bleibt unklar, ob ein Modell ein echtes
+Angriffsmerkmal nutzt oder einem Artefakt des Datensatzes folgt.
+Keine der genannten Arbeiten auf CICIoT2023 liefert diese Begruendung pro
+Angriffsklasse.
+
+\textbf{Unbewerteter Einfluss der Dimensionsreduktion.}
+Raturi et al.~\cite{raturi2026exploratory} reduzieren die 46 Merkmale per \pca{} auf
+16 Komponenten, ohne zu pruefen, wie sich dieser Schritt auf die Erkennungsleistung
+und auf die Nachvollziehbarkeit der Merkmale auswirkt.
+Da \pca{}-Komponenten Linearkombinationen der Originalmerkmale sind, steht zu
+erwarten, dass die fachliche Deutbarkeit darunter leidet.
+
+%=============================================================================
+\section{Zielsetzung}\label{ziel}
+
+Die Arbeit entwickelt einen \gb{}-Klassifikator auf dem CICIoT2023-Datensatz, der
+zwei Anforderungen zugleich erfuellt: eine hohe Erkennungsleistung, gemessen an der
+\ba{} als primaerer Metrik, und eine pro Angriffsklasse nachvollziehbare
+Entscheidungsgrundlage durch \shap{}.
+Eine Ablation Study stellt eine Pipeline mit 16 \pca{}-Komponenten einer
+Kontrollpipeline mit allen Originalmerkmalen gegenueber und beziffert so den
+Preis der Dimensionsreduktion fuer Leistung und Erklaerbarkeit.
+
+Der eigenstaendige Beitrag liegt in der Verbindung dreier bislang getrennter Elemente
+auf CICIoT2023: \shap{} als Erklaerungskomponente, die \ba{} als primaerer Massstab
+und eine messbare Pruefung der Erklaerungen.
+Die Qualitaet der \shap{}-Ausgaben wird dabei nicht unterstellt, sondern an den Kriterien
+Fidelitaet, Konsistenz und Jaccard-Aehnlichkeit nach Hermosilla et
+al.~\cite{hermosilla2025xai_forensic} ausgerichtet und qualitativ gegen die bekannten
+Netzwerksignaturen der jeweiligen Angriffstypen geprueft.
+Die Wahl von \shap{} stuetzt sich auf das PRISMA-Review von Ogunseyi et
+al.~\cite{ogunseyi2026xai_review}, das \shap{} in der Mehrheit von 129 untersuchten
+XAI-\ids{}-Studien einsetzt, ohne dass die Erkennungsleistung darunter leidet.
+
+% Literaturverzeichnis
+{\footnotesize \bibliographystyle{plain}
+\bibliography{references}}
+
+\end{document}

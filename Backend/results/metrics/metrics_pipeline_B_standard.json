@@ -1,0 +1,15 @@
+{
+  "pipeline": "B",
+  "balanced_accuracy_stage1": 0.999276,
+  "balanced_accuracy_stage2": 0.63005,
+  "f1_macro_stage1": 0.999337,
+  "f1_macro_stage2": 0.667016,
+  "training_time_seconds": 1552.14,
+  "n_train_samples": 670884,
+  "n_test_samples": 167721,
+  "n_features_in": 39,
+  "x_test_shape": [
+    167721,
+    39
+  ]
+}

@@ -4,7 +4,7 @@
   "balanced_accuracy_stage2": 0.726134,
   "f1_macro_stage1": 0.999294,
   "f1_macro_stage2": 0.656988,
-  "training_time_seconds": 2396.12,
+  "training_time_seconds": 3052.15,
   "n_train_samples": 670884,
   "n_test_samples": 167721,
   "n_features_in": 39,

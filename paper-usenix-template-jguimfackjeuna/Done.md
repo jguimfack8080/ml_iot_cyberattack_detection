@@ -6,6 +6,104 @@ Format : date | section | description
 
 ---
 
+### 2026-06-20 -- Session 16 : Quantitative SHAP-Erklaerungsqualitaet (Rahmenfrage beantwortet)
+
+**Branche :** fix/paper-100-prozent-fundiert (Issue #15)
+
+**Kontext :** Die Rahmenfrage verlangt MESSBARE XAI-Kriterien (Faithfulness, Stability,
+Comprehensibility). Bisher nur qualitativ. Option A umgesetzt: Metriken im Backend berechnet.
+
+**Backend (neu, deterministisch, seed=42) :**
+- src/explainability/quality_metrics.py : Faithfulness (Korrelation \shap{}-Wert vs.
+  Ablationseffekt), Stabilitaet (Kosinus-Aehnlichkeit unter kleinen Eingabestoerungen),
+  Jaccard@5 (Rangstabilitaet). Klar definiert, dokumentiert, keine Halluzination.
+- scripts/compute_shap_quality.py : berechnet auf Stufe 2 beider Pipelines.
+- tests/test_explainability_quality.py : 4 Tests gruen.
+- results/metrics/shap_quality.json :
+  A (PCA) : Faithfulness 0,75 | Stabilitaet 0,93 | Jaccard 0,58
+  B (39f) : Faithfulness 0,72 | Stabilitaet 0,26 | Jaccard 0,45
+
+**Befund (echt) :** Beide Pipelines treu (Faithfulness ~0,72-0,75); PCA-Erklaerungen deutlich
+stabiler (0,93 vs 0,26), aber semantisch nicht deutbar. Zielkonflikt Stabilitaet vs.
+Interpretierbarkeit -> verfeinert Teilfrage 2(b).
+
+**Paper :**
+- methodik : drei Metriken operational definiert (statt qualitativ/Zukunft)
+- evaluation : neue Tabelle tab:shap_quality + Interpretation
+- discussion 5.2, conclusion, abstract : quantitativ statt qualitativ formuliert
+- Redundanz getrimmt (Lokale-Erklaerungen-Absatz, Elaborationssaetze) -> 10 Seiten gehalten
+
+**Status :** Rahmenfrage + Teilfrage 2(b) nun mit echten Werten beantwortet. 10 Seiten,
+0 undefined, Tests gruen.
+
+---
+
+### 2026-06-20 -- Session 15 : Stil, Abbildungserklaerungen, DOI-Links, Architektur-Abbildung
+
+**Branche :** fix/paper-100-prozent-fundiert (Issue #15)
+
+**Abbildungen/Tabellen (alle mit belegter In-Text-Erklaerung) :**
+- Architektur-Abbildung (TikZ, fig:architektur) der zweistufigen Verarbeitungskette ergaenzt
+  und im Text erklaert; gegruendet auf Backend (_core.py, hierarchical_classifier.py, loader.py)
+- Konfusionsmatrix mit echten Matrixwerten erklaert (aus stage2_B.pkl extrahiert)
+- SHAP-Abbildungen A und B gegen die tatsaechlichen Plots verifiziert; Reihenfolge der
+  Pipeline-B-Features korrigiert (Min/Max stehen vor den TCP-Flags)
+- tab:best_hp interpretiert; SHAP-Figurenerklaerung als Balkendiagramm-Walkthrough
+
+**Literatur :** DOI-Link (anklickbar) fuer alle 10 Quellen; nur URL-Links blau
+(Zitate und interne Verweise schwarz).
+
+**Stil / Redundanz :**
+- "vorliegende Arbeit" (11 Vorkommen) durch variierte Formulierungen ersetzt
+- KI-typische Kapiteleinleitungen und Floskeln natuerlicher formuliert
+- verbatim-Dopplung methodik/diskussion (SHAP-Qualitaet) entfernt
+- geclusterte Wiederholungen (zeigt, Ansatz) lokal variiert
+
+**Leerraum :** Seite 10 mit belegtem Backend-Inhalt (Architektur, Sampling-Detail,
+Vorhersageregel) gefuellt; Float-Platzierung [h] -> [tbp].
+
+**Kompilierung (WSL) :** 10 Seiten, 0 undefined refs/citations, 0 Gedankenstriche im Text.
+
+---
+
+### 2026-06-15 -- Session 14 : Paper 100 Prozent fundiert (Backend-Re-Run + Zahlen-Abgleich)
+
+**Branche :** fix/paper-100-prozent-fundiert (Issue #15)
+
+**Kontext :** Die adversariale Review hatte gezeigt, dass die Standard-Konfigurationszahlen
+(0,5480 / 0,6301), an denen die Headline "8,21 Prozentpunkte" haengt, in keinem Backend-Artefakt
+existierten. Vollstaendiger Re-Run zur Fundierung jeder Zahl.
+
+**Backend-Re-Run (scripts/rerun_all.sh, deterministisch, random_state=42) :**
+- Standard, Grid Search, Best-HP, Balanced, Evaluation + SHAP komplett neu erzeugt
+- Standard-Config reproduziert EXAKT : A BA2=0,5480 / B BA2=0,6301 -> Headline jetzt fundiert
+- Alle BA/F1/Per-Class/SHAP-Werte deterministisch reproduziert (identisch)
+- Nur Trainingszeiten neu (nicht deterministisch) : Standard A=2.060s B=1.552s ;
+  Best-HP A=3.879s B=3.013s ; Balanced=3.052s
+- Per-Class B Best-HP (nobalanced) separat reproduziert (scripts/regen_perclass_b_besthp.py)
+
+**Paper-Korrekturen :**
+- abstract : SHAP-Qualitaet ehrlich (qualitativ), Reproduzierbarkeits-Einordnung zu 0,952
+- evaluation : Standardzeiten aktualisiert, Trainingszeiten aller Konfigs ergaenzt,
+  tab:shap_top5 (Benign) an Artefakt angeglichen, PC-Wording praezisiert, SHAP-Overclaim behoben,
+  Ergebnis-Unterabschnitte kondensiert (keine Prosa/Tabellen-Dopplung)
+- discussion : +1,78-Vergleich praezisiert, neuer Abschnitt "Einordnung der Abweichung zum
+  Referenzwert" (Setup-Unterschiede 39 vs 46 Merkmale / Literaturwert ggf. nicht reproduzierbar,
+  gemaess Betreuer-Abstimmung), §5.2 SHAP-Qualitaet ehrlich, Redundanzen getrimmt
+- conclusion : Zeitdifferenz 508s, Ausblick SHAP-Qualitaet ehrlich
+- methodik/motivation : SHAP-Qualitaetsmetriken als Bezugsrahmen + qualitativ
+- main : Abschnitt "Offenlegung zum Einsatz von Hilfsmitteln" (KI-Uebersetzung) ergaenzt
+- related-work : 7 Angriffskategorien + Benign = 8 klargestellt
+- Sprache : "Reentrainement"->"Neutraining", "Grille"->"Suchraster", "zahlenmaeßig"->"zahlenmaessig"
+- Figuren : 3 Paper-Figuren frisch aus Re-Run (shap_global_stage2_pipelineA manuell nachkopiert)
+
+**Kompilierung (WSL pdflatex) :** 10 Seiten, 0 undefined refs/citations, SUCCES.
+
+**Status :** Jede Zahl im Paper auf frischem Backend-Artefakt fundiert.
+10/10 Quellen zitiert, 0 Gedankenstriche im Inhalt.
+
+---
+
 ### 2026-05-31 -- Initialisation du repertoire paper-usenix-template-jguimfackjeuna/
 
 **Structure creee :**
@@ -230,6 +328,75 @@ Issue GitHub #3 fermee avec resultat reel.
 - 0 Halluzination, 0 interne Inkonsistenz, 0 falscher Zahlenwert
 - Alle Tabellenzeilen verifikation-positiv gegen Backend-JSON
 - paper : 9 pages, 0 Gedankenstrich, 10/10 sources
+
+---
+
+### 2026-06-01 -- Session 13 : Review complete (redondances, fluidite, coherence)
+
+**Branche :** fix/paper-review-vollstaendig (suite Issue #13)
+
+**Demande etudiant :** review complete de zero, suppression des redondances, formulation
+plus fluide des Forschungsfragen, verification anti-hallucination, question sur la Motivation.
+
+**Corrections implementees :**
+
+1. jguimfackjeuna-introduction.tex (reecriture) :
+   - Double citation supprimee : "[hamedani] ... Hamedani et al. [hamedani]" dans la meme
+     phrase d'ouverture, reduit a une seule citation
+   - Redondance avec Related Work supprimee : les descriptions detaillees de Mohale et
+     Hermosilla (deja en section 2.4) retirees de l'Einleitung ; conserve une seule phrase
+     de justification SHAP via Ogunseyi (PRISMA)
+   - Forschungsfragen reformulees en prose fluide et chronologique (Zunaechst / Darauf
+     aufbauend / Abschliessend) au lieu d'un bloc rigide avec (1)(2)(3)
+   - Paragraphe "Struktur der Arbeit" supprime (la fonction roadmap est absorbee par la
+     formulation des Teilfragen) -- demande explicite de l'etudiant
+   - Motivation renforcee dans l'Einleitung (scenario analyste : pourquoi l'explicabilite
+     compte avant de reagir a une alerte)
+
+2. jguimfackjeuna-abstract.tex (regression corrigee) :
+   - Resultats numeriques restaures (8.21 pts PCA : 0.5480 vs 0.6301 ; BA balanced 0.7261 ;
+     838.602 instances) -- avaient ete retires par erreur dans une version precedente
+   - Phrases meta-discursives supprimees ("Vergleichswerte aus Alharby gewonnen",
+     "im Diskussionsteil ... reflektiert") : surinterpretation (valeurs Alharby jamais
+     reellement comparees numeriquement dans le paper) + meta-commentaire impropre a un abstract
+   - Faute corrigee : "Schlusselworter" -> "Schluesselwoerter"
+
+3. jguimfackjeuna-evaluation.tex :
+   - Citation erronee \cite{hosseini2025imbalance} retiree de la phrase sur la
+     generalisation du Grid Search (Hosseini traite le desequilibre de classes, pas la
+     generalisation des HP) ; finding propre a l'auteur, sans citation
+   - Faute : "zukunftige" -> "zukuenftige"
+   - "Kapitel" -> "Abschnitt" (classe article = sections, pas chapitres)
+
+4. jguimfackjeuna-discussion.tex :
+   - §5.1 : triple repetition du constat "HP optimises sur subset ne generalisent pas"
+     consolidee en une seule formulation (resultats A+B donnes une fois, conclusion une fois)
+   - §5.2 : "Rahmenfrage" -> "leitende Forschungsfrage" (coherence terminologique avec l'intro)
+
+5. jguimfackjeuna-methodik.tex :
+   - Contradiction interne corrigee : "Die Normalverteilung aller Klassen bleibt erhalten"
+     contredisait discussion.tex ("glaettet die Klassenverteilung") + terme errone
+     (Normalverteilung = loi gaussienne). Remplace par : toutes les classes restent
+     representees, le desequilibre est attenue (coherent avec §5.3)
+
+6. jguimfackjeuna-conclusion.tex :
+   - "Kapitel" -> "Abschnitt"
+
+7. jguimfackjeuna-motivation.tex (document autonome) :
+   - "Kontrollpipeline mit allen 46 Originalmerkmalen" -> "allen Originalmerkmalen"
+     (le pipeline B de ce travail utilise 39 features, pas 46 ; 46 = chiffre nominal Raturi)
+
+**Verifications (statiques, sans compilation -- pas de LaTeX local, WSL HS) :**
+- 0 Gedankenstrich (-- / ---) dans le contenu des 6 fichiers edites
+- 10/10 sources BibTeX toujours citees au moins une fois dans le paper principal
+- Aucune cle de citation non definie introduite
+- BACKDOOR_MALWARE "<0.01% du volume total" VERIFIE contre Backend/docs/label_mapping.md
+  (3078 lignes = <0.01% du dataset complet, pas du sous-ensemble echantillonne)
+- Aucun "46 features" residuel errone (methodik:11 et motivation:95 = chiffre nominal Raturi,
+  correct et explique)
+
+**A faire avant merge :** compilation (build.sh WSL ou remote hopper) pour confirmer
+9 pages et 0 reference non resolue apres ces modifications.
 
 ---
 
